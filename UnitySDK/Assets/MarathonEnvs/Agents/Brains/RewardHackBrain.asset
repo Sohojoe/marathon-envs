@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: RewardHackBrain
   m_EditorClassIdentifier: 
   brainParameters:
-    vectorObservationSize: 5
+    vectorObservationSize: 4
     numStackedVectorObservations: 1
-    vectorActionSize: 05000000
+    vectorActionSize: 04000000
     cameraResolutions: []
     vectorActionDescriptions:
-    - 
     - 
     - 
     - 

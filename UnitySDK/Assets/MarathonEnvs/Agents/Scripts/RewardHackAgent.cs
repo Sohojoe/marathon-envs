@@ -6,10 +6,9 @@ using System.Linq;
 
 public class RewardHackAgent : Agent
 {
-    public int NumActions;
     public int NumSteps;
-    public List<float> Actions;
-    public List<float> SoftMaxActions;
+    public List<float> Actions = new List<float>();
+    public List<float> SoftMaxActions = new List<float>();
 
     int _curStep;
 
@@ -18,25 +17,24 @@ public class RewardHackAgent : Agent
     }
     void Init()
     {
-        var info = GetInfo();
-        var numActions = info.vectorObservation.Count;
+        var numActions = brain.brainParameters.vectorObservationSize;
         Actions = Enumerable.Range(0, numActions).Select(x => 0f).ToList();
         SoftMaxActions = Enumerable.Range(0, numActions).Select(x => 0f).ToList();
-        _curStep = 0;
+        _curStep = NumSteps;
     }
 
 	override public void CollectObservations()
     {
-        if (Actions == null) {
+        if (Actions.Count == 0) {
             Init();
         }
 
-        AddVectorObs(SoftMaxActions); 
+        AddVectorObs(Actions); 
     }
 
 	public override void AgentAction(float[] vectorAction, string textAction)
     {
-        if (Actions == null) {
+        if (Actions.Count == 0) {
             Init();
         }
         var softmaxActions = SoftMax(vectorAction).ToArray();;
@@ -47,27 +45,42 @@ public class RewardHackAgent : Agent
         }
     }
 
-    public float ScoreObservations(List<float> observations, float targetReward)
+    public float ScoreObservations(List<float> hints, float targetReward)
     {
-        if (Actions == null) {
-            return 0f;
-        }
-
-        var scoredObs = observations.Zip(SoftMaxActions, (x,y)=>(x*y));
-        var reward = scoredObs.Sum();
         RecordReward(targetReward);
+        var reward = 0f;
+
+        if (Actions.Count == 0) {
+            Init();
+            return reward;
+        }
+        // using Softmax
+        // var scoredObs = observations.Zip(SoftMaxActions, (x,y)=>(x*y));
+        // reward = scoredObs.Sum();
+
+        // using clamp & divide over size
+        var actions = Actions.Select(x=>(x+1f)/2f).ToList(); // convert -1 to 1, to, 0 to 1
+        var hintScores = hints
+            .Select(x=>x*targetReward) // scale hints to be no more than target
+            .Zip(actions, (x,y)=>(x*y))
+            .ToList();
+        reward = hintScores.Sum();
+        reward /= Actions.Count;
+        reward += targetReward;
+        reward /= 2f;
+
         return reward;
     }
 
     void RecordReward(float reward)
     {
         AddReward(reward);
-        _curStep++;
-        if (_curStep >= NumSteps)
-        {
+        // _curStep++;
+        // if (_curStep >= NumSteps)
+        // {
             RequestDecision();
             _curStep = 0;
-        }
+        // }
     }
 
     IEnumerable<float> SoftMax(IEnumerable<float> vector)

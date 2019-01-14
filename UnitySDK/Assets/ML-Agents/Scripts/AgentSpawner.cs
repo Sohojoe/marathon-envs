@@ -55,16 +55,19 @@ namespace MLAgents
         /// <summary>
         /// Return prefab for this AgentId else null
         /// </summary>
-        public Agent GetAgentPrefabFor(string thisAgentId)
+        public GameObject GetAgentPrefabFor(string thisAgentId)
         {
-            var entry = spawnableAgents
-                .FirstOrDefault(x=>x.agentId==thisAgentId);
-            return entry?.agentPrefab; 
+            var agent = spawnableAgents
+                .Where(x=>x.agentId==thisAgentId)
+                .Select(x=>x.agentPrefab)
+                .FirstOrDefault();
+            return agent?.gameObject; 
         }
 
-        public void SpawnAgents(GameObject parent, int numAgents, Agent agentPrefab)
+        public void SpawnAgents(GameObject parent, int numAgents, GameObject prefab)
         {
             Vector3 spawnStartPos = parent.transform.position;
+            Agent agentPrefab = prefab.GetComponent<Agent>();
             numAgents = FloodVolume(numAgents, agentPrefab, spawnStartPos);
         }
         int FloodVolume(int numAgents, Agent agentPrefab, Vector3 spawnStartPos)

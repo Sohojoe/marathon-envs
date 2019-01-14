@@ -6,7 +6,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6828806005732595406}
+  m_GameObject: {fileID: 4609758994635074001}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e2af096ae8827463cb36b31124951d2d, type: 3}
@@ -33,7 +33,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6828806005732595406}
+  m_GameObject: {fileID: 4609758994635074001}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2ba3af7e39894432b741a25a9ca310a, type: 3}
@@ -49,7 +49,6 @@ MonoBehaviour:
     skipActionsWithDecisions: 0
   agentBoundsMaxOffset: {x: 480, y: 2, z: 0.5}
   agentBoundsMinOffset: {x: 0, y: 0, z: -0.5}
-  NumActions: 5
   NumSteps: 10
   Actions: []
   SoftMaxActions: []
@@ -123,7 +122,7 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 4875893196157111703, guid: e1a94db6c017f48ceba332317285da93, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e1a94db6c017f48ceba332317285da93, type: 3}
---- !u!1 &6828806005732595406 stripped
+--- !u!1 &4609758994635074001 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7007017731364781948, guid: e1a94db6c017f48ceba332317285da93,
     type: 3}

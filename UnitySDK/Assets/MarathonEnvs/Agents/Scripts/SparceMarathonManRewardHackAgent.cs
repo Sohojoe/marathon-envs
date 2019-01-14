@@ -106,15 +106,15 @@ public class SparceMarathonManRewardHackAgent : Agent, IOnTerrainCollision
 	{
 		var normalizedPosition = _bodyManager.GetNormalizedPosition();
         var endPos = normalizedPosition.x;
+		endPos = Mathf.Clamp(endPos, 0f, 1f);
         
-        var obs = new List<float>();
-        obs.Add(endPos);
-        obs.Add(_torsoUprightReward);
-        obs.Add(_torsoForwardReward);
-        obs.Add(_hipsUprightReward);
-        obs.Add(_hipsForwardReward);
+        var hints = new List<float>();
+        hints.Add(_torsoUprightReward);
+        hints.Add(_torsoForwardReward);
+        hints.Add(_hipsUprightReward);
+        hints.Add(_hipsForwardReward);
 
-        var reward = _rewardHackAgent.ScoreObservations(obs, endPos);
+        var reward = _rewardHackAgent.ScoreObservations(hints, endPos);
 		AddReward(reward);
 		_bodyManager.SetDebugFrameReward(reward);
 	}
