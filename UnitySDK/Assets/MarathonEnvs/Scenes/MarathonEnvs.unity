@@ -377,12 +377,12 @@ MonoBehaviour:
     - agentId: SparseMarathonManRewardHack-v0
       agentPrefab: {fileID: 393888814121891457, guid: 6c279fe4a932047f4a1118a20711743d,
         type: 3}
-    agentIdDefault: SparseMarathonManRewardHack-v0
+    agentIdDefault: SparseMarathonMan-v0
     trainingNumAgentsDefault: 16
     inferenceNumAgentsDefault: 16
     worldBoundsMinOffset: {x: -10, y: 0, z: -250}
     worldBoundsMaxOffset: {x: 490, y: 2, z: 250}
-    trainingMode: 1
+    trainingMode: 0
   maxSteps: 0
   trainingConfiguration:
     width: 480
