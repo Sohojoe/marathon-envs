@@ -69,6 +69,7 @@ MonoBehaviour:
   agentParameters:
     agentCameras: []
     maxStep: 5000
+    agentRenderTextures: []
     resetOnDone: 1
     onDemandDecision: 0
     numberOfActionsBetweenDecisions: 5
@@ -81,6 +82,7 @@ MonoBehaviour:
   SensorIsInTouch: []
   FocalPoint: {fileID: 0}
   FocalRidgedBody: {fileID: 0}
+  DistanceTraveled: -3.4028235e+38
   FocalPointMaxDistanceTraveled: 0
   JointVelocity: []
   JointRotations: []
