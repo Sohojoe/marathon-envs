@@ -551,6 +551,8 @@ public class BodyManager002 : MonoBehaviour, IOnSensorCollision
 	}
 	public Vector3 GetNormalizedVelocity(Vector3 metersPerSecond)
 	{
+		if (_spawnableEnv == null)
+			return metersPerSecond;
 		var maxMetersPerSecond = _spawnableEnv.bounds.size
 			/ _agent.agentParameters.maxStep
 			/ Time.fixedDeltaTime;
@@ -570,6 +572,8 @@ public class BodyManager002 : MonoBehaviour, IOnSensorCollision
 	}
 	public Vector3 GetNormalizedPosition(Vector3 pos)
 	{
+		if (_spawnableEnv == null)
+			return pos;		
 		var maxPos = _spawnableEnv.bounds.size;
 		float x = pos.x / maxPos.x;
 		float y = pos.y / maxPos.y;

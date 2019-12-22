@@ -295,14 +295,18 @@ namespace MLAgents
             
             InitializeAcademy();
             Communicator communicator = null;
+            brainBatcher = new Batcher(null);
+            bool spawnerEnabled = false;
 
             var spawnPrefab = agentSpawner.GetPrefabFor(GetAgentId());
+            if (spawnPrefab != null)
+            {
             var spawnAgentPrefabs = spawnPrefab.GetComponentsInChildren<Agent>();
             var spawnAgentPrefabBrains = spawnAgentPrefabs
                 .Where(x=>x.brain as LearningBrain != null)
                 .Select(x=>x.brain)
                 .ToList();
-            var spawnerEnabled = spawnAgentPrefabBrains.Count > 0;
+            spawnerEnabled = spawnAgentPrefabBrains.Count > 0;
             var hubBrains = broadcastHub.broadcastingBrains.Where(x => x != null).ToList();;
             var hubControlledBrains = broadcastHub.broadcastingBrains.Where(
                 x => x != null && x is LearningBrain && broadcastHub.IsControlled(x));
@@ -386,6 +390,7 @@ namespace MLAgents
                     logWriter.WriteLine(" ");
                     logWriter.Close();
                 }
+            }
             }
 
             // If a communicator is enabled/provided, then we assume we are in
