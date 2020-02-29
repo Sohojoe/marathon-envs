@@ -108,7 +108,7 @@ MarathonManSparse-v0:
     beta: .003
     max_steps: 1.e7 
 
-Hopper-v0:
+MarathonHopper-v0:
     num_epoch: 10 
     time_horizon: 100 
     summary_freq: 10000
@@ -136,7 +136,7 @@ MarathonWalker2d-v0:
     max_steps: 1e6
     beta: .003
 
-Ant-v0:
+MarathonAnt-v0:
     num_epoch: 10 
     time_horizon: 100 
     summary_freq: 10000

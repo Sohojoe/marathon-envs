@@ -294,7 +294,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agentSpawner:
     spawnableEnvDefinitions:
-    - envId: Hopper-v0
+    - envId: MarathonHopper-v0
       envPrefab: {fileID: 6737101200792111825, guid: 562eb53b2c5eb47819b559b2afa6063c,
         type: 3}
     - envId: MarathonWalker2d-v0
@@ -326,7 +326,7 @@ MonoBehaviour:
         type: 3}
     envIdDefault: MarathonWalker2d-v0
     trainingNumEnvsDefault: 64
-    inferenceNumEnvsDefault: 1
+    inferenceNumEnvsDefault: 3
   DebugSkipPopUp: 0
 --- !u!1 &1715640920
 GameObject:

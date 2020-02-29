@@ -232,6 +232,9 @@ GameObject:
   - component: {fileID: 4484269634557110698}
   - component: {fileID: 4209007344491650751}
   - component: {fileID: 6284840784079424411}
+  - component: {fileID: 7862767056135862961}
+  - component: {fileID: 114420809964167508}
+  - component: {fileID: 2184373699142041738}
   m_Layer: 14
   m_Name: MarathonHopper2d
   m_TagString: Untagged
@@ -280,7 +283,7 @@ MonoBehaviour:
   m_Model: {fileID: 11400000, guid: 683e77c7c702b4133bf16682385ae477, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
-  m_BehaviorName: Hopper-v0
+  m_BehaviorName: MarathonHopper-v0
   m_TeamID: 0
   m_UseChildSensors: 1
 --- !u!114 &6284840784079424411
@@ -298,6 +301,72 @@ MonoBehaviour:
   DecisionPeriod: 5
   RepeatAction: 0
   offsetStep: 0
+--- !u!114 &7862767056135862961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5507999401980250815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e788eb6109bb04aa1bd822f9fc98f4bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MusclePowers:
+  - Muscle: pelvis
+    PowerVector: {x: 30, y: 0, z: 0}
+  - Muscle: thigh
+    PowerVector: {x: 40, y: 0, z: 0}
+  - Muscle: calf
+    PowerVector: {x: 30, y: 0, z: 0}
+  - Muscle: foot
+    PowerVector: {x: 10, y: 0, z: 0}
+  MotorScale: 1
+--- !u!114 &114420809964167508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5507999401980250815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 776799f55314f4500bc35f859c94e2fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CameraTarget: {fileID: 7385566605791865855}
+  FixedDeltaTime: 0.005
+  ShowMonitor: 0
+  DebugDisableMotor: 0
+  DebugShowWithOffset: 1
+  Muscles: []
+  BodyParts: []
+  SensorIsInTouch: []
+  Observations: []
+  ObservationNormalizedErrors: 0
+  MaxObservationNormalizedErrors: 0
+  Sensors: []
+  FrameReward: 0
+  AverageReward: 0
+  MaxDistanceTraveled: 0
+  DistanceTraveled: 0
+--- !u!114 &2184373699142041738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5507999401980250815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8fe46dbeca354201b1e77ca85c19b74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  maxStep: 5000
 --- !u!1 &5992100997702117815
 GameObject:
   m_ObjectHideFlags: 0

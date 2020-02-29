@@ -9,11 +9,6 @@ public class MarathonWalker2dAgent : Agent, IOnTerrainCollision
 {
 	BodyManager002 _bodyManager;
 
-	public bool MoveRight = true;
-	public bool MoveLeft;
-	public bool Jump;
-	// public int StepsUntilChange;
-
 	bool _isDone;
     bool _hasLazyInitialized;
 
@@ -46,12 +41,6 @@ public class MarathonWalker2dAgent : Agent, IOnTerrainCollision
 		// AddVectorObs.  = 2
 		var feetHeight = _bodyManager.GetSensorYPositions();
 		AddVectorObs(feetHeight);
-
-        AddVectorObs(MoveLeft);
-        AddVectorObs(MoveRight);
-        AddVectorObs(Jump);
-
-        // _bodyManager.OnCollectObservationsHandleDebug(GetInfo());
     }
 
 	public override void AgentAction(float[] vectorAction)
@@ -63,68 +52,7 @@ public class MarathonWalker2dAgent : Agent, IOnTerrainCollision
 		// manage reward
 		float velocity = _bodyManager.GetNormalizedVelocity().x;
 		velocity = Mathf.Clamp(velocity, -1f, 1f);
-		var actionDifference = _bodyManager.GetActionDifference();
-		var actionsAbsolute = vectorAction.Select(x => Mathf.Abs(x)).ToList();
-		var actionsAtLimit = actionsAbsolute.Select(x => x >= 1f ? 1f : 0f).ToList();
-		float actionaAtLimitCount = actionsAtLimit.Sum();
-		float notAtLimitBonus = 1f - (actionaAtLimitCount / (float)actionsAbsolute.Count);
-		float reducedPowerBonus = 1f - actionsAbsolute.Average();
-
-		var pelvis = _bodyManager.GetFirstBodyPart(BodyPartGroup.Torso);
-		if (pelvis.Transform.position.y < 0)
-		{
-			Done();
-		}
-
-		bool goalStationary = false;
-		bool goalRight = false;
-		float reward = 0f;
-		if (MoveRight && MoveLeft)
-			goalStationary = true;
-		else if (!MoveRight && !MoveLeft)
-			goalStationary = true;
-		else if (MoveRight)
-			goalRight = true;
-
-		var sensorsInTouch = _bodyManager.GetSensorIsInTouch();
-		var anySensorInTouch = sensorsInTouch.Sum() != 0;
-		var feetHeights = _bodyManager.GetSensorYPositions();
-		var footHeight = feetHeights.Min();
-		var jumpReward = 0f;
-		if (!anySensorInTouch)
-		{
-			jumpReward += footHeight;
-		}
-
-		float stationaryVelocityReward = 1f - Mathf.Abs(velocity * 3);
-		stationaryVelocityReward = Mathf.Clamp(stationaryVelocityReward, 0f, 1f);
-		if (goalStationary)
-		{
-			float footReward = sensorsInTouch.Average();
-			// float actionDifferenceReward = 1f-actionDifference;
-			reward =
-				footReward * .2f +
-				reducedPowerBonus * .3f +
-				stationaryVelocityReward * .5f;
-		}
-		else if (goalRight)
-			reward = velocity;
-		else
-			reward = -velocity;
-		if (Jump && goalStationary)
-		{
-			reward =
-				jumpReward * .5f +
-				reducedPowerBonus * .2f +
-				stationaryVelocityReward * .3f;
-		}
-		else if (Jump)
-		{
-			reward = reward * .5f;
-			reward += (jumpReward * .5f);
-		}
-		reward = Mathf.Clamp(reward, -1f, 1f);
-
+		var reward = velocity;
 		AddReward(reward);
 		_bodyManager.SetDebugFrameReward(reward);
 	}
@@ -141,16 +69,14 @@ public class MarathonWalker2dAgent : Agent, IOnTerrainCollision
 		}
         _isDone = true;
 		_bodyManager.OnAgentReset();
-		//StepsUntilChange = 0;
-		//SetAction(0);
 	}
 	public virtual void OnTerrainCollision(GameObject other, GameObject terrain)
 	{
-		// if (string.Compare(terrain.name, "Terrain", true) != 0)
 		if (terrain.GetComponent<Terrain>() == null)
 			return;
-		// if (!_styleAnimator.AnimationStepsReady)
-		// 	return;
+		// HACK - for when agent has not been initialized
+		if (_bodyManager == null)
+			return;
 		var bodyPart = _bodyManager.BodyParts.FirstOrDefault(x => x.Transform.gameObject == other);
 		if (bodyPart == null)
 			return;
@@ -173,60 +99,6 @@ public class MarathonWalker2dAgent : Agent, IOnTerrainCollision
 				break;
 		}
 	}
-    /*
-	void HandleControllerTraining()
-	{
-		StepsUntilChange--;
-		if (StepsUntilChange > 0)
-			return;
-		var rnd = UnityEngine.Random.value;
-		bool repeateAction = false;
-		int action = AsAction();
-		if (action != 0 && rnd > .6f)
-			repeateAction = true;
-		if (!repeateAction)
-		{
-			rnd = UnityEngine.Random.value;
-			if (rnd <= .4f)
-				action = 1; // right
-			else if (rnd <= .8f)
-				action = 2; // left
-			else
-				action = 0; // stand
-			rnd = UnityEngine.Random.value;
-			if (rnd >= .75)
-				action += 3; // add jump
-		}
-		StepsUntilChange = 40 + (int)(UnityEngine.Random.value * 200);
-		SetAction(action);
-	}
-	int AsAction()
-	{
-		int action = 0;
-		if (MoveRight && MoveLeft)
-			action = 0;
-		else if (!MoveRight && !MoveLeft)
-			action = 0;
-		else if (MoveRight)
-			action = 1;
-		else
-			action = 2;
-		if (Jump)
-			action += 3;
-		return action;
-	}
-	void SetAction(int action)
-	{
-		Jump = false;
-		if (action >= 3)
-		{
-			action -= 3;
-			Jump = true;
-		}
-		MoveRight = true ? action == 1 : false;
-		MoveLeft = true ? action == 2 : false;
-	}
-    */
 
 	public static BodyConfig BodyConfig = new BodyConfig
 	{
