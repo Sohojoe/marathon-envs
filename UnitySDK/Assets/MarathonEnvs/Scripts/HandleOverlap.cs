@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace MLAgents
@@ -5,6 +7,8 @@ namespace MLAgents
     public class HandleOverlap : MonoBehaviour
     {
         public GameObject Parent;
+        List<Transform> _transformsToIgnorCollision;
+        int _numUpdates;
 
         /// <summary>
         /// OnCollisionEnter is called when this collider/rigidbody has begun
@@ -16,10 +20,21 @@ namespace MLAgents
             Collider myCollider = GetComponent<Collider>();
             if (myCollider == null)
                 return;
-            // only ingore if part of the same object
-            if (myCollider.transform.root != other.transform.root)
-                return;
-            Physics.IgnoreCollision(myCollider, other.collider);
+            // skip if not part of same parent
+            if (_transformsToIgnorCollision == null)
+                _transformsToIgnorCollision = Parent
+                    .GetComponentsInChildren<HandleOverlap>()
+                    .Select(x => x.transform)
+                    .ToList();
+            if (_transformsToIgnorCollision.Contains(other.collider.transform))
+                Physics.IgnoreCollision(myCollider, other.collider);
+        }
+
+        private void Update()
+        {
+            if (_numUpdates>0)
+                UnityEngine.GameObject.Destroy(this);
+            _numUpdates++;
         }
     }
 }

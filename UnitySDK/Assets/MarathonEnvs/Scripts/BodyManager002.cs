@@ -191,15 +191,33 @@ public class BodyManager002 : MonoBehaviour, IOnSensorCollision
 		{
 			if (BodyConfig.GetBodyPartGroup(t.name) == BodyHelper002.BodyPartGroup.None)
 				continue;
-			
+			var bodyPartGroup = BodyConfig.GetBodyPartGroup(t.name);
+			if (bodyPartGroup != BodyConfig.GetBodyPartGroup(t.name))
+				continue;
+			root = new BodyPart002
+			{
+				Rigidbody = t.GetComponent<Rigidbody>(),
+				Transform = t,
+				Name = t.name,
+				Group = bodyPartGroup,
+			};
+			root.Root = root;
+			root.Init();
+			BodyParts.Add(root);
+		}
+		foreach (var t in GetComponentsInChildren<Transform>())
+		{
+			if (BodyConfig.GetBodyPartGroup(t.name) == BodyHelper002.BodyPartGroup.None)
+				continue;
+			var bodyPartGroup = BodyConfig.GetBodyPartGroup(t.name);
+			if (bodyPartGroup == BodyConfig.GetBodyPartGroup(t.name))
+				continue;
 			var bodyPart = new BodyPart002{
 				Rigidbody = t.GetComponent<Rigidbody>(),
 				Transform = t,
 				Name = t.name,
-				Group = BodyConfig.GetBodyPartGroup(t.name), 
+				Group = bodyPartGroup, 
 			};
-			if (bodyPart.Group == BodyConfig.GetRootBodyPart())
-				root = bodyPart;
 			bodyPart.Root = root;
 			bodyPart.Init();
 			BodyParts.Add(bodyPart);

@@ -5,7 +5,7 @@ using MLAgents;
 using System.Linq;
 using static BodyHelper002;
 
-public class MarathonHopper2dAgent : Agent, IOnTerrainCollision
+public class MarathonAntAgent : Agent, IOnTerrainCollision
 {
 	BodyManager002 _bodyManager;
 
@@ -63,7 +63,7 @@ public class MarathonHopper2dAgent : Agent, IOnTerrainCollision
 		if (!_hasLazyInitialized)
 		{
 			_bodyManager = GetComponent<BodyManager002>();
-			_bodyManager.BodyConfig = MarathonHopper2dAgent.BodyConfig;
+			_bodyManager.BodyConfig = MarathonAntAgent.BodyConfig;
 			_bodyManager.OnInitializeAgent();
 			_hasLazyInitialized = true;
 		}
@@ -106,15 +106,11 @@ public class MarathonHopper2dAgent : Agent, IOnTerrainCollision
 
 			if (name.Contains("torso"))
 				return BodyPartGroup.Torso;
-			if (name.Contains("nose"))
-				return BodyPartGroup.Head;
-			if (name.Contains("pelvis"))
-				return BodyPartGroup.Spine;
-			if (name.Contains("thigh"))
-				return BodyPartGroup.LegUpper;
-			if (name.Contains("calf"))
+			//if (name.Contains("aux"))
+				//return BodyPartGroup.LegUpper;
+			if (name.Contains("leg"))
 				return BodyPartGroup.LegLower;
-			if (name.Contains("foot"))
+			if (name.Contains("ankle"))
 				return BodyPartGroup.Foot;
 
 			return BodyPartGroup.None;
@@ -125,13 +121,9 @@ public class MarathonHopper2dAgent : Agent, IOnTerrainCollision
 			if (name.Contains("mixamorig"))
 				return MuscleGroup.None;
 
-			if (name.Contains("pelvis"))
-				return MuscleGroup.Spine;
-			if (name.Contains("thigh"))
-				return MuscleGroup.LegUpper;
-			if (name.Contains("calf"))
+			if (name.Contains("leg"))
 				return MuscleGroup.LegLower;
-			if (name.Contains("foot"))
+			if (name.Contains("ankle"))
 				return MuscleGroup.Foot;
 
 			return MuscleGroup.None;

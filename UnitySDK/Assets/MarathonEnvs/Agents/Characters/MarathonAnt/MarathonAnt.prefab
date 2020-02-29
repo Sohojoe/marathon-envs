@@ -182,6 +182,7 @@ GameObject:
   - component: {fileID: 5647165788957832226}
   - component: {fileID: 8487157272971143539}
   - component: {fileID: 1201637634638923228}
+  - component: {fileID: 7873862052558541997}
   m_Layer: 14
   m_Name: aux_2_geom
   m_TagString: Untagged
@@ -293,6 +294,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7873862052558541997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 850046122810012260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da87b37fe0ae0475a99808928afad49b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parent: {fileID: 8014873597719266705}
 --- !u!1 &1653045225767300942
 GameObject:
   m_ObjectHideFlags: 0
@@ -309,6 +323,7 @@ GameObject:
   - component: {fileID: 2833109992808630817}
   - component: {fileID: 5200112372579817186}
   - component: {fileID: 7570631858533314641}
+  - component: {fileID: 4083747326952001827}
   m_Layer: 14
   m_Name: third_ankle_geom
   m_TagString: Untagged
@@ -527,6 +542,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d041794481cd24f4d92e5f3da728fe64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4083747326952001827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653045225767300942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da87b37fe0ae0475a99808928afad49b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parent: {fileID: 8014873597719266705}
 --- !u!1 &2535734663514868141
 GameObject:
   m_ObjectHideFlags: 0
@@ -541,6 +569,7 @@ GameObject:
   - component: {fileID: 4823933801003577589}
   - component: {fileID: 3537255730185494704}
   - component: {fileID: 4556157317731787066}
+  - component: {fileID: 4083943353915024229}
   m_Layer: 14
   m_Name: aux_3_geom
   m_TagString: Untagged
@@ -652,6 +681,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4083943353915024229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2535734663514868141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da87b37fe0ae0475a99808928afad49b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parent: {fileID: 8014873597719266705}
 --- !u!1 &3046430905121621628
 GameObject:
   m_ObjectHideFlags: 0
@@ -668,6 +710,7 @@ GameObject:
   - component: {fileID: 159785674496522092}
   - component: {fileID: 7607610224772766342}
   - component: {fileID: 8240709347305655437}
+  - component: {fileID: 542431485268704405}
   m_Layer: 14
   m_Name: left_ankle_geom
   m_TagString: Untagged
@@ -886,6 +929,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d041794481cd24f4d92e5f3da728fe64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &542431485268704405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3046430905121621628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da87b37fe0ae0475a99808928afad49b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parent: {fileID: 8014873597719266705}
 --- !u!1 &5602157915565297495
 GameObject:
   m_ObjectHideFlags: 0
@@ -900,6 +956,7 @@ GameObject:
   - component: {fileID: 1444484599775555085}
   - component: {fileID: 488233272397338445}
   - component: {fileID: 6538321957917688049}
+  - component: {fileID: 798871463503065666}
   m_Layer: 14
   m_Name: aux_1_geom
   m_TagString: Untagged
@@ -1011,6 +1068,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &798871463503065666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5602157915565297495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da87b37fe0ae0475a99808928afad49b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parent: {fileID: 8014873597719266705}
 --- !u!1 &5929731551860209942
 GameObject:
   m_ObjectHideFlags: 0
@@ -1026,6 +1096,7 @@ GameObject:
   - component: {fileID: 1078810964709438933}
   - component: {fileID: 2913886012865759665}
   - component: {fileID: 2540846147782696060}
+  - component: {fileID: 2521729251244876751}
   m_Layer: 14
   m_Name: left_leg_geom
   m_TagString: Untagged
@@ -1232,6 +1303,19 @@ ConfigurableJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &2521729251244876751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5929731551860209942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da87b37fe0ae0475a99808928afad49b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parent: {fileID: 8014873597719266705}
 --- !u!1 &6275395192855243375
 GameObject:
   m_ObjectHideFlags: 0
@@ -1248,6 +1332,7 @@ GameObject:
   - component: {fileID: 7123126517429214299}
   - component: {fileID: 679512757959607856}
   - component: {fileID: 9187940029204086569}
+  - component: {fileID: 6801764357000851331}
   m_Layer: 14
   m_Name: right_ankle_geom
   m_TagString: Untagged
@@ -1466,6 +1551,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d041794481cd24f4d92e5f3da728fe64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6801764357000851331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6275395192855243375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da87b37fe0ae0475a99808928afad49b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parent: {fileID: 8014873597719266705}
 --- !u!1 &6854043788829492451
 GameObject:
   m_ObjectHideFlags: 0
@@ -1481,6 +1579,7 @@ GameObject:
   - component: {fileID: 4109062891645713446}
   - component: {fileID: 4997944978767107284}
   - component: {fileID: 5856636957400910666}
+  - component: {fileID: 2321731606749498357}
   m_Layer: 14
   m_Name: right_leg_geom
   m_TagString: Untagged
@@ -1687,6 +1786,19 @@ ConfigurableJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &2321731606749498357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6854043788829492451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da87b37fe0ae0475a99808928afad49b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parent: {fileID: 8014873597719266705}
 --- !u!1 &6990064778107712741
 GameObject:
   m_ObjectHideFlags: 0
@@ -1701,6 +1813,7 @@ GameObject:
   - component: {fileID: 8754328473951237494}
   - component: {fileID: 2843009321163952319}
   - component: {fileID: 4325960014076538756}
+  - component: {fileID: 6027613235023888339}
   m_Layer: 14
   m_Name: aux_4_geom
   m_TagString: Untagged
@@ -1812,6 +1925,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6027613235023888339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6990064778107712741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da87b37fe0ae0475a99808928afad49b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parent: {fileID: 8014873597719266705}
 --- !u!1 &7455967015722084416
 GameObject:
   m_ObjectHideFlags: 0
@@ -1827,6 +1953,7 @@ GameObject:
   - component: {fileID: 841893603829901371}
   - component: {fileID: 27657053180914811}
   - component: {fileID: 987250781978586982}
+  - component: {fileID: 2554795434445033011}
   m_Layer: 14
   m_Name: back_leg_geom
   m_TagString: Untagged
@@ -2033,6 +2160,19 @@ ConfigurableJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &2554795434445033011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7455967015722084416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da87b37fe0ae0475a99808928afad49b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parent: {fileID: 8014873597719266705}
 --- !u!1 &8014873597719266705
 GameObject:
   m_ObjectHideFlags: 0
@@ -2042,10 +2182,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2056166271465001900}
-  - component: {fileID: 5379218365737143314}
   - component: {fileID: 2923980194203804723}
-  - component: {fileID: 6450702858269188780}
   - component: {fileID: 766884507322565182}
+  - component: {fileID: 114221544079911564}
+  - component: {fileID: 114607859192802774}
+  - component: {fileID: 114324194124216256}
   m_Layer: 14
   m_Name: MarathonAnt
   m_TagString: Untagged
@@ -2080,27 +2221,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &5379218365737143314
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8014873597719266705}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a532e373957504411bd01901bf361ad3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Xml: {fileID: 4900000, guid: de5754460293b4149885f02bd66d1ca7, type: 3}
-  Material: {fileID: 2100000, guid: 9013613e105254620b29c7301046af30, type: 2}
-  PhysicMaterial: {fileID: 13400000, guid: 38b7ea504254a4fa986e42a7bb16c8df, type: 2}
-  UseXmlTimestep: 1
-  DebugOutput: 0
-  Force2D: 0
-  OnGenerateApplyRandom: 0.005
-  DefaultDensity: 300
-  MotorScale: 1
 --- !u!114 &2923980194203804723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2114,7 +2234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    vectorObservationSize: 54
+    vectorObservationSize: 57
     numStackedVectorObservations: 1
     vectorActionSize: 08000000
     vectorActionDescriptions: []
@@ -2122,138 +2242,9 @@ MonoBehaviour:
   m_Model: {fileID: 11400000, guid: 7264130bd4f8441dd99ab09d9b9c5d81, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
-  m_BehaviorName: Ant-v0
+  m_BehaviorName: MarathonAnt-v0
   m_TeamID: 0
   m_UseChildSensors: 1
---- !u!114 &6450702858269188780
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8014873597719266705}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b072f3c2a55bd48149bbbd9701c7c6af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agentParameters:
-    maxStep: 1000
-  hasUpgradedFromAgentParameters: 1
-  maxStep: 5000
-  CameraTarget: {fileID: 0}
-  ShowMonitor: 1
-  FootHitTerrain: 0
-  NonFootHitTerrain: 0
-  Actions:
-  - -0.26798066
-  - -0.3938153
-  - 0.4060469
-  - 0.082316466
-  - 1
-  - 0.2554579
-  - -0.0430395
-  - 0.10832081
-  SensorIsInTouch:
-  - 0
-  - 0
-  - 0
-  - 0
-  FocalPoint: {fileID: 560374256671745340}
-  FocalRidgedBody: {fileID: 1776771335186190170}
-  DistanceTraveled: 0
-  FocalPointMaxDistanceTraveled: 0
-  JointVelocity:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  JointRotations:
-  - {x: 0, y: 0, z: 0, w: 1.0000001}
-  - {x: 0, y: 0, z: 0, w: 1.0000001}
-  - {x: 0, y: 0, z: 0, w: 1.0000001}
-  - {x: 0, y: 0, z: 0, w: 1.0000001}
-  - {x: 0, y: 0, z: 0, w: 1.0000001}
-  - {x: 0, y: 0, z: 0, w: 1.0000001}
-  - {x: 0, y: 0, z: 0, w: 1.0000001}
-  - {x: 0, y: 0, z: 0, w: 1.0000001}
-  MarathonJoints:
-  - Joint: {fileID: 7229772903993961757}
-    Name: 
-    JointName: hip_4
-    CtrlRange: {x: -1, y: 1}
-    TrueBase: {fileID: 7229772903993961757}
-    TrueTarget: {fileID: 1379208412863132723}
-    MaximumForce: 150
-  - Joint: {fileID: 5665075786558032245}
-    Name: 
-    JointName: ankle_4
-    CtrlRange: {x: -1, y: 1}
-    TrueBase: {fileID: 5665075786558032245}
-    TrueTarget: {fileID: 8751644378239318484}
-    MaximumForce: 150
-  - Joint: {fileID: 2540846147782696060}
-    Name: 
-    JointName: hip_1
-    CtrlRange: {x: -1, y: 1}
-    TrueBase: {fileID: 2540846147782696060}
-    TrueTarget: {fileID: 1552139757837325247}
-    MaximumForce: 150
-  - Joint: {fileID: 7607610224772766342}
-    Name: 
-    JointName: ankle_1
-    CtrlRange: {x: -1, y: 1}
-    TrueBase: {fileID: 7607610224772766342}
-    TrueTarget: {fileID: 6252387008877016954}
-    MaximumForce: 150
-  - Joint: {fileID: 5856636957400910666}
-    Name: 
-    JointName: hip_2
-    CtrlRange: {x: -1, y: 1}
-    TrueBase: {fileID: 5856636957400910666}
-    TrueTarget: {fileID: 9010490132408425281}
-    MaximumForce: 150
-  - Joint: {fileID: 679512757959607856}
-    Name: 
-    JointName: ankle_2
-    CtrlRange: {x: -1, y: 1}
-    TrueBase: {fileID: 679512757959607856}
-    TrueTarget: {fileID: 318283341632617079}
-    MaximumForce: 150
-  - Joint: {fileID: 987250781978586982}
-    Name: 
-    JointName: hip_3
-    CtrlRange: {x: -1, y: 1}
-    TrueBase: {fileID: 987250781978586982}
-    TrueTarget: {fileID: 4064931506402778616}
-    MaximumForce: 150
-  - Joint: {fileID: 5200112372579817186}
-    Name: 
-    JointName: ankle_3
-    CtrlRange: {x: -1, y: 1}
-    TrueBase: {fileID: 5200112372579817186}
-    TrueTarget: {fileID: 4590055516342905617}
-    MaximumForce: 150
-  MarathonSensors:
-  - SiteObject: {fileID: 4858079812006520041}
-    Name: touch_left_ankle_geom
-    SiteName: left_ankle_geom
-  - SiteObject: {fileID: 6221682448611880121}
-    Name: touch_right_ankle_geom
-    SiteName: right_ankle_geom
-  - SiteObject: {fileID: 1724502812169491202}
-    Name: touch_third_ankle_geom
-    SiteName: third_ankle_geom
-  - SiteObject: {fileID: 3410688160555438837}
-    Name: touch_fourth_ankle_geom
-    SiteName: fourth_ankle_geom
-  Observations: []
-  ObservationNormalizedErrors: 0
-  MaxObservationNormalizedErrors: 0
 --- !u!114 &766884507322565182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2269,6 +2260,80 @@ MonoBehaviour:
   DecisionPeriod: 5
   RepeatAction: 0
   offsetStep: 0
+--- !u!114 &114221544079911564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8014873597719266705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e788eb6109bb04aa1bd822f9fc98f4bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MusclePowers:
+  - Muscle: left_leg_geom
+    PowerVector: {x: 150, y: 0, z: 0}
+  - Muscle: left_ankle_geom
+    PowerVector: {x: 150, y: 0, z: 0}
+  - Muscle: right_leg_geom
+    PowerVector: {x: 150, y: 0, z: 0}
+  - Muscle: right_ankle_geom
+    PowerVector: {x: 150, y: 0, z: 0}
+  - Muscle: back_leg_geom
+    PowerVector: {x: 150, y: 0, z: 0}
+  - Muscle: third_ankle_geom
+    PowerVector: {x: 150, y: 0, z: 0}
+  - Muscle: rightback_leg_geom
+    PowerVector: {x: 150, y: 0, z: 0}
+  - Muscle: fourth_ankle_geom
+    PowerVector: {x: 150, y: 0, z: 0}
+  MotorScale: 1
+--- !u!114 &114607859192802774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8014873597719266705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 776799f55314f4500bc35f859c94e2fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CameraTarget: {fileID: 8075055504654026684}
+  FixedDeltaTime: 0.005
+  ShowMonitor: 0
+  DebugDisableMotor: 0
+  DebugShowWithOffset: 0
+  Muscles: []
+  BodyParts: []
+  SensorIsInTouch: []
+  Observations: []
+  ObservationNormalizedErrors: 0
+  MaxObservationNormalizedErrors: 0
+  Sensors: []
+  FrameReward: 0
+  AverageReward: 0
+  MaxDistanceTraveled: 0
+  DistanceTraveled: 0
+--- !u!114 &114324194124216256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8014873597719266705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 344c8b6d9137d46daa00ebef3c4a6e38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  maxStep: 5000
 --- !u!1 &8570426256889855227
 GameObject:
   m_ObjectHideFlags: 0
@@ -2285,6 +2350,7 @@ GameObject:
   - component: {fileID: 2149462776594822391}
   - component: {fileID: 5665075786558032245}
   - component: {fileID: 429961271427508090}
+  - component: {fileID: 8361286866131499996}
   m_Layer: 14
   m_Name: fourth_ankle_geom
   m_TagString: Untagged
@@ -2503,6 +2569,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d041794481cd24f4d92e5f3da728fe64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8361286866131499996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8570426256889855227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da87b37fe0ae0475a99808928afad49b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parent: {fileID: 8014873597719266705}
 --- !u!1 &8920521083118581383
 GameObject:
   m_ObjectHideFlags: 0
@@ -2518,6 +2597,7 @@ GameObject:
   - component: {fileID: 4138759570196476105}
   - component: {fileID: 4125095161726392143}
   - component: {fileID: 7229772903993961757}
+  - component: {fileID: 8473970987449058295}
   m_Layer: 14
   m_Name: rightback_leg_geom
   m_TagString: Untagged
@@ -2724,3 +2804,16 @@ ConfigurableJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &8473970987449058295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8920521083118581383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da87b37fe0ae0475a99808928afad49b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parent: {fileID: 8014873597719266705}
