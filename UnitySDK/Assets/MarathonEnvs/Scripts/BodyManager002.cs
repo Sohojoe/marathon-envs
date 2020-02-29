@@ -263,6 +263,11 @@ public class BodyManager002 : MonoBehaviour, IOnSensorCollision
 				transformsRotation[child.gameObject] = child.rotation;
 			}
 		}
+		var toCallOnReset = gameObject.GetComponents<IOnHandleModelReset>();
+		foreach (var item in toCallOnReset)
+		{
+			item.OnHandleModelReset();
+		}
 	}
 
 	public float GetHeightNormalizedReward(float maxHeight)
@@ -439,8 +444,33 @@ public class BodyManager002 : MonoBehaviour, IOnSensorCollision
             vectorObservation.Add(normalizedVelocity.z);
 		}
         return vectorObservation;
-    }
-    public List<float> GetMusclesObservations()
+    }	
+	public (List<float>, List<float>) GetMusclesRotationAndRotationVelocity()
+	{
+		List<float> rotationVector = new List<float>();
+		List<float> rotationVelocityVector = new List<float>();
+		foreach (var muscle in Muscles)
+		{
+			muscle.UpdateObservations();
+			if (muscle.ConfigurableJoint.angularXMotion != ConfigurableJointMotion.Locked)
+			{
+				rotationVector.Add(muscle.ObsNormalizedRotation.x);
+				rotationVelocityVector.Add(muscle.ObsRotationVelocity.x);
+			}
+			if (muscle.ConfigurableJoint.angularYMotion != ConfigurableJointMotion.Locked)
+            {
+				rotationVector.Add(muscle.ObsNormalizedRotation.y);
+				rotationVelocityVector.Add(muscle.ObsRotationVelocity.y);
+			}
+			if (muscle.ConfigurableJoint.angularZMotion != ConfigurableJointMotion.Locked)
+			{
+				rotationVector.Add(muscle.ObsNormalizedRotation.z);
+				rotationVelocityVector.Add(muscle.ObsRotationVelocity.z);
+			}
+		}
+		return (rotationVector, rotationVelocityVector);
+	}
+	public List<float> GetMusclesObservations()
     {
         List<float> vectorObservation = new List<float>();
 		foreach (var muscle in Muscles)

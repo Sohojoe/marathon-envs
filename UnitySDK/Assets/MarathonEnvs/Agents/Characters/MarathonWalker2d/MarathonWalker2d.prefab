@@ -685,10 +685,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9042123795094747134}
-  - component: {fileID: 5487179739535396379}
   - component: {fileID: 344199816800343497}
-  - component: {fileID: 2017041966402676489}
   - component: {fileID: 7077199528994152235}
+  - component: {fileID: 2928700444258136888}
+  - component: {fileID: 7727276629284364019}
+  - component: {fileID: 114915873284586120}
   m_Layer: 14
   m_Name: MarathonWalker2d
   m_TagString: Untagged
@@ -717,27 +718,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &5487179739535396379
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5910248952367531655}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a532e373957504411bd01901bf361ad3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Xml: {fileID: 4900000, guid: bdcc3c87672e842d48022e5d42f2e965, type: 3}
-  Material: {fileID: 2100000, guid: 9013613e105254620b29c7301046af30, type: 2}
-  PhysicMaterial: {fileID: 13400000, guid: 38b7ea504254a4fa986e42a7bb16c8df, type: 2}
-  UseXmlTimestep: 1
-  DebugOutput: 0
-  Force2D: 1
-  OnGenerateApplyRandom: 0.005
-  DefaultDensity: 1000
-  MotorScale: 1
 --- !u!114 &344199816800343497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -751,7 +731,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    vectorObservationSize: 43
+    vectorObservationSize: 28
     numStackedVectorObservations: 1
     vectorActionSize: 06000000
     vectorActionDescriptions: []
@@ -759,110 +739,9 @@ MonoBehaviour:
   m_Model: {fileID: 11400000, guid: cdd39e3b3a1904e2abce4578f340c793, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
-  m_BehaviorName: Walker2d-v0
+  m_BehaviorName: MarathonWalker2d-v0
   m_TeamID: 0
   m_UseChildSensors: 1
---- !u!114 &2017041966402676489
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5910248952367531655}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9077dc2f53ed9427e995a11ce8489a1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agentParameters:
-    maxStep: 1000
-  hasUpgradedFromAgentParameters: 1
-  maxStep: 5000
-  CameraTarget: {fileID: 0}
-  ShowMonitor: 1
-  FootHitTerrain: 0
-  NonFootHitTerrain: 0
-  Actions:
-  - 0.722183
-  - -0.20184265
-  - 0.049864005
-  - -0.31615853
-  - 0.7479272
-  - -0.2826718
-  SensorIsInTouch:
-  - 0
-  - 0
-  FocalPoint: {fileID: 7965766824123805839}
-  FocalRidgedBody: {fileID: 9094283392226189676}
-  DistanceTraveled: 0
-  FocalPointMaxDistanceTraveled: 0
-  JointVelocity:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  JointRotations:
-  - {x: 0, y: 0, z: 0, w: 1}
-  - {x: 0, y: 0, z: 0, w: 1}
-  - {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  - {x: 0, y: 0, z: 0, w: 1}
-  - {x: 0, y: 0, z: 0, w: 1}
-  - {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  MarathonJoints:
-  - Joint: {fileID: 1364015818326171452}
-    Name: right_hip
-    JointName: right_hip
-    CtrlRange: {x: 0, y: 0}
-    TrueBase: {fileID: 1364015818326171452}
-    TrueTarget: {fileID: 254748127682686991}
-    MaximumForce: 100
-  - Joint: {fileID: 7817827066109579857}
-    Name: right_knee
-    JointName: right_knee
-    CtrlRange: {x: 0, y: 0}
-    TrueBase: {fileID: 7817827066109579857}
-    TrueTarget: {fileID: 5931131404911901874}
-    MaximumForce: 50
-  - Joint: {fileID: 334544681916129568}
-    Name: right_ankle
-    JointName: right_ankle
-    CtrlRange: {x: 0, y: 0}
-    TrueBase: {fileID: 334544681916129568}
-    TrueTarget: {fileID: 7915337920428699358}
-    MaximumForce: 20
-  - Joint: {fileID: 880545823024780685}
-    Name: left_hip
-    JointName: left_hip
-    CtrlRange: {x: 0, y: 0}
-    TrueBase: {fileID: 880545823024780685}
-    TrueTarget: {fileID: 254748127682686991}
-    MaximumForce: 100
-  - Joint: {fileID: 8482370225418608097}
-    Name: left_knee
-    JointName: left_knee
-    CtrlRange: {x: 0, y: 0}
-    TrueBase: {fileID: 8482370225418608097}
-    TrueTarget: {fileID: 3079633171880826605}
-    MaximumForce: 50
-  - Joint: {fileID: 620212404994161426}
-    Name: left_ankle
-    JointName: left_ankle
-    CtrlRange: {x: 0, y: 0}
-    TrueBase: {fileID: 620212404994161426}
-    TrueTarget: {fileID: 7829196898130682365}
-    MaximumForce: 20
-  MarathonSensors:
-  - SiteObject: {fileID: 2190908467596348705}
-    Name: touch_foot_left
-    SiteName: left_foot
-  - SiteObject: {fileID: 8420860186186219494}
-    Name: touch_foot_right
-    SiteName: right_foot
-  Observations: []
-  ObservationNormalizedErrors: 0
-  MaxObservationNormalizedErrors: 0
 --- !u!114 &7077199528994152235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -878,6 +757,79 @@ MonoBehaviour:
   DecisionPeriod: 5
   RepeatAction: 0
   offsetStep: 0
+--- !u!114 &2928700444258136888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5910248952367531655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e788eb6109bb04aa1bd822f9fc98f4bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MusclePowers:
+  - Muscle: right_thigh
+    PowerVector: {x: 100, y: 0, z: 0}
+  - Muscle: right_leg
+    PowerVector: {x: 50, y: 0, z: 0}
+  - Muscle: right_foot
+    PowerVector: {x: 20, y: 0, z: 0}
+  - Muscle: left_thigh
+    PowerVector: {x: 100, y: 0, z: 0}
+  - Muscle: left_leg
+    PowerVector: {x: 50, y: 0, z: 0}
+  - Muscle: left_foot
+    PowerVector: {x: 20, y: 0, z: 0}
+  MotorScale: 1
+--- !u!114 &7727276629284364019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5910248952367531655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 776799f55314f4500bc35f859c94e2fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CameraTarget: {fileID: 254748127682686991}
+  FixedDeltaTime: 0.005
+  ShowMonitor: 0
+  DebugDisableMotor: 0
+  DebugShowWithOffset: 0
+  Muscles: []
+  BodyParts: []
+  SensorIsInTouch: []
+  Observations: []
+  ObservationNormalizedErrors: 0
+  MaxObservationNormalizedErrors: 0
+  Sensors: []
+  FrameReward: 0
+  AverageReward: 0
+  MaxDistanceTraveled: 0
+  DistanceTraveled: 0
+--- !u!114 &114915873284586120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5910248952367531655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b942698319214c1398f41a4fd2deb31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  maxStep: 5000
+  MoveRight: 1
+  MoveLeft: 0
+  Jump: 0
 --- !u!1 &6504747356624073193
 GameObject:
   m_ObjectHideFlags: 0

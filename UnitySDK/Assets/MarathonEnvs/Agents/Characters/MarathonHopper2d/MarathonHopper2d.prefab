@@ -230,9 +230,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4484269634557110698}
-  - component: {fileID: 1883693353190376918}
   - component: {fileID: 4209007344491650751}
-  - component: {fileID: 1348958159981445688}
   - component: {fileID: 6284840784079424411}
   m_Layer: 14
   m_Name: MarathonHopper2d
@@ -261,27 +259,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &1883693353190376918
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5507999401980250815}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a532e373957504411bd01901bf361ad3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Xml: {fileID: 4900000, guid: 25b575bef22a8461faeeb3edf758e864, type: 3}
-  Material: {fileID: 2100000, guid: 9013613e105254620b29c7301046af30, type: 2}
-  PhysicMaterial: {fileID: 13400000, guid: 38b7ea504254a4fa986e42a7bb16c8df, type: 2}
-  UseXmlTimestep: 1
-  DebugOutput: 0
-  Force2D: 1
-  OnGenerateApplyRandom: 0.005
-  DefaultDensity: 1000
-  MotorScale: 1
 --- !u!114 &4209007344491650751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -306,90 +283,6 @@ MonoBehaviour:
   m_BehaviorName: Hopper-v0
   m_TeamID: 0
   m_UseChildSensors: 1
---- !u!114 &1348958159981445688
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5507999401980250815}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8e0e8a6cb2e04a0b89d72c85942082d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agentParameters:
-    maxStep: 1000
-  hasUpgradedFromAgentParameters: 1
-  maxStep: 5000
-  CameraTarget: {fileID: 0}
-  ShowMonitor: 1
-  FootHitTerrain: 0
-  NonFootHitTerrain: 0
-  Actions:
-  - -0.4002775
-  - -0.43246028
-  - -0.14309295
-  - 0.76853085
-  SensorIsInTouch:
-  - 0
-  FocalPoint: {fileID: 6136743139226571008}
-  FocalRidgedBody: {fileID: 6482822723101394539}
-  DistanceTraveled: 0.115
-  FocalPointMaxDistanceTraveled: 0.115
-  JointVelocity:
-  - 0
-  - 0
-  - 0
-  - 0
-  JointRotations:
-  - {x: 1, y: 0, z: 0, w: 0}
-  - {x: 0, y: 0, z: 0, w: 1}
-  - {x: 0, y: 0, z: 0, w: 1}
-  - {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  MarathonJoints:
-  - Joint: {fileID: 2280182075139811725}
-    Name: waist
-    JointName: waist
-    CtrlRange: {x: 0, y: 0}
-    TrueBase: {fileID: 2280182075139811725}
-    TrueTarget: {fileID: 2418653808158478173}
-    MaximumForce: 30
-  - Joint: {fileID: 7756854011835270247}
-    Name: hip
-    JointName: hip
-    CtrlRange: {x: 0, y: 0}
-    TrueBase: {fileID: 7756854011835270247}
-    TrueTarget: {fileID: 7385566605791865855}
-    MaximumForce: 40
-  - Joint: {fileID: 7718492107943104523}
-    Name: knee
-    JointName: knee
-    CtrlRange: {x: 0, y: 0}
-    TrueBase: {fileID: 7718492107943104523}
-    TrueTarget: {fileID: 1980898356976072172}
-    MaximumForce: 30
-  - Joint: {fileID: 3140665687443404674}
-    Name: ankle
-    JointName: ankle
-    CtrlRange: {x: 0, y: 0}
-    TrueBase: {fileID: 3140665687443404674}
-    TrueTarget: {fileID: 8182012716687952157}
-    MaximumForce: 10
-  MarathonSensors:
-  - SiteObject: {fileID: 6039378175222150739}
-    Name: touch_toe
-    SiteName: foot
-  Observations: []
-  ObservationNormalizedErrors: 0
-  MaxObservationNormalizedErrors: 0
-  RewardHackingVector:
-  - 0
-  - 0
-  - 0.7604102
-  - 1
-  - 0
-  - 0
 --- !u!114 &6284840784079424411
 MonoBehaviour:
   m_ObjectHideFlags: 0
