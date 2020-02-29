@@ -108,7 +108,7 @@ MarathonManSparse-v0:
     beta: .003
     max_steps: 1.e7 
 
-MarathonHopper-v0:
+MarathonHopper2d-v0:
     num_epoch: 10 
     time_horizon: 100 
     summary_freq: 10000

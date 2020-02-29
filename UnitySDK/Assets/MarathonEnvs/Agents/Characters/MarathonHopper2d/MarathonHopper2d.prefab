@@ -283,7 +283,7 @@ MonoBehaviour:
   m_Model: {fileID: 11400000, guid: 683e77c7c702b4133bf16682385ae477, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
-  m_BehaviorName: MarathonHopper-v0
+  m_BehaviorName: MarathonHopper2d-v0
   m_TeamID: 0
   m_UseChildSensors: 1
 --- !u!114 &6284840784079424411

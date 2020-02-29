@@ -294,7 +294,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agentSpawner:
     spawnableEnvDefinitions:
-    - envId: MarathonHopper-v0
+    - envId: MarathonHopper2d-v0
       envPrefab: {fileID: 6737101200792111825, guid: 562eb53b2c5eb47819b559b2afa6063c,
         type: 3}
     - envId: MarathonWalker2d-v0
