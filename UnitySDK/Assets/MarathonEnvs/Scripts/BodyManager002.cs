@@ -208,7 +208,6 @@ public class BodyManager002 : MonoBehaviour, IOnSensorCollision
 
 		Muscles = new List<Muscle002> ();
 		var muscles = GetComponentsInChildren<ConfigurableJoint>();
-		ConfigurableJoint rootConfigurableJoint = null;
 		var ragDoll = GetComponent<RagDoll002>();
 		foreach (var m in muscles)
 		{
@@ -222,9 +221,7 @@ public class BodyManager002 : MonoBehaviour, IOnSensorCollision
 				Group = BodyConfig.GetMuscleGroup(m.name),
 				MaximumForce = maximumForce
 			};
-			if (muscle.Group == BodyConfig.GetRootMuscle())
-				rootConfigurableJoint = muscle.ConfigurableJoint;
-			muscle.RootConfigurableJoint = rootConfigurableJoint;
+			muscle.RootTransform = root.Transform;
 			muscle.Init();
 
 			Muscles.Add(muscle);			
@@ -445,26 +442,24 @@ public class BodyManager002 : MonoBehaviour, IOnSensorCollision
 		}
         return vectorObservation;
     }	
-	public (List<float>, List<float>) GetMusclesRotationAndRotationVelocity()
+	public (List<Quaternion>, List<float>) GetMusclesRotationAndRotationVelocity()
 	{
-		List<float> rotationVector = new List<float>();
+		List<Quaternion> rotationVector = new List<Quaternion>();
 		List<float> rotationVelocityVector = new List<float>();
 		foreach (var muscle in Muscles)
 		{
 			muscle.UpdateObservations();
+			rotationVector.Add(muscle.ObsRotation);
 			if (muscle.ConfigurableJoint.angularXMotion != ConfigurableJointMotion.Locked)
 			{
-				rotationVector.Add(muscle.ObsNormalizedRotation.x);
 				rotationVelocityVector.Add(muscle.ObsRotationVelocity.x);
 			}
 			if (muscle.ConfigurableJoint.angularYMotion != ConfigurableJointMotion.Locked)
             {
-				rotationVector.Add(muscle.ObsNormalizedRotation.y);
 				rotationVelocityVector.Add(muscle.ObsRotationVelocity.y);
 			}
 			if (muscle.ConfigurableJoint.angularZMotion != ConfigurableJointMotion.Locked)
 			{
-				rotationVector.Add(muscle.ObsNormalizedRotation.z);
 				rotationVelocityVector.Add(muscle.ObsRotationVelocity.z);
 			}
 		}

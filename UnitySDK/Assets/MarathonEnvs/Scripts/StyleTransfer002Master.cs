@@ -121,7 +121,6 @@ public class StyleTransfer002Master : MonoBehaviour {
 
 		Muscles = new List<Muscle002> ();
 		var muscles = GetComponentsInChildren<ConfigurableJoint>();
-		ConfigurableJoint rootConfigurableJoint = null;
 		var ragDoll = GetComponent<RagDoll002>();
 		foreach (var m in muscles)
 		{
@@ -135,9 +134,7 @@ public class StyleTransfer002Master : MonoBehaviour {
 				Group = BodyConfig.GetMuscleGroup(m.name),
 				MaximumForce = maximumForce
 			};
-			if (muscle.Group == BodyConfig.GetRootMuscle())
-				rootConfigurableJoint = muscle.ConfigurableJoint;
-			muscle.RootConfigurableJoint = rootConfigurableJoint;
+			muscle.RootTransform = root.Transform;
 			muscle.Init();
 
 			Muscles.Add(muscle);			

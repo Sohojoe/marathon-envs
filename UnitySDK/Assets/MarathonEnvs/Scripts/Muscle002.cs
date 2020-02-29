@@ -40,7 +40,7 @@ public class Muscle002
     public Transform Transform;
     public ConfigurableJoint ConfigurableJoint;
     public Rigidbody Parent;
-    public ConfigurableJoint RootConfigurableJoint;
+    public Transform RootTransform;
     public Quaternion InitialRootRotation;
     public Vector3 InitialRootPosition;
 
@@ -97,11 +97,19 @@ public class Muscle002
     }
     static Vector3 ScaleNormalizedByJoint(Vector3 normalizedRotation, ConfigurableJoint configurableJoint)
     {
+        var highX = configurableJoint.highAngularXLimit.limit;
+        var lowX = configurableJoint.lowAngularXLimit.limit;
+        var yLimit = configurableJoint.angularYLimit.limit;
+        var zLimit = configurableJoint.angularZLimit.limit;
+        highX = highX == 0f ? 1f : highX;
+        lowX = lowX == 0f ? -1f : lowX;
+        yLimit = yLimit == 0f ? 1f : yLimit;
+        zLimit = zLimit == 0f ? 1f : zLimit;
         var x = normalizedRotation.x > 0f ?
-            (normalizedRotation.x * 180f) / configurableJoint.highAngularXLimit.limit :
-            (-normalizedRotation.x * 180f) / configurableJoint.lowAngularXLimit.limit;
-        var y = (normalizedRotation.y * 180f) / configurableJoint.angularYLimit.limit;
-        var z = (normalizedRotation.z * 180f) / configurableJoint.angularZLimit.limit;
+            (normalizedRotation.x * 180f) / highX :
+            (-normalizedRotation.x * 180f) / lowX;
+        var y = (normalizedRotation.y * 180f) / yLimit;
+        var z = (normalizedRotation.z * 180f) / zLimit;
         var scaledNormalizedRotation = new Vector3(x,y,z);
         return scaledNormalizedRotation;
     }
@@ -125,8 +133,8 @@ public class Muscle002
         if (!_hasRanVeryFirstInit) {
 			Parent = ConfigurableJoint.connectedBody;
 			
-            InitialRootRotation = RootConfigurableJoint.transform.rotation;
-            InitialRootPosition = RootConfigurableJoint.transform.position;
+            InitialRootRotation = RootTransform.rotation;
+            InitialRootPosition = RootTransform.position;
 
 			DefaultLocalRotation = LocalRotation;
 			// Vector3 forward = Vector3.Cross (ConfigurableJoint.axis, ConfigurableJoint.secondaryAxis).normalized;
@@ -178,10 +186,10 @@ public class Muscle002
             rotationVelocity /= dt;
         ObsRotationVelocity = rotationVelocity;
         _lastObsRotation = ObsRotation;
-        var rootBone = RootConfigurableJoint.transform;
-        var toRootSpace = Quaternion.Inverse(RootConfigurableJoint.transform.rotation) * rootBone.rotation;
+        var rootBone = RootTransform;
+        var toRootSpace = Quaternion.Inverse(RootTransform.rotation) * rootBone.rotation;
         Quaternion rootRotation = Quaternion.Inverse(rootBone.rotation * toRootSpace) * Transform.rotation;
-        ObsLocalPosition = Transform.position - RootConfigurableJoint.transform.position;
+        ObsLocalPosition = Transform.position - RootTransform.position;
         var velocity = ObsLocalPosition - _lastLocalPosition;
         ObsVelocity = velocity;
         if (dt > 0f)

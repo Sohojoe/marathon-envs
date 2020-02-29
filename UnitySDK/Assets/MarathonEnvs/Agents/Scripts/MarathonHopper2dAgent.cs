@@ -265,7 +265,6 @@ public class MarathonHopper2dAgent : Agent, IOnTerrainCollision
 			return MuscleGroup.None;
 		},
         GetRootBodyPart = () => BodyPartGroup.Torso,
-        GetRootMuscle = () => MuscleGroup.Torso
     };
 
 }

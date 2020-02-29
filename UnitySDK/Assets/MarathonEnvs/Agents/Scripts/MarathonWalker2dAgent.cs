@@ -265,7 +265,6 @@ public class MarathonWalker2dAgent : Agent, IOnTerrainCollision
 			return MuscleGroup.None;
 		},
         GetRootBodyPart = () => BodyPartGroup.Torso,
-        GetRootMuscle = () => MuscleGroup.LegUpper
     };
 
 }
