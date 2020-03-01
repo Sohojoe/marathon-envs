@@ -107,8 +107,9 @@ public class MarathonManAgent : Agent, IOnTerrainCollision
 	public override void AgentAction(float[] vectorAction)
 	{
 		_isDone = false;
-		// apply actions to body
-		_bodyManager.OnAgentAction(vectorAction);
+        // apply actions to body
+        //vectorAction = vectorAction.Select(x => 0f).ToArray();
+        _bodyManager.OnAgentAction(vectorAction);
 
 		// manage reward
         float velocity = Mathf.Clamp(_bodyManager.GetNormalizedVelocity().x, 0f, 1f);

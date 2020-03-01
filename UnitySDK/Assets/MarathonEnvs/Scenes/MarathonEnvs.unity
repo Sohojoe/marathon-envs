@@ -309,7 +309,7 @@ MonoBehaviour:
     - envId: MarathonManSparse-v0
       envPrefab: {fileID: 233471726635017911, guid: e5ff581d16faa48b8827455b500a4fa5,
         type: 3}
-    - envId: TerrainHopper-v0
+    - envId: TerrainMarathonHopper2d-v0
       envPrefab: {fileID: 7947809634594933162, guid: ab36b786276a623428519ab8ad2f0357,
         type: 3}
     - envId: TerrainWalker2d-v0

@@ -164,7 +164,7 @@ TerrainHopper-v0:
     beta: .1
     max_steps: 50e6
 
-TerrainWalker2d-v0:
+TerrainMarathonHopper2d-v0:
     num_epoch: 3 
     time_horizon: 1000 
     summary_freq: 10000
