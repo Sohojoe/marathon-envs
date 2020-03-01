@@ -7,6 +7,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 263117481777225556, guid: c13ea8e8df87c42639b6304f70acf750,
+        type: 3}
+      propertyPath: m_BehaviorName
+      value: MarathonManJazzDancing-v0
+      objectReference: {fileID: 0}
+    - target: {fileID: 263117481777225556, guid: c13ea8e8df87c42639b6304f70acf750,
+        type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 11400000, guid: ff3439846ee55430da44363e0623ca0d,
+        type: 3}
     - target: {fileID: 1802870815327278923, guid: c13ea8e8df87c42639b6304f70acf750,
         type: 3}
       propertyPath: m_Name

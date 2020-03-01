@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 674611361109512564}
   - component: {fileID: 6265067965867510565}
   - component: {fileID: 7718492107943104523}
+  - component: {fileID: 7891859040496327183}
   m_Layer: 14
   m_Name: calf
   m_TagString: Untagged
@@ -221,6 +222,19 @@ ConfigurableJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &7891859040496327183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016912359528077018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da87b37fe0ae0475a99808928afad49b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parent: {fileID: 7912055320635277032}
 --- !u!1 &5507999401980250815
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,6 +396,7 @@ GameObject:
   - component: {fileID: 1723879395733404058}
   - component: {fileID: 953000177036467314}
   - component: {fileID: 7756854011835270247}
+  - component: {fileID: 6894860514815905114}
   m_Layer: 14
   m_Name: thigh
   m_TagString: Untagged
@@ -588,6 +603,19 @@ ConfigurableJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &6894860514815905114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5992100997702117815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da87b37fe0ae0475a99808928afad49b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parent: {fileID: 7912055320635277032}
 --- !u!1 &6136743139226571008
 GameObject:
   m_ObjectHideFlags: 0
@@ -603,6 +631,7 @@ GameObject:
   - component: {fileID: 1488227243825825531}
   - component: {fileID: 6482822723101394539}
   - component: {fileID: 9022464663865561420}
+  - component: {fileID: 7832448880860342902}
   m_Layer: 14
   m_Name: nose
   m_TagString: Untagged
@@ -728,6 +757,19 @@ FixedJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &7832448880860342902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6136743139226571008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da87b37fe0ae0475a99808928afad49b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parent: {fileID: 7912055320635277032}
 --- !u!1 &6377684255748996747
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,6 +785,7 @@ GameObject:
   - component: {fileID: 4200694469471130785}
   - component: {fileID: 6703525137362275968}
   - component: {fileID: 2280182075139811725}
+  - component: {fileID: 3884703310513137412}
   m_Layer: 14
   m_Name: pelvis
   m_TagString: Untagged
@@ -949,6 +992,19 @@ ConfigurableJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &3884703310513137412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6377684255748996747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da87b37fe0ae0475a99808928afad49b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parent: {fileID: 7912055320635277032}
 --- !u!1 &6828239756025450623
 GameObject:
   m_ObjectHideFlags: 0
@@ -965,6 +1021,7 @@ GameObject:
   - component: {fileID: 8079690780612290596}
   - component: {fileID: 3140665687443404674}
   - component: {fileID: 8366469091428419616}
+  - component: {fileID: 2454077502357596602}
   m_Layer: 14
   m_Name: foot
   m_TagString: Untagged
@@ -1183,6 +1240,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d041794481cd24f4d92e5f3da728fe64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2454077502357596602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6828239756025450623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da87b37fe0ae0475a99808928afad49b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parent: {fileID: 7912055320635277032}
 --- !u!1 &7912055320635277032
 GameObject:
   m_ObjectHideFlags: 0
@@ -1197,6 +1267,7 @@ GameObject:
   - component: {fileID: 5252422701135086268}
   - component: {fileID: 7200735875988919716}
   - component: {fileID: 2585513306337308485}
+  - component: {fileID: 4693979432817273169}
   m_Layer: 14
   m_Name: torso
   m_TagString: Untagged
@@ -1308,3 +1379,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 8
   m_CollisionDetection: 0
+--- !u!114 &4693979432817273169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7912055320635277032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da87b37fe0ae0475a99808928afad49b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parent: {fileID: 7912055320635277032}
