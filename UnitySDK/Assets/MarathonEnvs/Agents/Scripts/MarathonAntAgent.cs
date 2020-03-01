@@ -47,10 +47,11 @@ public class MarathonAntAgent : Agent, IOnTerrainCollision
 	{
 		_isDone = false;
 		// apply actions to body
-		_bodyManager.OnAgentAction(vectorAction);
+		//vectorAction = vectorAction.Select(x => 0f).ToArray();
+        _bodyManager.OnAgentAction(vectorAction);
 
-		// manage reward
-		float velocity = _bodyManager.GetNormalizedVelocity().x;
+        // manage reward
+        float velocity = _bodyManager.GetNormalizedVelocity().x;
 		velocity = Mathf.Clamp(velocity, -1f, 1f);
 		var reward = velocity;
 		AddReward(reward);

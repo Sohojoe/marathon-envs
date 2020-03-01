@@ -32,8 +32,8 @@ namespace MLAgents
 
         private void Update()
         {
-            if (_numUpdates>0)
-                UnityEngine.GameObject.Destroy(this);
+            if (_numUpdates > 0)
+                this.enabled = false;
             _numUpdates++;
         }
     }

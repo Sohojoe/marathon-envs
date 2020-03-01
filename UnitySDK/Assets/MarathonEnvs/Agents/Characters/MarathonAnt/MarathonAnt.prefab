@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 1499510650702380385}
   - component: {fileID: 7771147699413986453}
   - component: {fileID: 2750821695270272208}
+  - component: {fileID: 4480564222846799022}
   m_Layer: 14
   m_Name: torso_geom
   m_TagString: Untagged
@@ -168,6 +169,19 @@ FixedJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &4480564222846799022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 560374256671745340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da87b37fe0ae0475a99808928afad49b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parent: {fileID: 8014873597719266705}
 --- !u!1 &850046122810012260
 GameObject:
   m_ObjectHideFlags: 0
@@ -2239,7 +2253,7 @@ MonoBehaviour:
     vectorActionSize: 08000000
     vectorActionDescriptions: []
     vectorActionSpaceType: 1
-  m_Model: {fileID: 11400000, guid: 7264130bd4f8441dd99ab09d9b9c5d81, type: 3}
+  m_Model: {fileID: 11400000, guid: 053468320ed6e4a70add9295fea2d822, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: MarathonAnt-v0

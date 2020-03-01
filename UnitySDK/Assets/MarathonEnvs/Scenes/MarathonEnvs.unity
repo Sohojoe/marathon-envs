@@ -300,7 +300,7 @@ MonoBehaviour:
     - envId: MarathonWalker2d-v0
       envPrefab: {fileID: 7075913131664046299, guid: b3657881460b242f7963952291e61aec,
         type: 3}
-    - envId: Ant-v0
+    - envId: MarathonAnt-v0
       envPrefab: {fileID: 5262237177341221258, guid: c3c332aefbae14d7bb05a9a9d1e92822,
         type: 3}
     - envId: MarathonMan-v0
