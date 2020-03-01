@@ -6,7 +6,7 @@ using System.Linq;
 using static BodyHelper002;
 
 
-public class TerrainMarathonWalker2dAgent : Agent, IOnTerrainCollision
+public class TerrainMarathonAntAgent : Agent, IOnTerrainCollision
 {
 	BodyManager002 _bodyManager;
 
@@ -36,6 +36,7 @@ public class TerrainMarathonWalker2dAgent : Agent, IOnTerrainCollision
 		AddVectorObs(normalizedVelocity);
 		AddVectorObs(pelvis.Rigidbody.transform.forward); // gyroscope 
 		AddVectorObs(pelvis.Rigidbody.transform.up);
+		AddVectorObs(pelvis.Rigidbody.transform.right);
 
 		//AddVectorObs(_bodyManager.GetSensorIsInTouch());
 		var sensorsInTouch = _bodyManager.GetSensorIsInTouch();
@@ -111,7 +112,7 @@ public class TerrainMarathonWalker2dAgent : Agent, IOnTerrainCollision
 		if (!_hasLazyInitialized)
 		{
 			_bodyManager = GetComponent<BodyManager002>();
-			_bodyManager.BodyConfig = MarathonWalker2dAgent.BodyConfig;
+			_bodyManager.BodyConfig = MarathonAntAgent.BodyConfig;
 			_bodyManager.OnInitializeAgent();
 			_hasLazyInitialized = true;
 		}

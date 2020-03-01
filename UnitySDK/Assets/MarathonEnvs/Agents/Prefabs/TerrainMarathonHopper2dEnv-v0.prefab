@@ -20,6 +20,24 @@ MonoBehaviour:
   debugLastHeights: []
   debugLastNormHeights: []
   debugLastFraction: 0
+--- !u!114 &2501630833619755579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3873881749919391818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bde7a007bb57f4b8195a82246bb406d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  maxStep: 5000
+  _lastXPosInMeters: 0
+  maxXPosInMeters: 0
 --- !u!1001 &2191716780691842813
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -95,7 +113,7 @@ PrefabInstance:
     - target: {fileID: 8081357739622870871, guid: c7f549aabbce548e7aae2b2101ae3062,
         type: 3}
       propertyPath: m_Name
-      value: TerrainHopperEnv-v0
+      value: TerrainMarathonHopperEnv-v0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c7f549aabbce548e7aae2b2101ae3062, type: 3}

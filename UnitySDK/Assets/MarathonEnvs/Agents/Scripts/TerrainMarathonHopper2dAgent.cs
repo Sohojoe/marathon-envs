@@ -6,7 +6,7 @@ using System.Linq;
 using static BodyHelper002;
 
 
-public class TerrainMarathonWalker2dAgent : Agent, IOnTerrainCollision
+public class TerrainMarathonHopper2dAgent : Agent, IOnTerrainCollision
 {
 	BodyManager002 _bodyManager;
 
@@ -111,7 +111,7 @@ public class TerrainMarathonWalker2dAgent : Agent, IOnTerrainCollision
 		if (!_hasLazyInitialized)
 		{
 			_bodyManager = GetComponent<BodyManager002>();
-			_bodyManager.BodyConfig = MarathonWalker2dAgent.BodyConfig;
+			_bodyManager.BodyConfig = MarathonHopper2dAgent.BodyConfig;
 			_bodyManager.OnInitializeAgent();
 			_hasLazyInitialized = true;
 		}

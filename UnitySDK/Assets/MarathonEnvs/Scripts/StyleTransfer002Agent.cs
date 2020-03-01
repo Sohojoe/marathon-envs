@@ -93,7 +93,7 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 	public override void AgentAction(float[] vectorAction)
 	{
 		_isDone = false;
-		vectorAction = vectorAction.Select(x => 0f).ToArray();
+		//vectorAction = vectorAction.Select(x => 0f).ToArray();
 		if (_styleAnimator == _localStyleAnimator)
 			_styleAnimator.OnAgentAction();
 		_master.OnAgentAction();
