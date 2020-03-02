@@ -36,7 +36,6 @@ public class TerrainMarathonAntAgent : Agent, IOnTerrainCollision
 		AddVectorObs(normalizedVelocity);
 		AddVectorObs(pelvis.Rigidbody.transform.forward); // gyroscope 
 		AddVectorObs(pelvis.Rigidbody.transform.up);
-		AddVectorObs(pelvis.Rigidbody.transform.right);
 
 		//AddVectorObs(_bodyManager.GetSensorIsInTouch());
 		var sensorsInTouch = _bodyManager.GetSensorIsInTouch();
@@ -138,6 +137,9 @@ public class TerrainMarathonAntAgent : Agent, IOnTerrainCollision
 			return;
 		// if (!_styleAnimator.AnimationStepsReady)
 		// 	return;
+		// HACK - for when agent has not been initialized
+		if (_bodyManager == null)
+			return;
 		var bodyPart = _bodyManager.BodyParts.FirstOrDefault(x => x.Transform.gameObject == other);
 		if (bodyPart == null)
 			return;

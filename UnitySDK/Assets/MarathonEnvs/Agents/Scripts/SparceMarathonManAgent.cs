@@ -159,6 +159,9 @@ public class SparceMarathonManAgent : Agent, IOnTerrainCollision
 			return;
 		// if (!_styleAnimator.AnimationStepsReady)
 		// 	return;
+		// HACK - for when agent has not been initialized
+		if (_bodyManager == null)
+			return;
 		var bodyPart = _bodyManager.BodyParts.FirstOrDefault(x=>x.Transform.gameObject == other);
 		if (bodyPart == null)
 			return;
