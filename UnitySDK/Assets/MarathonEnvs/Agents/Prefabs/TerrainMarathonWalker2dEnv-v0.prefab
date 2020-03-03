@@ -45,26 +45,46 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4939886509443424698}
     m_Modifications:
+    - target: {fileID: 334544681916129568, guid: 1fefc571d0c5c458e9105e1323697678,
+        type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: -0.25000024
+      objectReference: {fileID: 0}
     - target: {fileID: 344199816800343497, guid: 1fefc571d0c5c458e9105e1323697678,
         type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 11400000, guid: 78b5b8edec68440e08397b27907fafed,
+      objectReference: {fileID: 11400000, guid: 408aa39641e6840b9a49148500f23314,
         type: 3}
     - target: {fileID: 344199816800343497, guid: 1fefc571d0c5c458e9105e1323697678,
         type: 3}
       propertyPath: m_BrainParameters.vectorObservationSize
-      value: 77
+      value: 79
       objectReference: {fileID: 0}
     - target: {fileID: 344199816800343497, guid: 1fefc571d0c5c458e9105e1323697678,
         type: 3}
       propertyPath: m_BehaviorName
       value: TerrainMarathonWalker2d-v0
       objectReference: {fileID: 0}
+    - target: {fileID: 620212404994161426, guid: 1fefc571d0c5c458e9105e1323697678,
+        type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: -0.25000024
+      objectReference: {fileID: 0}
     - target: {fileID: 5910248952367531655, guid: 1fefc571d0c5c458e9105e1323697678,
         type: 3}
       propertyPath: m_Name
       value: MarathonWalker2d
+      objectReference: {fileID: 0}
+    - target: {fileID: 7817827066109579857, guid: 1fefc571d0c5c458e9105e1323697678,
+        type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: -0.22500026
+      objectReference: {fileID: 0}
+    - target: {fileID: 8482370225418608097, guid: 1fefc571d0c5c458e9105e1323697678,
+        type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: -0.22500026
       objectReference: {fileID: 0}
     - target: {fileID: 9042123795094747134, guid: 1fefc571d0c5c458e9105e1323697678,
         type: 3}
@@ -170,7 +190,7 @@ PrefabInstance:
     - target: {fileID: 8081357739622870871, guid: c7f549aabbce548e7aae2b2101ae3062,
         type: 3}
       propertyPath: m_Name
-      value: TerrainWalker2dEnv-v0
+      value: TerrainMarathonWalker2dEnv-v0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c7f549aabbce548e7aae2b2101ae3062, type: 3}
