@@ -229,8 +229,11 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 			}
 		}
 		FrameReward = reward;
-		var stepCount = GetStepCount() > 0 ? GetStepCount() : 1;
-		AverageReward = GetCumulativeReward() / (float) stepCount;
+		var stepCount = GetStepCount();
+		if (_decisionRequester?.DecisionPeriod > 1)
+			stepCount /= _decisionRequester.DecisionPeriod;
+		stepCount = Mathf.Max(stepCount, 1);
+		AverageReward = GetCumulativeReward() / (float)stepCount;
 	}
 	float GetEffort(string[] ignorJoints = null)
 	{
