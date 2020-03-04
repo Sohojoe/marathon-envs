@@ -18,6 +18,18 @@ MonoBehaviour:
   maxStep: 5000
   FrameReward: 0
   AverageReward: 0
+  RotationReward: 0
+  VelocityReward: 0
+  EndEffectorReward: 0
+  CenterMassReward: 0
+  SensorReward: 0
+  JointsNotAtLimitReward: 0
+  MaxRotationReward: 0
+  MaxVelocityReward: 0
+  MaxEndEffectorReward: 0
+  MaxCenterMassReward: 0
+  MaxSensorReward: 0
+  MaxJointsNotAtLimitReward: 0
   Rewards: []
   SensorIsInTouch: []
   ShowMonitor: 0
@@ -328,6 +340,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6637013144633364566, guid: 27548cbf466924cd699685496025f534, type: 3}
+    - {fileID: 5859498862604059448, guid: 27548cbf466924cd699685496025f534, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 27548cbf466924cd699685496025f534, type: 3}
 --- !u!1 &8878912891930077695 stripped
 GameObject:

@@ -8,6 +8,19 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 
 	public float FrameReward;
 	public float AverageReward;
+	public float RotationReward;
+	public float VelocityReward;
+	public float EndEffectorReward;
+	public float CenterMassReward;
+	public float SensorReward;
+	public float JointsNotAtLimitReward;
+	public float MaxRotationReward;
+	public float MaxVelocityReward;
+	public float MaxEndEffectorReward;
+	public float MaxCenterMassReward;
+	public float MaxSensorReward;
+	public float MaxJointsNotAtLimitReward;
+
 	public List<float> Rewards;
 	public List<float> SensorIsInTouch;
 	StyleTransfer002Master _master;
@@ -93,7 +106,7 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 	public override void AgentAction(float[] vectorAction)
 	{
 		_isDone = false;
-		vectorAction = vectorAction.Select(x => 0f).ToArray();
+		//vectorAction = vectorAction.Select(x => 0f).ToArray();
 		if (_styleAnimator == _localStyleAnimator)
 			_styleAnimator.OnAgentAction();
 		_master.OnAgentAction();
@@ -135,16 +148,16 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 		centerOfMassDistance = Mathf.Clamp(centerOfMassDistance, 0f, centerOfMassDistancScalee);
 		sensorDistance = Mathf.Clamp(sensorDistance, 0f, sensorDistanceScale);
 
-		var rotationReward = (rotationDistanceScale - rotationDistance) / rotationDistanceScale;
-		var velocityReward = (velocityDistanceScale - velocityDistance) / velocityDistanceScale;
-		var endEffectorReward = (endEffectorDistanceScale - endEffectorDistance) / endEffectorDistanceScale;
-		var centerMassReward = (centerOfMassDistancScalee - centerOfMassDistance) / centerOfMassDistancScalee;
-		var sensorReward = (sensorDistanceScale - sensorDistance) / sensorDistanceScale;
-		rotationReward = Mathf.Pow(rotationReward, rotationDistanceScale);
-		velocityReward = Mathf.Pow(velocityReward, velocityDistanceScale);
-		endEffectorReward = Mathf.Pow(endEffectorReward, endEffectorDistanceScale);
-		centerMassReward = Mathf.Pow(centerMassReward, centerOfMassDistancScalee);
-		sensorReward = Mathf.Pow(sensorReward, sensorDistanceScale);
+		RotationReward = (rotationDistanceScale - rotationDistance) / rotationDistanceScale;
+		VelocityReward = (velocityDistanceScale - velocityDistance) / velocityDistanceScale;
+		EndEffectorReward = (endEffectorDistanceScale - endEffectorDistance) / endEffectorDistanceScale;
+		CenterMassReward = (centerOfMassDistancScalee - centerOfMassDistance) / centerOfMassDistancScalee;
+		SensorReward = (sensorDistanceScale - sensorDistance) / sensorDistanceScale;
+		RotationReward = Mathf.Pow(RotationReward, rotationDistanceScale);
+		VelocityReward = Mathf.Pow(VelocityReward, velocityDistanceScale);
+		EndEffectorReward = Mathf.Pow(EndEffectorReward, endEffectorDistanceScale);
+		CenterMassReward = Mathf.Pow(CenterMassReward, centerOfMassDistancScalee);
+		SensorReward = Mathf.Pow(SensorReward, sensorDistanceScale);
 
 		float rotationRewardScale = .65f*.9f;
 		float velocityRewardScale = .1f*.9f;
@@ -165,21 +178,35 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 		// centerMassReward = Mathf.Clamp(centerMassReward, -1f, 1f);
 		// feetPoseReward = Mathf.Clamp(feetPoseReward, -1f, 1f);
 		// sensorReward = Mathf.Clamp(sensorReward, -1f, 1f);
-        var jointsNotAtLimitReward = 1f - JointsAtLimit();
+        JointsNotAtLimitReward = 1f - JointsAtLimit();
 		var jointsNotAtLimitRewardScale = .09f;
 
+		RotationReward = RotationReward * rotationRewardScale;
+		VelocityReward = VelocityReward * velocityRewardScale;
+		EndEffectorReward = EndEffectorReward * endEffectorRewardScale;
+		// feetPoseReward = (feetPoseReward * feetRewardScale);
+		CenterMassReward = CenterMassReward * centerMassRewardScale;
+		SensorReward = SensorReward * sensorRewardScale;
+		JointsNotAtLimitReward = JointsNotAtLimitReward * jointsNotAtLimitRewardScale;
+
+		MaxRotationReward = Mathf.Max(MaxRotationReward, RotationReward);
+		MaxVelocityReward = Mathf.Max(MaxVelocityReward, VelocityReward);
+		MaxEndEffectorReward = Mathf.Max(MaxEndEffectorReward, EndEffectorReward);
+		MaxCenterMassReward = Mathf.Max(MaxCenterMassReward, CenterMassReward);
+		MaxSensorReward = Mathf.Max(MaxSensorReward, SensorReward);
+		MaxJointsNotAtLimitReward = Mathf.Max(MaxJointsNotAtLimitReward, JointsNotAtLimitReward);
 
 		float distanceReward = 
-			(rotationReward * rotationRewardScale) +
-			(velocityReward * velocityRewardScale) +
-			(endEffectorReward * endEffectorRewardScale) +
-			// (feetPoseReward * feetRewardScale) +
-			(centerMassReward * centerMassRewardScale) + 
-			(sensorReward * sensorRewardScale);
+			RotationReward +
+            VelocityReward +
+            EndEffectorReward +
+			// feetPoseReward +
+			CenterMassReward + 
+			SensorReward;
 		float reward = 
 			distanceReward
 			// - effortPenality +
-			+ (jointsNotAtLimitReward * jointsNotAtLimitRewardScale);
+			+ JointsNotAtLimitReward;
 
 		// HACK _startCount used as Monitor does not like reset
     //    if (ShowMonitor && _startCount < 2) {
@@ -356,7 +383,7 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 			if (other.GetComponent<Terrain>() == null)
 				return;
             var sensor = _sensors
-                .FirstOrDefault(x=>x == sensorCollider.gameObject);
+                ?.FirstOrDefault(x=>x == sensorCollider.gameObject);
             if (sensor != null) {
                 var idx = _sensors.IndexOf(sensor);
                 SensorIsInTouch[idx] = 1f;
@@ -368,7 +395,7 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 			//if (string.Compare(other.gameObject.name, "Terrain", true) !=0)
                 return;
             var sensor = _sensors
-                .FirstOrDefault(x=>x == sensorCollider.gameObject);
+                ?.FirstOrDefault(x=>x == sensorCollider.gameObject);
             if (sensor != null) {
                 var idx = _sensors.IndexOf(sensor);
                 SensorIsInTouch[idx] = 0f;
