@@ -418,7 +418,8 @@ public class StyleTransfer002Animator : MonoBehaviour, IOnSensorCollision {
 
 	public void OnSensorCollisionEnter(Collider sensorCollider, GameObject other)
 	{
-		if (string.Compare(other.name, "Terrain", true) !=0)
+		//if (string.Compare(other.name, "Terrain", true) !=0)
+		if (other.GetComponent<Terrain>() == null)
 			return;
 		var sensor = _sensors
 			.FirstOrDefault(x=>x == sensorCollider.gameObject);
@@ -429,7 +430,8 @@ public class StyleTransfer002Animator : MonoBehaviour, IOnSensorCollision {
 	}
 	public void OnSensorCollisionExit(Collider sensorCollider, GameObject other)
 	{
-		if (string.Compare(other.gameObject.name, "Terrain", true) !=0)
+		//if (string.Compare(other.gameObject.name, "Terrain", true) !=0)
+		if (other.GetComponent<Terrain>() == null)
 			return;
 		var sensor = _sensors
 			.FirstOrDefault(x=>x == sensorCollider.gameObject);

@@ -93,7 +93,7 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 	public override void AgentAction(float[] vectorAction)
 	{
 		_isDone = false;
-		//vectorAction = vectorAction.Select(x => 0f).ToArray();
+		vectorAction = vectorAction.Select(x => 0f).ToArray();
 		if (_styleAnimator == _localStyleAnimator)
 			_styleAnimator.OnAgentAction();
 		_master.OnAgentAction();
@@ -325,8 +325,9 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 	}
 	public virtual void OnTerrainCollision(GameObject other, GameObject terrain)
 	{
-		if (string.Compare(terrain.name, "Terrain", true) != 0)
-			return;
+		//if (string.Compare(terrain.name, "Terrain", true) != 0)
+		if (terrain.GetComponent<Terrain>() == null)
+    		return;
 		if (!_styleAnimator.AnimationStepsReady)
 			return;
 		var bodyPart = _master.BodyParts.FirstOrDefault(x=>x.Transform.gameObject == other);
@@ -343,26 +344,17 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 			case BodyHelper002.BodyPartGroup.ArmUpper:
 				break;
 			default:
-				// AddReward(-100f);
-				Done();
-				// if (_master.IsInferenceMode == false)
-				// 	Done();
+				// re-enable for early exit on body collisions
+				//Done();
 				break;
-			// case BodyHelper002.BodyPartGroup.Hand:
-			// 	// AddReward(-.5f);
-			// 	Done();
-			// 	break;
-			// case BodyHelper002.BodyPartGroup.Head:
-			// 	// AddReward(-2f);
-			// 	Done();
-			// 	break;
 		}
 	}
 
 
 	public void OnSensorCollisionEnter(Collider sensorCollider, GameObject other) {
-			if (string.Compare(other.name, "Terrain", true) !=0)
-                return;
+			//if (string.Compare(other.name, "Terrain", true) !=0)
+			if (other.GetComponent<Terrain>() == null)
+				return;
             var sensor = _sensors
                 .FirstOrDefault(x=>x == sensorCollider.gameObject);
             if (sensor != null) {
@@ -372,7 +364,8 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 		}
         public void OnSensorCollisionExit(Collider sensorCollider, GameObject other)
         {
-            if (string.Compare(other.gameObject.name, "Terrain", true) !=0)
+    		if (other.GetComponent<Terrain>() == null)
+			//if (string.Compare(other.gameObject.name, "Terrain", true) !=0)
                 return;
             var sensor = _sensors
                 .FirstOrDefault(x=>x == sensorCollider.gameObject);
