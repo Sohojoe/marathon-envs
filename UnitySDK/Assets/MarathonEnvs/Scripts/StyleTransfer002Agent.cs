@@ -371,9 +371,9 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 			case BodyHelper002.BodyPartGroup.ArmUpper:
 				break;
 			default:
-				// re-enable for early exit on body collisions
-				//Done();
-				break;
+                // re-enable for early exit on body collisions
+                Done();
+                break;
 		}
 	}
 
