@@ -39,6 +39,7 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 	bool _ignorScoreForThisFrame;
 	bool _isDone;
 	bool _hasLazyInitialized;
+	bool _callDoneOnNextAction;
 
 	// Use this for initialization
 	void Start () {
@@ -106,22 +107,12 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 	public override void AgentAction(float[] vectorAction)
 	{
 		_isDone = false;
+		if (_callDoneOnNextAction)
+			Done();
 		//vectorAction = vectorAction.Select(x => 0f).ToArray();
 		if (_styleAnimator == _localStyleAnimator)
 			_styleAnimator.OnAgentAction();
-		_master.OnAgentAction();
-		int i = 0;
-		foreach (var muscle in _master.Muscles)
-		{
-			// if(muscle.Parent == null)
-			// 	continue;
-			if (muscle.ConfigurableJoint.angularXMotion != ConfigurableJointMotion.Locked)
-				muscle.TargetNormalizedRotationX = vectorAction[i++];
-			if (muscle.ConfigurableJoint.angularYMotion != ConfigurableJointMotion.Locked)
-				muscle.TargetNormalizedRotationY = vectorAction[i++];
-			if (muscle.ConfigurableJoint.angularZMotion != ConfigurableJointMotion.Locked)
-				muscle.TargetNormalizedRotationZ = vectorAction[i++];
-		}
+		_master.OnAgentAction(vectorAction);
         float effort = GetEffort();
         var effortPenality = 0.05f * (float)effort;
 		
@@ -133,7 +124,7 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 		// var sensorReward = 1f - _master.SensorDistance;
 
 		var rotationDistanceScale = (float)_master.BodyParts.Count;
-		var velocityDistanceScale = 3f;
+		var velocityDistanceScale = 170f; // 3f;
 		var endEffectorDistanceScale = 8f;
 		var centerOfMassDistancScalee = 5f;
 		var sensorDistanceScale = 1f;
@@ -154,12 +145,12 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 		CenterMassReward = (centerOfMassDistancScalee - centerOfMassDistance) / centerOfMassDistancScalee;
 		SensorReward = (sensorDistanceScale - sensorDistance) / sensorDistanceScale;
 		RotationReward = Mathf.Pow(RotationReward, rotationDistanceScale);
-		VelocityReward = Mathf.Pow(VelocityReward, velocityDistanceScale);
+		VelocityReward = Mathf.Pow(VelocityReward, 3f);
 		EndEffectorReward = Mathf.Pow(EndEffectorReward, endEffectorDistanceScale);
 		CenterMassReward = Mathf.Pow(CenterMassReward, centerOfMassDistancScalee);
 		SensorReward = Mathf.Pow(SensorReward, sensorDistanceScale);
 
-		float rotationRewardScale = .65f*.9f;
+		float rotationRewardScale = .55f*.9f;
 		float velocityRewardScale = .1f*.9f;
 		float endEffectorRewardScale = .15f*.9f;
 		float centerMassRewardScale = .1f*.9f;
@@ -251,8 +242,8 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 				Done();
 				// if (_master.StartAnimationIndex > 0 && distanceReward >= _master.ErrorCutoff)
 				// if (_master.StartAnimationIndex > 0 && !shouldTerminate)
-				if (_master.StartAnimationIndex > 0)
-				 	_master.StartAnimationIndex--;
+				// if (_master.StartAnimationIndex > 0)
+				//  	_master.StartAnimationIndex--;
 			}
 		}
 		FrameReward = reward;
@@ -334,7 +325,6 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 			_localStyleAnimator.DestoryIfNotFirstAnim();
 		}
 		_isDone = true;
-		_ignorScoreForThisFrame = true;
 		_master.ResetPhase();
 		_sensors = GetComponentsInChildren<SensorBehavior>()
 			.Select(x=>x.gameObject)
@@ -344,11 +334,9 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 			var column = _master.StartAnimationIndex;
 			if (_decisionRequester?.DecisionPeriod > 1)
 				column /= _decisionRequester.DecisionPeriod;
-			if (_ignorScoreForThisFrame)
-				_ignorScoreForThisFrame = false;
-			else
-	             _scoreHistogramData.SetItem(column, AverageReward);
+			_scoreHistogramData.SetItem(column, AverageReward);
         }
+		_callDoneOnNextAction = false;
 	}
 	public virtual void OnTerrainCollision(GameObject other, GameObject terrain)
 	{
@@ -372,7 +360,7 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 				break;
 			default:
                 // re-enable for early exit on body collisions
-                Done();
+                _callDoneOnNextAction=true;
                 break;
 		}
 	}

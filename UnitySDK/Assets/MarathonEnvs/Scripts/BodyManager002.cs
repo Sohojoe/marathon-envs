@@ -125,8 +125,11 @@ public class BodyManager002 : MonoBehaviour, IOnSensorCollision
 
 	public void OnAgentAction(float[] vectorAction)
 	{
+		if (DebugDisableMotor)
+			vectorAction = vectorAction.Select(x=>0f).ToArray();
+
 		if (lastVectorAction == null){
-			lastVectorAction = vectorAction.Select(x=>0f).ToArray();
+			lastVectorAction = vectorAction.Select(x=>x).ToArray();
 			vectorDifference = vectorAction.Select(x=>0f).ToArray();
 		}
 		int i = 0;
@@ -146,8 +149,7 @@ public class BodyManager002 : MonoBehaviour, IOnSensorCollision
 				vectorDifference[i] = Mathf.Abs(vectorAction[i]-lastVectorAction[i]);
 				muscle.TargetNormalizedRotationZ = vectorAction[i++];
 			}
-			if (!DebugDisableMotor)
-				muscle.UpdateMotor();
+			muscle.UpdateMotor();
 		}
 
         if (ShowMonitor)

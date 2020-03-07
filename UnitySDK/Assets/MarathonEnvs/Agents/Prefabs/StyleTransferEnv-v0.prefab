@@ -77,7 +77,7 @@ MonoBehaviour:
   EpisodeAnimationIndex: 0
   StartAnimationIndex: 0
   UseRandomIndexForTraining: 1
-  UseRandomIndexForInference: 1
+  UseRandomIndexForInference: 0
   CameraFollowMe: 0
   CameraTarget: {fileID: 768669141725031210}
   IsInferenceMode: 0

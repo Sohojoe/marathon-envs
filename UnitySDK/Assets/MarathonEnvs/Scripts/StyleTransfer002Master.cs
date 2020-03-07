@@ -48,6 +48,8 @@ public class StyleTransfer002Master : MonoBehaviour {
     [Range(-100,100)]
 	public int DebugAnimOffset;
 
+	public bool DebugPauseOnReset;
+	public bool DebugPauseOnStep;
 
 	public float TimeStep;
 	public int AnimationIndex;
@@ -169,11 +171,25 @@ public class StyleTransfer002Master : MonoBehaviour {
 		return sum;
 	}
 
-	public void OnAgentAction()
+	public void OnAgentAction(float[] vectorAction)
 	{
+		if (DebugDisableMotor)
+			vectorAction = vectorAction.Select(x=>0f).ToArray();
 		if (_waitingForAnimation && _styleAnimator.AnimationStepsReady){
 			_waitingForAnimation = false;
 			ResetPhase();
+		}
+		int i = 0;
+		foreach (var muscle in Muscles)
+		{
+			if (muscle.ConfigurableJoint.angularXMotion != ConfigurableJointMotion.Locked)
+				muscle.TargetNormalizedRotationX = vectorAction[i++];
+			if (muscle.ConfigurableJoint.angularYMotion != ConfigurableJointMotion.Locked)
+				muscle.TargetNormalizedRotationY = vectorAction[i++];
+			if (muscle.ConfigurableJoint.angularZMotion != ConfigurableJointMotion.Locked)
+				muscle.TargetNormalizedRotationZ = vectorAction[i++];
+			if (!DebugShowWithOffset)
+				muscle.UpdateMotor();
 		}
 		var animStep = UpdateObservations();
 		Step(animStep);
@@ -208,8 +224,6 @@ public class StyleTransfer002Master : MonoBehaviour {
 		{
 			var i = Muscles.IndexOf(muscle);
 			muscle.UpdateObservations();
-			if (!DebugShowWithOffset && !DebugDisableMotor)
-				muscle.UpdateMotor();
 			if (!muscle.Rigidbody.useGravity)
 				continue; // skip sub joints
 		}
@@ -300,6 +314,8 @@ public class StyleTransfer002Master : MonoBehaviour {
 			_muscleAnimator.anim.transform.position = animStep.TransformPosition;
 			_muscleAnimator.anim.transform.rotation = animStep.TransformRotation;
 		}
+		if (Application.isEditor && DebugPauseOnStep)
+	        UnityEditor.EditorApplication.isPaused = true;
 	}
 	void CompareAnimationFrame(StyleTransfer002Animator.AnimationStep animStep)
 	{
@@ -316,6 +332,9 @@ public class StyleTransfer002Master : MonoBehaviour {
 				rb.velocity = Vector3.zero;
 			}
 		}
+		var deltaTime = Time.fixedDeltaTime;
+		if (_decisionRequester?.DecisionPeriod > 1)
+			deltaTime *= this._decisionRequester.DecisionPeriod;
 		foreach (var bodyPart in BodyParts)
 		{
 			var i = animStep.Names.IndexOf(bodyPart.Name);
@@ -326,7 +345,7 @@ public class StyleTransfer002Master : MonoBehaviour {
 				animRotation = bodyPart.InitialRootRotation * animStep.Rotaions[i];
 			}
 			Vector3 angularVelocity = animStep.AngularVelocities[i] / Time.fixedDeltaTime;
-			Vector3 velocity = animStep.Velocities[i] / Time.fixedDeltaTime;
+			Vector3 velocity = animStep.Velocities[i] / deltaTime;
 			// angularVelocity = Vector3.zero;
 			// velocity = Vector3.zero;
 			bool setAnim = !onlySetAnimation;
@@ -366,19 +385,18 @@ public class StyleTransfer002Master : MonoBehaviour {
 		// _trainerAgent.SetBrainParams(_muscleAnimator.AnimationSteps.Count);
 		_agent.SetTotalAnimFrames(_muscleAnimator.AnimationSteps.Count);
 		// _trainerAgent.RequestDecision(_agent.AverageReward);
-		SetStartIndex(0); // HACK for gym
+		SetStartIndex();
 		UpdateObservations();
+		if (Application.isEditor && DebugPauseOnReset)
+	        UnityEditor.EditorApplication.isPaused = true;
 	}
 
-	public void SetStartIndex(int startIdx)
+	public void SetStartIndex()
 	{
 		_decisionRequester.enabled = false;
 
 		// _animationIndex =  UnityEngine.Random.Range(0, _muscleAnimator.AnimationSteps.Count);
 		if (!_phaseIsRunning){
-			StartAnimationIndex = _muscleAnimator.AnimationSteps.Count-1;
-			EpisodeAnimationIndex = _muscleAnimator.AnimationSteps.Count-1;
-			AnimationIndex = EpisodeAnimationIndex;
 			if (CameraFollowMe){
 				var camera = FindObjectOfType<Camera>();
 				var follow = camera.GetComponent<SmoothFollow>();
@@ -400,26 +418,30 @@ public class StyleTransfer002Master : MonoBehaviour {
 		// 	AnimationIndex = EpisodeAnimationIndex;
 		// }
 
-		// // start with random
-		// AnimationIndex = UnityEngine.Random.Range(0, _muscleAnimator.AnimationSteps.Count);
-		// // AnimationIndex = StartAnimationIndex;
-		// if (IsInferenceMode && !UseRandomIndexForInference){
-		// 	AnimationIndex = 1;
-		// } else if (!IsInferenceMode && !UseRandomIndexForTraining) {
-		// 	var minIdx = StartAnimationIndex;
-		// 	if (_muscleAnimator.IsLoopingAnimation)
-		// 		minIdx = minIdx == 0 ? 1 : minIdx;
-		// 	var maxIdx = _muscleAnimator.AnimationSteps.Count-1;
-		// 	var range = 30f;//maxIdx-minIdx;
-		// 	var rnd = (NextGaussian() /3f) * (float) range;
-		// 	var idx = Mathf.Clamp((float)minIdx + rnd, minIdx, (float)maxIdx);
-		// 	AnimationIndex = (int)idx;
-		// }
-		// // AnimationIndex = StartAnimationIndex;
+		StartAnimationIndex = Mathf.Clamp(StartAnimationIndex, 0, _muscleAnimator.AnimationSteps.Count-1);
 
-		AnimationIndex = startIdx;
-		if (_decisionRequester?.DecisionPeriod > 1)
-			AnimationIndex *= this._decisionRequester.DecisionPeriod;
+		// start with random
+		AnimationIndex = UnityEngine.Random.Range(0, _muscleAnimator.AnimationSteps.Count);
+		// AnimationIndex = StartAnimationIndex;
+		if (IsInferenceMode && !UseRandomIndexForInference){
+			AnimationIndex = StartAnimationIndex;
+		} else if (!IsInferenceMode && !UseRandomIndexForTraining){
+			AnimationIndex = StartAnimationIndex;
+		} else if (!IsInferenceMode && UseRandomIndexForTraining) {
+			// var minIdx = StartAnimationIndex;
+			// if (_muscleAnimator.IsLoopingAnimation)
+			// 	minIdx = minIdx == 0 ? 1 : minIdx;
+			// var maxIdx = _muscleAnimator.AnimationSteps.Count-1;
+			// var range = 30f;//maxIdx-minIdx;
+			// var rnd = (NextGaussian() /3f) * (float) range;
+			// var idx = Mathf.Clamp((float)minIdx + rnd, minIdx, (float)maxIdx);
+			// AnimationIndex = (int)idx;
+		}
+		// AnimationIndex = StartAnimationIndex;
+
+		// AnimationIndex = startIdx;
+		// if (_decisionRequester?.DecisionPeriod > 1)
+		// 	AnimationIndex *= this._decisionRequester.DecisionPeriod;
 		StartAnimationIndex = AnimationIndex;
 		EpisodeAnimationIndex = AnimationIndex;
 		_phaseIsRunning = true;
