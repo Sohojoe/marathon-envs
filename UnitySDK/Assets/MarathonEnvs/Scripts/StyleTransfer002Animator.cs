@@ -155,7 +155,7 @@ public class StyleTransfer002Animator : MonoBehaviour, IOnSensorCollision {
 	public void OnAgentAction() {
 			
 		if (AnimationStepsReady){
-			MimicAnimation();
+			// MimicAnimation();
 			return;
 		}
 		if (_lastPosition == null)
@@ -291,8 +291,10 @@ public class StyleTransfer002Animator : MonoBehaviour, IOnSensorCollision {
 		centerOfMass -= transform.parent.position;
 		return centerOfMass;
 	}
-	public void MimicAnimation()
+	public void MimicAnimation(bool skipIfLearning = false)
 	{
+		if (skipIfLearning && !AnimationStepsReady)
+			return;
 		if (!anim.enabled)
 			return;
 

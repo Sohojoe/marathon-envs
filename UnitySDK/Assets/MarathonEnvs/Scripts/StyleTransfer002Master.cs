@@ -192,7 +192,10 @@ public class StyleTransfer002Master : MonoBehaviour {
 				muscle.UpdateMotor();
 		}
 		var animStep = UpdateObservations();
-		Step(animStep);
+		IncrementStep(animStep);
+		SetAnimStep(animStep);
+		if (Application.isEditor && DebugPauseOnStep)
+	        UnityEditor.EditorApplication.isPaused = true;
 	}
 	StyleTransfer002Animator.AnimationStep UpdateObservations()
 	{
@@ -296,17 +299,20 @@ public class StyleTransfer002Master : MonoBehaviour {
 		ObsPhase = _muscleAnimator.AnimationSteps[AnimationIndex].NormalizedTime % 1f;
 		return animStep;
 	}
-	void Step(StyleTransfer002Animator.AnimationStep animStep)
+	void IncrementStep(StyleTransfer002Animator.AnimationStep animStep)
 	{
 		if (_phaseIsRunning){
 			if (!DebugShowWithOffset)
 				AnimationIndex++;
-			if (AnimationIndex>=_muscleAnimator.AnimationSteps.Count) {
+			if (AnimationIndex>=_muscleAnimator.AnimationSteps.Count-1) {
 				//ResetPhase();
 				Done();
-				AnimationIndex--;
+				// AnimationIndex--;
 			}
 		}
+	}
+	void SetAnimStep(StyleTransfer002Animator.AnimationStep animStep)
+	{
 		if (_phaseIsRunning && IsInferenceMode && CameraFollowMe)
 		{
 			_muscleAnimator.anim.enabled = true;
@@ -314,8 +320,6 @@ public class StyleTransfer002Master : MonoBehaviour {
 			_muscleAnimator.anim.transform.position = animStep.TransformPosition;
 			_muscleAnimator.anim.transform.rotation = animStep.TransformRotation;
 		}
-		if (Application.isEditor && DebugPauseOnStep)
-	        UnityEditor.EditorApplication.isPaused = true;
 	}
 	void CompareAnimationFrame(StyleTransfer002Animator.AnimationStep animStep)
 	{
@@ -386,9 +390,7 @@ public class StyleTransfer002Master : MonoBehaviour {
 		_agent.SetTotalAnimFrames(_muscleAnimator.AnimationSteps.Count);
 		// _trainerAgent.RequestDecision(_agent.AverageReward);
 		SetStartIndex();
-		UpdateObservations();
-		if (Application.isEditor && DebugPauseOnReset)
-	        UnityEditor.EditorApplication.isPaused = true;
+		var animStep = UpdateObservations();
 	}
 
 	public void SetStartIndex()
@@ -462,6 +464,7 @@ public class StyleTransfer002Master : MonoBehaviour {
 			bodyPart.Init();
 		MimicAnimationFrame(animStep);
 		EpisodeAnimationIndex = AnimationIndex;
+		SetAnimStep(animStep);
 	}
 
 	Vector3 GetCenterOfMass()
