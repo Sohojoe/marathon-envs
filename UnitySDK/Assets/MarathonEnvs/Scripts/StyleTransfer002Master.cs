@@ -194,8 +194,10 @@ public class StyleTransfer002Master : MonoBehaviour {
 		var animStep = UpdateObservations();
 		IncrementStep(animStep);
 		SetAnimStep(animStep);
-		if (Application.isEditor && DebugPauseOnStep)
+#if UNITY_EDITOR
+		if (DebugPauseOnStep)
 	        UnityEditor.EditorApplication.isPaused = true;
+#endif
 	}
 	StyleTransfer002Animator.AnimationStep UpdateObservations()
 	{
