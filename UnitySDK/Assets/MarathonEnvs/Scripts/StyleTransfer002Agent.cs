@@ -135,13 +135,13 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 		CenterMassReward = (centerOfMassDistancScalee - centerOfMassDistance) / centerOfMassDistancScalee;
 		SensorReward = (sensorDistanceScale - sensorDistance) / sensorDistanceScale;
 		RotationReward = Mathf.Pow(RotationReward, rotationDistanceScale);
-		VelocityReward = Mathf.Pow(VelocityReward, 3f);
+		VelocityReward = Mathf.Pow(VelocityReward, 17f);
 		EndEffectorReward = Mathf.Pow(EndEffectorReward, endEffectorDistanceScale);
 		CenterMassReward = Mathf.Pow(CenterMassReward, centerOfMassDistancScalee);
 		SensorReward = Mathf.Pow(SensorReward, sensorDistanceScale);
 
-		float rotationRewardScale = .55f*.9f;
-		float velocityRewardScale = .1f*.9f;
+		float rotationRewardScale = .35f*.9f;
+		float velocityRewardScale = .3f*.9f;
 		float endEffectorRewardScale = .15f*.9f;
 		float centerMassRewardScale = .1f*.9f;
 		float sensorRewardScale = .1f*.9f;
@@ -173,11 +173,6 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 			distanceReward
 			+ JointsNotAtLimitReward;
 
-		if (distanceReward < 0.334f && _master.IsInferenceMode == false)
-		{
-			Done();
-			return;
-		}
 		if (!_master.IgnorRewardUntilObservation)
 			AddReward(reward);
 		FrameReward = reward;
@@ -186,6 +181,11 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 			stepCount /= _decisionRequester.DecisionPeriod;
 		stepCount = Mathf.Max(stepCount, 1);
 		AverageReward = GetCumulativeReward() / (float)stepCount;
+		if (distanceReward < 0.2f && _master.IsInferenceMode == false)
+		{
+			Done();
+			return;
+		}
 		if (_master.IsDone())
 		{
 			Done();
