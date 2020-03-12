@@ -21,6 +21,9 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 	public float MaxSensorReward;
 	public float MaxJointsNotAtLimitReward;
 
+	public float RewardTerminateValue;
+	public List<float> RewardTerminateValues = new List<float>{.333f, .2f};
+
 	public List<float> Rewards;
 	public List<float> SensorIsInTouch;
 	StyleTransfer002Master _master;
@@ -181,7 +184,7 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 			stepCount /= _decisionRequester.DecisionPeriod;
 		stepCount = Mathf.Max(stepCount, 1);
 		AverageReward = GetCumulativeReward() / (float)stepCount;
-		if (distanceReward < 0.2f && _master.IsInferenceMode == false)
+		if (distanceReward < RewardTerminateValue && _master.IsInferenceMode == false)
 		{
 			Done();
 			return;
@@ -261,6 +264,8 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 			_hasLazyInitialized = true;
 			_localStyleAnimator.DestoryIfNotFirstAnim();
 		}
+		int idx = UnityEngine.Random.Range(0, RewardTerminateValues.Count);
+		RewardTerminateValue = RewardTerminateValues[idx];
 		_isDone = true;
 		_master.ResetPhase();
 		_sensors = GetComponentsInChildren<SensorBehavior>()
@@ -297,7 +302,7 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 				break;
 			default:
                 // re-enable for early exit on body collisions
-                _callDoneOnNextAction=true;
+                // _callDoneOnNextAction=true;
                 break;
 		}
 	}
