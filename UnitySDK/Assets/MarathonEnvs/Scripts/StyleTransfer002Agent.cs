@@ -22,7 +22,7 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 	public float MaxJointsNotAtLimitReward;
 
 	public float RewardTerminateValue;
-	public List<float> RewardTerminateValues = new List<float>{.333f, .2f};
+	public List<float> RewardTerminateValues = new List<float>{.3f};
 
 	public List<float> Rewards;
 	public List<float> SensorIsInTouch;
@@ -143,14 +143,21 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 		CenterMassReward = Mathf.Pow(CenterMassReward, centerOfMassDistancScalee);
 		SensorReward = Mathf.Pow(SensorReward, sensorDistanceScale);
 
-		float rotationRewardScale = .35f*.9f;
-		float velocityRewardScale = .3f*.9f;
-		float endEffectorRewardScale = .15f*.9f;
-		float centerMassRewardScale = .1f*.9f;
-		float sensorRewardScale = .1f*.9f;
+		// float rotationRewardScale = .45f*.9f;
+		// float velocityRewardScale = .2f*.9f;
+		// float endEffectorRewardScale = .15f*.9f;
+		// float centerMassRewardScale = .1f*.9f;
+		// float sensorRewardScale = .1f*.9f;
+        // JointsNotAtLimitReward = 1f - JointsAtLimit();
+		// var jointsNotAtLimitRewardScale = .09f;
 
+		float rotationRewardScale = .5f;
+		float velocityRewardScale = .1f;
+		float endEffectorRewardScale = .15f;
+		float centerMassRewardScale = .1f;
+		float sensorRewardScale = .05f;
         JointsNotAtLimitReward = 1f - JointsAtLimit();
-		var jointsNotAtLimitRewardScale = .09f;
+		var jointsNotAtLimitRewardScale = .1f;
 
 		RotationReward = RotationReward * rotationRewardScale;
 		VelocityReward = VelocityReward * velocityRewardScale;
@@ -302,7 +309,7 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 				break;
 			default:
                 // re-enable for early exit on body collisions
-                // _callDoneOnNextAction=true;
+                _callDoneOnNextAction=true;
                 break;
 		}
 	}

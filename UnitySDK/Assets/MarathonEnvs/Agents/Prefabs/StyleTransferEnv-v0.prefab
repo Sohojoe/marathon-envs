@@ -30,6 +30,9 @@ MonoBehaviour:
   MaxCenterMassReward: 0
   MaxSensorReward: 0
   MaxJointsNotAtLimitReward: 0
+  RewardTerminateValue: 0
+  RewardTerminateValues:
+  - 0.23
   Rewards: []
   SensorIsInTouch: []
   ShowMonitor: 0
@@ -72,11 +75,13 @@ MonoBehaviour:
   DebugMode: 0
   DebugDisableMotor: 0
   DebugAnimOffset: 0
+  DebugPauseOnReset: 0
+  DebugPauseOnStep: 0
   TimeStep: 0
   AnimationIndex: 0
   EpisodeAnimationIndex: 0
   StartAnimationIndex: 0
-  UseRandomIndexForTraining: 1
+  UseRandomIndexForTraining: 0
   UseRandomIndexForInference: 0
   CameraFollowMe: 0
   CameraTarget: {fileID: 768669141725031210}
