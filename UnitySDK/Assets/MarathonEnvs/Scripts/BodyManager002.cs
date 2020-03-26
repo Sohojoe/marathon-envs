@@ -384,12 +384,6 @@ public class BodyManager002 : MonoBehaviour, IOnSensorCollision
 			SensorIsInTouch[idx] = 0f;
 		}
 	}  
-	public Vector3 GetLocalCenterOfMass()
-    {
-        var centerOfMass = GetCenterOfMass();
-		centerOfMass -= transform.position;
-        return centerOfMass;
-    }
 	public Vector3 GetCenterOfMass()
 	{
 		var centerOfMass = Vector3.zero;
@@ -404,6 +398,7 @@ public class BodyManager002 : MonoBehaviour, IOnSensorCollision
 			totalMass += rb.mass;
 		}
 		centerOfMass /= totalMass;
+		centerOfMass -= _spawnableEnv.transform.position;
 		return centerOfMass;
 	}
 

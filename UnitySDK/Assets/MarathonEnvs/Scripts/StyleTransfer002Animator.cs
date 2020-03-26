@@ -36,6 +36,7 @@ public class StyleTransfer002Animator : MonoBehaviour, IOnSensorCollision {
 
 	private List<Rigidbody> _rigidbodies;
 	private List<Transform> _transforms;
+	SpawnableEnv _spawnableEnv;
 
 	private bool isFirstOfThisAnim; 
 
@@ -68,6 +69,7 @@ public class StyleTransfer002Animator : MonoBehaviour, IOnSensorCollision {
 	// Use this for initialization
 	public void OnInitializeAgent()
     {
+		_spawnableEnv = GetComponentInParent<SpawnableEnv>();
 		anim = GetComponent<Animator>();
 		anim.Play("Record",0, NormalizedTime);
 		anim.Update(0f);
@@ -288,7 +290,7 @@ public class StyleTransfer002Animator : MonoBehaviour, IOnSensorCollision {
 			totalMass += rb.mass;
 		}
 		centerOfMass /= totalMass;
-		centerOfMass -= transform.parent.position;
+		centerOfMass -= _spawnableEnv.transform.position;
 		return centerOfMass;
 	}
 	public void MimicAnimation(bool skipIfLearning = false)

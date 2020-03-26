@@ -73,6 +73,7 @@ public class StyleTransfer002Master : MonoBehaviour {
 	StyleTransfer002Animator _styleAnimator;
 	StyleTransfer002Animator _localStyleAnimator;
 	DecisionRequester _decisionRequester;
+	SpawnableEnv _spawnableEnv;
 	// private StyleTransfer002TrainerAgent _trainerAgent;
 	// private Brain _brain;
 	public bool IsInferenceMode;
@@ -141,8 +142,8 @@ public class StyleTransfer002Master : MonoBehaviour {
 
 			Muscles.Add(muscle);			
 		}
-		var spawnableEnv = GetComponentInParent<SpawnableEnv>();
-		_localStyleAnimator = spawnableEnv.gameObject.GetComponentInChildren<StyleTransfer002Animator>();
+		_spawnableEnv = GetComponentInParent<SpawnableEnv>();
+		_localStyleAnimator = _spawnableEnv.gameObject.GetComponentInChildren<StyleTransfer002Animator>();
 		_styleAnimator = _localStyleAnimator.GetFirstOfThisAnim();
 		// _styleAnimator = _localStyleAnimator;
 		_muscleAnimator = _styleAnimator;
@@ -483,7 +484,7 @@ public class StyleTransfer002Master : MonoBehaviour {
 			totalMass += rb.mass;
 		}
 		centerOfMass /= totalMass;
-		centerOfMass -= transform.parent.position;
+		centerOfMass -= _spawnableEnv.transform.position;
 		return centerOfMass;
 	}
 

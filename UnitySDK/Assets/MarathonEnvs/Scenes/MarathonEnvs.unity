@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -323,6 +323,9 @@ MonoBehaviour:
         type: 3}
     - envId: MarathonManBackflip-v0
       envPrefab: {fileID: 4993543594474631292, guid: 6e16b77232d1f4b2d9696aa19a59513b,
+        type: 3}
+    - envId: MarathonManWalkingEnv-v0
+      envPrefab: {fileID: 8762153322364534832, guid: d7c9fbb45d5364c579795c900c9f1c8a,
         type: 3}
     envIdDefault: MarathonWalker2d-v0
     trainingNumEnvsDefault: 64
