@@ -119,7 +119,7 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 		var rotationDistanceScale = (float)_master.BodyParts.Count;
 		var velocityDistanceScale = 170f; // 3f;
 		var endEffectorDistanceScale = 8f;
-		var centerOfMassDistancScalee = 5f;
+		var centerOfMassDistancScalee = 1f;
 		var sensorDistanceScale = 1f;
 		var rotationDistance = _master.RotationDistance;
 		var velocityDistance = Mathf.Abs(_master.VelocityDistance);
@@ -140,7 +140,7 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 		RotationReward = Mathf.Pow(RotationReward, rotationDistanceScale);
 		VelocityReward = Mathf.Pow(VelocityReward, 17f);
 		EndEffectorReward = Mathf.Pow(EndEffectorReward, endEffectorDistanceScale);
-		CenterMassReward = Mathf.Pow(CenterMassReward, centerOfMassDistancScalee);
+		CenterMassReward = Mathf.Pow(CenterMassReward, 5f);
 		SensorReward = Mathf.Pow(SensorReward, sensorDistanceScale);
 
 		// float rotationRewardScale = .45f*.9f;

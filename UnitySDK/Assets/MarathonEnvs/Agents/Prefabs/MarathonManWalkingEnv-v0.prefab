@@ -23,6 +23,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: MarathonManWalkingEnv-v0
       objectReference: {fileID: 0}
+    - target: {fileID: 2856160450822654072, guid: c13ea8e8df87c42639b6304f70acf750,
+        type: 3}
+      propertyPath: RewardTerminateValues.Array.data[0]
+      value: 0.6
+      objectReference: {fileID: 0}
     - target: {fileID: 3038961438858554306, guid: c13ea8e8df87c42639b6304f70acf750,
         type: 3}
       propertyPath: m_Controller
