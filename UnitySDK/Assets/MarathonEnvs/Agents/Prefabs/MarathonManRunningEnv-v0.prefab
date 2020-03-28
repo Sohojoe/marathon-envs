@@ -26,7 +26,7 @@ PrefabInstance:
     - target: {fileID: 2856160450822654072, guid: c13ea8e8df87c42639b6304f70acf750,
         type: 3}
       propertyPath: RewardTerminateValues.Array.data[0]
-      value: 0.6
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 3038961438858554306, guid: c13ea8e8df87c42639b6304f70acf750,
         type: 3}
@@ -99,5 +99,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 82f3fea4b879d4948932132a8c7b62cc,
         type: 3}
+    - target: {fileID: 8578658519273318744, guid: c13ea8e8df87c42639b6304f70acf750,
+        type: 3}
+      propertyPath: UseRandomIndexForTraining
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c13ea8e8df87c42639b6304f70acf750, type: 3}

@@ -109,5 +109,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: ff3439846ee55430da44363e0623ca0d,
         type: 3}
+    - target: {fileID: 8578658519273318744, guid: c13ea8e8df87c42639b6304f70acf750,
+        type: 3}
+      propertyPath: UseRandomIndexForTraining
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c13ea8e8df87c42639b6304f70acf750, type: 3}
