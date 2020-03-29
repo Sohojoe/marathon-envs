@@ -177,6 +177,15 @@ public class StyleTransfer002Animator : MonoBehaviour, IOnSensorCollision {
 				UpdateAnimationStep(timeStep);
 		}
 		else {
+			if (IsLoopingAnimation)
+			{
+				// handle that first frame of looping does not have valid velocity
+				int idx = AnimationSteps.Count/3;
+				AnimationSteps[0].AngularVelocities = AnimationSteps[idx].AngularVelocities;
+				AnimationSteps[0].RotaionVelocities = AnimationSteps[idx].RotaionVelocities;
+				AnimationSteps[0].Velocities = AnimationSteps[idx].Velocities;
+				AnimationSteps[0].Velocity = AnimationSteps[idx].Velocity;
+			}
 			StopAnimation();
 			// BecomeRagDoll();
 		}

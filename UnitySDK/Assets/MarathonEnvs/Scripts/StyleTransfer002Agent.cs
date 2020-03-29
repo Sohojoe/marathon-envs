@@ -275,6 +275,12 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 		RewardTerminateValue = RewardTerminateValues[idx];
 		_isDone = true;
 		_master.ResetPhase();
+		var rb = GetComponent<Rigidbody>();
+		if (rb != null)
+		{
+			rb.angularVelocity = Vector3.zero;
+			rb.velocity = Vector3.zero;
+		}		
 		_sensors = GetComponentsInChildren<SensorBehavior>()
 			.Select(x=>x.gameObject)
 			.ToList();
