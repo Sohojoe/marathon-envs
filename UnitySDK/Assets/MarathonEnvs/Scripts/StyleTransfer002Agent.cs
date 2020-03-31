@@ -44,6 +44,8 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 	bool _hasLazyInitialized;
 	bool _callDoneOnNextAction;
 	bool _firstStepAfterReset;
+	Vector3 _startPosition;
+	Quaternion _startRotation;
 
 	// Use this for initialization
 	void Start () {
@@ -270,17 +272,21 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 			_styleAnimator.OnInitializeAgent();
 			_hasLazyInitialized = true;
 			_localStyleAnimator.DestoryIfNotFirstAnim();
+			_startPosition = this.transform.position;
+			_startRotation = this.transform.rotation;
 		}
 		int idx = UnityEngine.Random.Range(0, RewardTerminateValues.Count);
 		RewardTerminateValue = RewardTerminateValues[idx];
 		_isDone = true;
-		_master.ResetPhase();
+		this.transform.position = _startPosition;
+		this.transform.rotation = _startRotation;
 		var rb = GetComponent<Rigidbody>();
 		if (rb != null)
 		{
 			rb.angularVelocity = Vector3.zero;
 			rb.velocity = Vector3.zero;
 		}		
+		_master.ResetPhase();
 		_sensors = GetComponentsInChildren<SensorBehavior>()
 			.Select(x=>x.gameObject)
 			.ToList();
