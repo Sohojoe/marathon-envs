@@ -27,7 +27,6 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 	public List<float> Rewards;
 	public List<float> SensorIsInTouch;
 	StyleTransfer002Master _master;
-	StyleTransfer002Animator _localStyleAnimator;
 	StyleTransfer002Animator _styleAnimator;
 	DecisionRequester _decisionRequester;
 	// StyleTransfer002TrainerAgent _trainerAgent;
@@ -44,16 +43,13 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 	bool _hasLazyInitialized;
 	bool _callDoneOnNextAction;
 	bool _firstStepAfterReset;
-	Vector3 _startPosition;
-	Quaternion _startRotation;
 
 	// Use this for initialization
 	void Start () {
 		_master = GetComponent<StyleTransfer002Master>();
 		_decisionRequester = GetComponent<DecisionRequester>();
 		var spawnableEnv = GetComponentInParent<SpawnableEnv>();
-		_localStyleAnimator = spawnableEnv.gameObject.GetComponentInChildren<StyleTransfer002Animator>();
-		_styleAnimator = _localStyleAnimator.GetFirstOfThisAnim();
+		_styleAnimator = spawnableEnv.gameObject.GetComponentInChildren<StyleTransfer002Animator>();
 		_startCount++;
 	}
 
@@ -62,8 +58,7 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 	}
 	void LateUpdate ()
 	{
-		if (_styleAnimator == _localStyleAnimator)
-			_styleAnimator.MimicAnimation(true);
+		_styleAnimator.MimicAnimation(true);
 	}
 
 	override public void CollectObservations()
@@ -112,8 +107,7 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 			Done();
 			return;
 		}
-		if (_styleAnimator == _localStyleAnimator)
-			_styleAnimator.OnAgentAction();
+		_styleAnimator.OnAgentAction();
 		_master.OnAgentAction(vectorAction);
         float effort = GetEffort();
         var effortPenality = 0.05f * (float)effort;
@@ -144,14 +138,6 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 		EndEffectorReward = Mathf.Pow(EndEffectorReward, endEffectorDistanceScale);
 		CenterMassReward = Mathf.Pow(CenterMassReward, 5f);
 		SensorReward = Mathf.Pow(SensorReward, sensorDistanceScale);
-
-		// float rotationRewardScale = .45f*.9f;
-		// float velocityRewardScale = .2f*.9f;
-		// float endEffectorRewardScale = .15f*.9f;
-		// float centerMassRewardScale = .1f*.9f;
-		// float sensorRewardScale = .1f*.9f;
-        // JointsNotAtLimitReward = 1f - JointsAtLimit();
-		// var jointsNotAtLimitRewardScale = .09f;
 
 		float rotationRewardScale = .5f;
 		float velocityRewardScale = .1f;
@@ -266,26 +252,13 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 			_master.OnInitializeAgent();
 			_decisionRequester = GetComponent<DecisionRequester>();
 			var spawnableEnv = GetComponentInParent<SpawnableEnv>();
-			_localStyleAnimator = spawnableEnv.gameObject.GetComponentInChildren<StyleTransfer002Animator>();
-			_styleAnimator = _localStyleAnimator.GetFirstOfThisAnim();
 			_styleAnimator.BodyConfig = MarathonManAgent.BodyConfig;
 			_styleAnimator.OnInitializeAgent();
 			_hasLazyInitialized = true;
-			_localStyleAnimator.DestoryIfNotFirstAnim();
-			_startPosition = this.transform.position;
-			_startRotation = this.transform.rotation;
 		}
 		int idx = UnityEngine.Random.Range(0, RewardTerminateValues.Count);
 		RewardTerminateValue = RewardTerminateValues[idx];
-		_isDone = true;
-		this.transform.position = _startPosition;
-		this.transform.rotation = _startRotation;
-		var rb = GetComponent<Rigidbody>();
-		if (rb != null)
-		{
-			rb.angularVelocity = Vector3.zero;
-			rb.velocity = Vector3.zero;
-		}		
+		_isDone = true;	
 		_master.ResetPhase();
 		_sensors = GetComponentsInChildren<SensorBehavior>()
 			.Select(x=>x.gameObject)
@@ -325,7 +298,6 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
                 break;
 		}
 	}
-
 
 	public void OnSensorCollisionEnter(Collider sensorCollider, GameObject other) {
 			if (other.GetComponent<Terrain>() == null)

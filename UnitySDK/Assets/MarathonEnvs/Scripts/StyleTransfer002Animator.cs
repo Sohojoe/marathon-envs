@@ -38,8 +38,6 @@ public class StyleTransfer002Animator : MonoBehaviour, IOnSensorCollision {
 	private List<Transform> _transforms;
 	SpawnableEnv _spawnableEnv;
 
-	private bool isFirstOfThisAnim; 
-
     [System.Serializable]
 	public class AnimationStep
 	{
@@ -137,21 +135,6 @@ public class StyleTransfer002Animator : MonoBehaviour, IOnSensorCollision {
 			.Select(x=> x.Transform.rotation)
 			.ToList();
 		BecomeAnimated();
-	}
-
-	public StyleTransfer002Animator GetFirstOfThisAnim()
-	{
-		if (isFirstOfThisAnim)
-			return this;
-		var anim = GetComponent<Animator>();
-		var styleAnimators = FindObjectsOfType<StyleTransfer002Animator>().ToList();
-		var firstOfThisAnim = styleAnimators
-			.Where(x=> x.GetComponent<Animator>().avatar == anim.avatar)
-			.FirstOrDefault(x=> x.isFirstOfThisAnim);
-		if (firstOfThisAnim != null)
-			return firstOfThisAnim;
-		isFirstOfThisAnim = true;
-		return this;
 	}
 	
 	public void OnAgentAction() {
@@ -279,12 +262,6 @@ public class StyleTransfer002Animator : MonoBehaviour, IOnSensorCollision {
 		anim.enabled=false;
 	}
 
-	public void DestoryIfNotFirstAnim()
-    {
-		if (!isFirstOfThisAnim){
-			Destroy(this.gameObject);
-        }
-    }
     Vector3 GetCenterOfMass()
 	{
 		var centerOfMass = Vector3.zero;
