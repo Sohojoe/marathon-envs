@@ -236,8 +236,6 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 		_totalAnimFrames = totalAnimFrames;
 		if (_scoreHistogramData == null) {
 			var columns = _totalAnimFrames;
-			if (_decisionRequester?.DecisionPeriod > 1)
-				columns /= _decisionRequester.DecisionPeriod;
 			_scoreHistogramData = new ScoreHistogramData(columns, 30);
 		}
 			Rewards = _scoreHistogramData.GetAverages().Select(x=>(float)x).ToList();
@@ -266,8 +264,6 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 		SensorIsInTouch = Enumerable.Range(0,_sensors.Count).Select(x=>0f).ToList();
 		if (_scoreHistogramData != null) {
 			var column = _master.StartAnimationIndex;
-			if (_decisionRequester?.DecisionPeriod > 1)
-				column /= _decisionRequester.DecisionPeriod;
 			_scoreHistogramData.SetItem(column, AverageReward);
         }
 		_callDoneOnNextAction = false;
