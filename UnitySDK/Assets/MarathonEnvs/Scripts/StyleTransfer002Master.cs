@@ -369,7 +369,7 @@ public class StyleTransfer002Master : MonoBehaviour {
 	{
 		_decisionRequester.enabled = false;
 
-		// _animationIndex =  UnityEngine.Random.Range(0, _muscleAnimator.AnimationSteps.Count);
+		// _animationIndex =  UnityEngine.Random.Range(0, _muscleAnimator.AnimationSteps.Count-1);
 		if (!_phaseIsRunning){
 			if (CameraFollowMe){
 				var camera = FindObjectOfType<Camera>();
@@ -381,7 +381,7 @@ public class StyleTransfer002Master : MonoBehaviour {
 		StartAnimationIndex = Mathf.Clamp(StartAnimationIndex, 0, _styleAnimator.AnimationSteps.Count-1);
 
 		// start with random
-		AnimationIndex = UnityEngine.Random.Range(0, _styleAnimator.AnimationSteps.Count);
+		AnimationIndex = UnityEngine.Random.Range(0, _styleAnimator.AnimationSteps.Count-1);
 		if (IsInferenceMode && !UseRandomIndexForInference){
 			AnimationIndex = StartAnimationIndex;
 		} else if (!IsInferenceMode && !UseRandomIndexForTraining){

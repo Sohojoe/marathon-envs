@@ -130,7 +130,7 @@ public class StyleTransfer002Animator : MonoBehaviour, IOnSensorCollision {
 
 		_lastPosition = Enumerable.Repeat(Vector3.zero, partCount).ToList();
 		_lastRotation = Enumerable.Repeat(Quaternion.identity, partCount).ToList();
-		_lastVelocityPosition = transform.position;
+		_lastVelocityPosition = GetCenterOfMass();
 		_initialRotations = BodyParts
 			.Select(x=> x.Transform.rotation)
 			.ToList();
@@ -193,10 +193,11 @@ public class StyleTransfer002Animator : MonoBehaviour, IOnSensorCollision {
 		animStep.RootAngles = Enumerable.Repeat(Vector3.zero, c).ToList();
 		animStep.Positions = Enumerable.Repeat(Vector3.zero, c).ToList();
 		animStep.Rotaions = Enumerable.Repeat(Quaternion.identity, c).ToList();
-		animStep.Velocity = transform.position - _lastVelocityPosition;
+		Vector3 cOM = GetCenterOfMass();
+		animStep.Velocity = cOM - _lastVelocityPosition;
 		animStep.Names = BodyParts.Select(x=>x.Name).ToList();
 		animStep.SensorIsInTouch = new List<float>(SensorIsInTouch);
-		_lastVelocityPosition = transform.position;
+		_lastVelocityPosition = cOM;
 
 		var rootBone = BodyParts[0];
 

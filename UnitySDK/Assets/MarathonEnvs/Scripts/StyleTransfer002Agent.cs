@@ -172,14 +172,15 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 			distanceReward
 			+ JointsNotAtLimitReward;
 
-		if (distanceReward < RewardTerminateValue && _master.IsInferenceMode == false)
+		var stepCount = GetStepCount();
+		if (_decisionRequester?.DecisionPeriod > 1)
+			stepCount /= _decisionRequester.DecisionPeriod;
+		bool earlyExit = (distanceReward < RewardTerminateValue && _master.IsInferenceMode == false);
+		if (stepCount<5)
+			earlyExit = false;
+		if (earlyExit)
 		{
-			Done();
-			return;
-		}
-		// _master.IncrementStep();
-		if (_master.IsDone())
-		{
+			// terminate without reward
 			Done();
 			return;
 		}
@@ -187,11 +188,13 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 		if (!_master.IgnorRewardUntilObservation)
 			AddReward(reward);
 		FrameReward = reward;
-		var stepCount = GetStepCount();
-		if (_decisionRequester?.DecisionPeriod > 1)
-			stepCount /= _decisionRequester.DecisionPeriod;
-		stepCount = Mathf.Max(stepCount, 1);
-		AverageReward = GetCumulativeReward() / (float)stepCount;
+		AverageReward = GetCumulativeReward() / (float)Mathf.Max(stepCount, 1);
+
+		if (_master.IsDone())
+		{
+			Done();
+		}
+
 	}
 	float GetEffort(string[] ignorJoints = null)
 	{
@@ -258,7 +261,7 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 			_styleAnimator.OnInitializeAgent();
 			_hasLazyInitialized = true;
 		}
-		int idx = UnityEngine.Random.Range(0, RewardTerminateValues.Count);
+		int idx = UnityEngine.Random.Range(0, RewardTerminateValues.Count-1);
 		RewardTerminateValue = RewardTerminateValues[idx];
 		_isDone = true;	
 		_master.ResetPhase();

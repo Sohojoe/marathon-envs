@@ -170,8 +170,9 @@ public class BodyPart002
         ObsVelocity = velocity;
 
         ObsDeltaFromKinematicPosition = KinematicGameobject.transform.position - Transform.position;
-        var obsNormalizedDeltaFromKinematicRotation = KinematicGameobject.transform.rotation * Quaternion.Inverse(rotationFromBase);
-        ObsAngleDeltaFromKinematicRotation = Mathf.Abs(Quaternion.Angle(obsNormalizedDeltaFromKinematicRotation, rotationFromBase)/180f);
+        // var obsNormalizedDeltaFromKinematicRotation = KinematicGameobject.transform.rotation * Quaternion.Inverse(rotationFromBase);
+        // ObsAngleDeltaFromKinematicRotation = Mathf.Abs(Quaternion.Angle(KinematicGameobject.transform.rotation, rotationFromBase)/180f);
+        ObsAngleDeltaFromKinematicRotation = Mathf.Abs(Quaternion.Angle(KinematicGameobject.transform.rotation, Transform.rotation)/180f);
 
         if (_firstRunComplete == false){
             ObsDeltaFromAnimationPosition = Vector3.zero;
