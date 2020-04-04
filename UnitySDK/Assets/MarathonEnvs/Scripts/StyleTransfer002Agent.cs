@@ -93,6 +93,7 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 
 	public override void AgentAction(float[] vectorAction)
 	{
+		_master.IncrementStep();
 
 #if UNITY_EDITOR		
 		if (_master.DebugPauseOnReset && _firstStepAfterReset)
@@ -184,6 +185,7 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 			Done();
 			return;
 		}
+		// _master.IncrementStep();
 		if (_master.IsDone())
 		{
 			Done();

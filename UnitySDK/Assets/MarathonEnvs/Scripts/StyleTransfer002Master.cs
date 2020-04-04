@@ -91,7 +91,7 @@ public class StyleTransfer002Master : MonoBehaviour {
 		_spawnableEnv = GetComponentInParent<SpawnableEnv>();
 		_styleAnimator = _spawnableEnv.gameObject.GetComponentInChildren<StyleTransfer002Animator>();
 		_agent = GetComponent<StyleTransfer002Agent>();
-		var animatorTransforms = _styleAnimator.GetComponentsInChildren<Transform>();
+		var kinematicTransforms = _styleAnimator.GetComponentsInChildren<Transform>();
 
 		BodyParts = new List<BodyPart002> ();
 		BodyPart002 root = null;
@@ -100,14 +100,14 @@ public class StyleTransfer002Master : MonoBehaviour {
 			if (BodyConfig.GetBodyPartGroup(t.name) == BodyHelper002.BodyPartGroup.None)
 				continue;
 			
-			Transform kinematicTransform = animatorTransforms.First(x=>x.name==t.name);
-			Rigidbody kinematicRigidbody = kinematicTransform.GetComponent<Rigidbody>();
+			GameObject kinematicGameobject = kinematicTransforms.First(x=>x.name==t.name).gameObject;
+			Rigidbody kinematicRigidbody = kinematicGameobject.GetComponent<Rigidbody>();
 			var bodyPart = new BodyPart002{
 				Rigidbody = t.GetComponent<Rigidbody>(),
 				Transform = t,
 				Name = t.name,
 				Group = BodyConfig.GetBodyPartGroup(t.name),
-				KinematicTransform = kinematicTransform,
+				KinematicGameobject = kinematicGameobject,
 				KinematicRigidbody = kinematicRigidbody
 			};
 			if (bodyPart.Group == BodyConfig.GetRootBodyPart())
@@ -168,6 +168,9 @@ public class StyleTransfer002Master : MonoBehaviour {
 			_waitingForAnimation = false;
 			ResetPhase();
 		}
+		var animStep = _styleAnimator.AnimationSteps[AnimationIndex];
+		SetAnimStep(animStep);
+		UpdateObservations();
 		int i = 0;
 		foreach (var muscle in Muscles)
 		{
@@ -179,9 +182,9 @@ public class StyleTransfer002Master : MonoBehaviour {
 				muscle.TargetNormalizedRotationZ = vectorAction[i++];
 			muscle.UpdateMotor();
 		}
-		var animStep = UpdateObservations();
-		IncrementStep();
-		SetAnimStep(animStep);
+		// var animStep = UpdateObservations();
+		// IncrementStep();
+		// SetAnimStep(animStep);
 #if UNITY_EDITOR
 		if (DebugPauseOnStep)
 	        UnityEditor.EditorApplication.isPaused = true;
@@ -271,7 +274,7 @@ public class StyleTransfer002Master : MonoBehaviour {
 		ObsPhase = _styleAnimator.AnimationSteps[AnimationIndex].NormalizedTime % 1f;
 		return animStep;
 	}
-	void IncrementStep()
+	public void IncrementStep()
 	{
 		if (_phaseIsRunning){
 			AnimationIndex++;
@@ -282,7 +285,7 @@ public class StyleTransfer002Master : MonoBehaviour {
 	}
 	void SetAnimStep(StyleTransfer002Animator.AnimationStep animStep)
 	{
-		if (_phaseIsRunning && IsInferenceMode)
+		if (_phaseIsRunning)
 		{
 			_styleAnimator.anim.enabled = true;
 			_styleAnimator.anim.Play("Record",0, animStep.NormalizedTime);

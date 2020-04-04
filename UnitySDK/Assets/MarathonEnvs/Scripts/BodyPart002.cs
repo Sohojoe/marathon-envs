@@ -45,7 +45,7 @@ public class BodyPart002
     //
     public Quaternion ToFocalRoation;
     public Rigidbody KinematicRigidbody;
-    public Transform KinematicTransform;
+    public GameObject KinematicGameobject;
 
 
     Quaternion _lastObsRotation;
@@ -169,8 +169,8 @@ public class BodyPart002
         ObsRotationVelocity = angularVelocity;
         ObsVelocity = velocity;
 
-        ObsDeltaFromKinematicPosition = KinematicTransform.position - Transform.position;
-        ObsAngleDeltaFromKinematicRotation = Mathf.Abs(Quaternion.Angle(KinematicTransform.rotation, Transform.rotation)/180f);
+        ObsDeltaFromKinematicPosition = KinematicGameobject.transform.position - Transform.position;
+        ObsAngleDeltaFromKinematicRotation = Mathf.Abs(Quaternion.Angle(KinematicGameobject.transform.rotation, Transform.rotation)/180f);
 
         if (_firstRunComplete == false){
             ObsDeltaFromAnimationPosition = Vector3.zero;
