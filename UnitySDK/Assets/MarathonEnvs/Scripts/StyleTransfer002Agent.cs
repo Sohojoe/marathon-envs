@@ -172,14 +172,6 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 			distanceReward
 			+ JointsNotAtLimitReward;
 
-		if (!_master.IgnorRewardUntilObservation)
-			AddReward(reward);
-		FrameReward = reward;
-		var stepCount = GetStepCount();
-		if (_decisionRequester?.DecisionPeriod > 1)
-			stepCount /= _decisionRequester.DecisionPeriod;
-		stepCount = Mathf.Max(stepCount, 1);
-		AverageReward = GetCumulativeReward() / (float)stepCount;
 		if (distanceReward < RewardTerminateValue && _master.IsInferenceMode == false)
 		{
 			Done();
@@ -189,7 +181,17 @@ public class StyleTransfer002Agent : Agent, IOnSensorCollision, IOnTerrainCollis
 		if (_master.IsDone())
 		{
 			Done();
+			return;
 		}
+
+		if (!_master.IgnorRewardUntilObservation)
+			AddReward(reward);
+		FrameReward = reward;
+		var stepCount = GetStepCount();
+		if (_decisionRequester?.DecisionPeriod > 1)
+			stepCount /= _decisionRequester.DecisionPeriod;
+		stepCount = Mathf.Max(stepCount, 1);
+		AverageReward = GetCumulativeReward() / (float)stepCount;
 	}
 	float GetEffort(string[] ignorJoints = null)
 	{
