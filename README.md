@@ -2,28 +2,42 @@
 
 A set of high-dimensional continuous control environments for use with Unity ML-Agents Toolkit.
 
-[Web Demo](http://marathonenvs.joebooth.com)
-
 ![MarathonEnvs](images/MarathonEnvsBanner.gif)
 
-**MarathonEnvs** enables the reproduction of these benchmarks within Unity ml-agents using Unity’s native physics simulator, PhysX. MarathonEnvs maybe useful for:
+## Preview MarathonEnvs using the **[Web Demo](http://marathonenvs.joebooth.com)**
+
+**MarathonEnvs** is a set of high-dimensional continuous control benchmarks using Unity’s native physics simulator, PhysX. MarathonEnvs can be trained using Unity ML-Agents or any OpenAI Gym compatable algorthem. MarathonEnvs maybe useful for:
 
 * Video Game researchers interested in apply bleeding edge robotics research into the domain of locomotion and AI for video games.
-* Traditional academic researchers looking to leverage the strengths of Unity and ML-Agents along with the body of existing research and benchmarks provided by projects such as the [DeepMind Control Suite](https://github.com/deepmind/dm_control), or [OpenAI Mujoco](http://gym.openai.com/envs/#mujoco) environments.
+* Academic researchers looking to leverage the strengths of Unity and ML-Agents along with the body of existing research and benchmarks provided by projects such as the [DeepMind Control Suite](https://github.com/deepmind/dm_control), or [OpenAI Mujoco](http://gym.openai.com/envs/#mujoco) environments.
 
 *Note: This project is the result of a contribution from [Joe Booth (@Sohojo)](https://github.com/Sohojoe), a member of the Unity community who currently maintains the repository. As such, the contents of this repository are not officially supported by Unity Technologies.*
 
 ---
 
-## What's new in MarathonEnvs-v2.0
+## What's new in MarathonEnvs-v2.0.0-alpha.2
 
-### ml-agents 0.9 support
+### WebGL Demo / Support for in browser
 
-* Updated to work with ml-agents 0.9 / new inference engine
+* See [Web Demo](http://marathonenvs.joebooth.com)
+
+### marathon-envs Gym wrapper (Preview)
+
+* Use marathon-envs as a OpenAI Gym environment - see [documentation](marathon-envs/README.md)
+
+### ml-agents 0.14.1 support
+
+* Updated to work with ml-agents 0.14.1 / new inference engine
 
 ### Unity 2018.4 LTS
 
 * Updated to use Unity 2018.4 LTS. Should work with later versions. However, sometimes Unity makes breaking physics changes.
+
+### MarathonManBackflip-v0
+
+* Train the agent to complete a backflip based on motion capture data
+* Merged from StyleTransfer experimental repro
+
 
 ### MarathonMan-v0
 
@@ -49,11 +63,6 @@ A set of high-dimensional continuous control environments for use with Unity ML-
 * Unique Physics Scene per Environment (makes it easier to port envionments however runs slower)
 * SelectEnvToSpawn.cs - Optional menu to enable user to select from all agents in build
 
-### Skip setting actions
-
-* Option to not set actions when skipping steps.
-* Optimization for when running physics at high frequencey
-
 ### Scorer.cs
 
 * Score agent against 'goal' (for example, max distance) to distinguish rewards from goals
@@ -77,19 +86,14 @@ A set of high-dimensional continuous control environments for use with Unity ML-
 
 ## Getting Started
 
-### Web Demo
-
-* Preview MarathonEnvs using the [Web Demo](http://marathonenvs.joebooth.com)
-
 ### Requirements
 
 * Unity 2018.4 (Download [here](https://unity3d.com/get-unity/download)).
 * Cloan / Download this repro
-* Install **CUSTOM** ml-agents version 0.9 - install via:
+* Install ml-agents version 0.14.1 - install via:
 
 ``` sh
-cd ml-agents
-pip3 install -e ./
+pip3 install mlagents==0.14.1
 ```
 
 * Build or install the correct runtime for your version into the `envs\` folder
@@ -113,112 +117,6 @@ pip3 install -e ./
 * [ActiveRagdollControllers](https://github.com/Sohojoe/ActiveRagdollControllers) - Implementing a Player Controller
 * [ActiveRagdollStyleTransfer](https://github.com/Sohojoe/ActiveRagdollStyleTransfer) - Learning From Motioncapture Data
 * [MarathonEnvsBaselines](https://github.com/Sohojoe/MarathonEnvsBaselines) - Experimental implementation with OpenAI.Baselines and Stable.Baselines
-
----
-
-## Included Environments
-
-### Humanoid
-
-| **DeepMindHumanoid** |
-| --- |
-| ![DeepMindHumanoid](images/DeepMindHumanoid102-2m.gif) |
-
-* Set-up: Complex (DeepMind) Humanoid agent.
-* Goal: The agent must move its body toward the goal as quickly as possible without falling.
-* Agents: The environment contains 16 independent agents linked to a single brain.
-* Agent Reward Function:
-  * Reference OpenAI.Roboschool and / or DeepMind
-    * -joints at limit penality
-    * -effort penality (ignors hip_y and knee)
-    * +velocity
-    * -height penality if below 1.2m
-  * Inspired by Deliberate Practice (currently, only does legs)
-    * +facing upright bonus for shoulders, waist, pelvis
-    * +facing target bonus for shoulders, waist, pelvis
-    * -non straight thigh penality
-    * +leg phase bonus (for height of knees)
-    * +0.01 times body direction alignment with goal direction.
-    * -0.01 times head velocity difference from body velocity.
-* Agent Terminate Function:
-  * TerminateOnNonFootHitTerrain - Agent terminates when a body part other than foot collides with the terrain.
-* Brains: One brain with the following observation/action space.
-  * Vector Observation space: (Continuous) 88 variables
-  * Vector Action space: (Continuous) Size of 21 corresponding to target rotations applicable to the joints.
-  * Visual Observations: None.
-* Reset Parameters: None.
-
-### Hopper
-
-| **DeepMindHopper** |
-| --- |
-| ![DeepMindHopper](images/DeepMindHopper101-1m.gif) |
-
-* Set-up: DeepMind Hopper agents.
-* Goal: The agent must move its body toward the goal as quickly as possible without falling.
-* Agents: The environment contains 16 independent agents linked to a single brain.
-* Agent Reward Function:
-  * Reference OpenAI.Roboschool and / or DeepMind
-    * -effort penality
-    * +velocity
-    * +uprightBonus
-    * -height penality if below .65m OpenAI, 1.1m DeepMind
-* Agent Terminate Function:
-  * DeepMindHopper: TerminateOnNonFootHitTerrain - Agent terminates when a body part other than foot collides with the terrain.
-  * OpenAIHopper
-    * TerminateOnNonFootHitTerrain
-    * Terminate if height < .3m
-    * Terminate if head tilt > 0.4
-* Brains: One brain with the following observation/action space.
-  * Vector Observation space: (Continuous) 31 variables
-  * Vector Action space: (Continuous) 4 corresponding to target rotations applicable to the joints.
-  * Visual Observations: None.
-* Reset Parameters: None.
-
-### Walker
-
-| **DeepMindWalker** |
-| --- |
-| ![DeepMindWalker](images/DeepMindWalker108-1m.gif) |
-
-* Set-up: DeepMind Walker agent.
-* Goal: The agent must move its body toward the goal as quickly as possible without falling.
-* Agents: The environment contains 16 independent agents linked to a single brain.
-* Agent Reward Function:
-  * Reference OpenAI.Roboschool and / or DeepMind
-    * -effort penality
-    * +velocity
-    * +uprightBonus
-    * -height penality if below .65m OpenAI, 1.1m DeepMind
-* Agent Terminate Function:
-  * TerminateOnNonFootHitTerrain - Agent terminates when a body part other than foot collides with the terrain.
-* Brains: One brain with the following observation/action space.
-  * Vector Observation space: (Continuous) 41 variables
-  * Vector Action space: (Continuous) Size of 6 corresponding to target rotations applicable to the joints.
-  * Visual Observations: None.
-* Reset Parameters: None.
-
-### Ant
-
-| **OpenAIAnt** |
-| --- |
-| ![OpenAIAnt](images/OpenAIAnt102-1m.gif) |
-
-* Set-up: OpenAI and Ant agent.
-* Goal: The agent must move its body toward the goal as quickly as possible without falling.
-* Agents: The environment contains 16 independent agents linked to a single brain.
-* Agent Reward Function:
-  * Reference OpenAI.Roboschool and / or DeepMind
-    * -joints at limit penality
-    * -effort penality
-    * +velocity
-* Agent Terminate Function:
-  * Terminate if head body > 0.2
-* Brains: One brain with the following observation/action space.
-  * Vector Observation space: (Continuous) 53 variables
-  * Vector Action space: (Continuous) Size of 8 corresponding to target rotations applicable to the joints.
-  * Visual Observations: None.
-* Reset Parameters: None.
 
 ---
 
