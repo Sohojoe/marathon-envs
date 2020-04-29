@@ -57,88 +57,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d041794481cd24f4d92e5f3da728fe64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2856160450822654072
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8878912891930077695}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9cfe0db841e420283facda78fa8b61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agentParameters:
-    maxStep: 1000
-  hasUpgradedFromAgentParameters: 1
-  maxStep: 5000
-  FrameReward: 0
-  AverageReward: 0
-  RotationReward: 0
-  VelocityReward: 0
-  EndEffectorReward: 0
-  CenterMassReward: 0
-  SensorReward: 0
-  JointsNotAtLimitReward: 0
-  MaxRotationReward: 0
-  MaxVelocityReward: 0
-  MaxEndEffectorReward: 0
-  MaxCenterMassReward: 0
-  MaxSensorReward: 0
-  MaxJointsNotAtLimitReward: 0
-  RewardTerminateValue: 0
-  RewardTerminateValues:
-  - 0.33
-  Rewards: []
-  SensorIsInTouch: []
-  ShowMonitor: 0
---- !u!114 &8578658519273318744
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8878912891930077695}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbee4689469f148ca897ef6aabbab08d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FixedDeltaTime: 0.005
-  visualizeAnimator: 1
-  Muscles: []
-  BodyParts: []
-  ObsPhase: 0
-  ObsCenterOfMass: {x: 0, y: 0, z: 0}
-  ObsVelocity: {x: 0, y: 0, z: 0}
-  EndEffectorDistance: 0
-  FeetRotationDistance: 0
-  EndEffectorVelocityDistance: 0
-  RotationDistance: 0
-  VelocityDistance: 0
-  CenterOfMassDistance: 0
-  SensorDistance: 0
-  MaxEndEffectorDistance: 0
-  MaxFeetRotationDistance: 0
-  MaxEndEffectorVelocityDistance: 0
-  MaxRotationDistance: 0
-  MaxVelocityDistance: 0
-  MaxCenterOfMassDistance: 0
-  MaxSensorDistance: 0
-  IgnorRewardUntilObservation: 0
-  DebugDisableMotor: 0
-  DebugPauseOnReset: 0
-  DebugPauseOnStep: 0
-  TimeStep: 0
-  AnimationIndex: 0
-  EpisodeAnimationIndex: 0
-  StartAnimationIndex: 0
-  UseRandomIndexForTraining: 1
-  UseRandomIndexForInference: 0
-  CameraFollowMe: 0
-  CameraTarget: {fileID: 8876778131031204105}
-  IsInferenceMode: 0
 --- !u!1 &166006078276076820
 GameObject:
   m_ObjectHideFlags: 0
@@ -4509,7 +4427,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7305795301202754079}
   - component: {fileID: 8904546996881210184}
-  - component: {fileID: 4957875624901823384}
+  - component: {fileID: 4179130893711495411}
   m_Layer: 15
   m_Name: Animator
   m_TagString: Untagged
@@ -4543,7 +4461,7 @@ Animator:
   m_GameObject: {fileID: 9145827518470932530}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: fa0773caae34843268db7f12c1421ce5, type: 3}
-  m_Controller: {fileID: 9100000, guid: b1b909ee490e74bcdb043fcd491f0a8f, type: 2}
+  m_Controller: {fileID: 9100000, guid: 1d7f094048467488b82f17a4f66ef24f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 1
   m_ApplyRootMotion: 1
@@ -4552,7 +4470,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &4957875624901823384
+--- !u!114 &4179130893711495411
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4561,16 +4479,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 9145827518470932530}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3543848243544424b5503dcdc34970c, type: 3}
+  m_Script: {fileID: 11500000, guid: b32a249d28f504208a5cdd12152f1e51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SensorIsInTouch: []
-  AnimationSteps: []
-  AnimationStepsReady: 0
-  IsLoopingAnimation: 0
   NormalizedTime: 0
   Lenght: 0
-  BodyParts: []
+  IsLoopingAnimation: 0
+  CameraFollowMe: 0
+  CameraTarget: {fileID: 6652720892968975459}
   toePositionOffset: 0.3
   toeRotationOffset: 0.7
 --- !u!1 &9204387782085218896
@@ -4801,6 +4718,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: b7a674254088b4148881ff08b5fe1261,
         type: 3}
+    - target: {fileID: 8690789666678175709, guid: 27548cbf466924cd699685496025f534,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8719875636317608491, guid: 27548cbf466924cd699685496025f534,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5019,19 +4941,9 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 6637013144633364566, guid: 27548cbf466924cd699685496025f534, type: 3}
     - {fileID: 5859498862604059448, guid: 27548cbf466924cd699685496025f534, type: 3}
+    - {fileID: 114275564199513312, guid: 27548cbf466924cd699685496025f534, type: 3}
+    - {fileID: 114263248370519032, guid: 27548cbf466924cd699685496025f534, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 27548cbf466924cd699685496025f534, type: 3}
---- !u!1 &8878912891930077695 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8722076229893094739, guid: 27548cbf466924cd699685496025f534,
-    type: 3}
-  m_PrefabInstance: {fileID: 158529944589636780}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &8876778131031204105 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8719972220993353125, guid: 27548cbf466924cd699685496025f534,
-    type: 3}
-  m_PrefabInstance: {fileID: 158529944589636780}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7576133710724167708
 PrefabInstance:
   m_ObjectHideFlags: 0
