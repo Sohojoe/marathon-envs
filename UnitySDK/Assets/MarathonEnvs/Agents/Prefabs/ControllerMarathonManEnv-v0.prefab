@@ -4709,9 +4709,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddcd176a32835474d9ddbce9eb0273af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxForwardVelocity: 8
+  MaxForwardVelocity: 1
   MinTurnVelocity: 400
   MaxTurnVelocity: 1200
+  JumpSpeed: 5
 --- !u!143 &3134828878707654441
 CharacterController:
   m_ObjectHideFlags: 0
@@ -4723,13 +4724,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1.3
+  m_Height: 1.5
   m_Radius: 0.2
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.9, z: 0}
+  m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!1001 &158529944589636780
 PrefabInstance:
   m_ObjectHideFlags: 0

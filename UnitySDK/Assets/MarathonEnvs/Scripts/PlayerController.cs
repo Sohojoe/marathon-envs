@@ -5,14 +5,16 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float MaxForwardVelocity = 8f;        // Max run speed.
+    public float MaxForwardVelocity = 1f;        // Max run speed.
     public float MinTurnVelocity = 400f;         // Turn velocity when moving at maximum speed.
     public float MaxTurnVelocity = 1200f;        // Turn velocity when stationary.
+    public float JumpSpeed = 10f;                // 
     Animator _anim;
     CharacterController _characterController;
-    bool _isGrounded = true;
+    bool _isGrounded;
     bool _previouslyGrounded;
     const float kAirborneTurnSpeedProportion = 5.4f;
+    const float kGroundTurnSpeedProportion = 200f;
     const float kGroundedRayDistance = 1f;
     const float kJumpAbortSpeed = 10f;
     const float kMinEnemyDotCoeff = 0.2f;
@@ -23,13 +25,19 @@ public class PlayerController : MonoBehaviour
 
     Material materialUnderFoot;
     float _forwardVelocity;
+    Vector3 _lastGroundForwardVelocity;
     float _desiredForwardSpeed;
-    float _verticalVelocity;
+    float _verticalVelocity = -1f;
     
     Quaternion _targetDirection;    // direction we want to move towards
     float _angleDiff;               // delta between targetRotation and current roataion
     Quaternion _targetRotation;
     Vector2 _moveInput;
+    float _rotateInput;
+    bool _jumpInput;
+    bool _readyToJump;
+    bool _inCombo;
+
 
     protected bool IsMoveInput
     {
@@ -48,34 +56,29 @@ public class PlayerController : MonoBehaviour
     {
         _moveInput = new Vector2(
             Input.GetAxis("Horizontal"),
+            // 0f,
             Input.GetAxis("Vertical")
         );
+        // _rotateInput = Input.GetAxis("Horizontal");
+        _rotateInput = 0f;
         _anim.SetFloat("horizontal", _moveInput.x);
-        _anim.SetFloat("vertical", _moveInput.y);
+        // _anim.SetFloat("vertical", _moveInput.y);
+        _anim.SetFloat("vertical", _moveInput.normalized.magnitude);
+        // _jumpInput = Input.GetButtonDown("Fire1");
+        _jumpInput = Input.GetKeyDown(KeyCode.Space);
     }
 
     void FixedUpdate()
     {
-        // CacheAnimatorState();
+        // RotateTarget(Time.fixedDeltaTime);
+        SetTargetFromMoveInput();
+        CalculateForwardMovement(Time.fixedDeltaTime);
+        CalculateVerticalMovement(Time.fixedDeltaTime);
 
-        // UpdateInputBlocking();
+        if (this.IsMoveInput)
+            SetTargetRotation();
 
-        // EquipMeleeWeapon(IsWeaponEquiped());
-
-        // m_Animator.SetFloat(m_HashStateTime, Mathf.Repeat(m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime, 1f));
-        // m_Animator.ResetTrigger(m_HashMeleeAttack);
-
-        // if (m_Input.Attack && canAttack)
-            // m_Animator.SetTrigger(m_HashMeleeAttack);
-
-        CalculateForwardMovement();
-        // CalculateVerticalMovement();
-
-        SetTargetRotation();
-
-        // if (IsOrientationUpdated() && IsMoveInput)
-        //     UpdateOrientation();
-        UpdateOrientation();
+        UpdateOrientation(Time.fixedDeltaTime);
 
         // PlayAudio();
 
@@ -91,8 +94,7 @@ public class PlayerController : MonoBehaviour
         if (_anim == null)
             return;
         Vector3 movement;
-        // if (_isGrounded)
-        if (true)
+        if (_isGrounded)
         {
             // find ground
             RaycastHit hit;
@@ -113,11 +115,13 @@ public class PlayerController : MonoBehaviour
                 movement = _anim.deltaPosition;
                 materialUnderFoot = null;
             }
+            _lastGroundForwardVelocity = movement / Time.deltaTime;
         }
         else
         {
             // in air, use the forward velocity
-            movement = _forwardVelocity * transform.forward * Time.deltaTime;
+            // movement = _forwardVelocity * transform.forward * Time.deltaTime;
+            movement = _lastGroundForwardVelocity * Time.deltaTime;
         }
         // Rotate the transform of the character controller by the animation's root rotation.
         _characterController.transform.rotation *= _anim.deltaRotation;
@@ -134,10 +138,28 @@ public class PlayerController : MonoBehaviour
         // If Ellen is not on the ground then send the vertical speed to the animator.
         // This is so the vertical speed is kept when landing so the correct landing animation is played.
         if (!_isGrounded)
-            _anim.SetFloat("VerticalVelocity", _verticalVelocity);
+            _anim.SetFloat("verticalVelocity", _verticalVelocity);
 
         // Send whether or not Ellen is on the ground to the animator.
-        _anim.SetBool("OnGround", _isGrounded);
+        _anim.SetBool("onGround", _isGrounded);
+    }
+
+    void RotateTarget(float deltaTime)
+    {
+        if (!Mathf.Approximately(_rotateInput*_rotateInput, 0f))
+        {
+            float roation = _targetDirection.eulerAngles.y;
+            float delta = _rotateInput * kGroundTurnSpeedProportion * deltaTime;
+            roation += delta;
+            print($"{_targetDirection.eulerAngles.y} delta:{delta}, {roation}");
+            _targetDirection = Quaternion.Euler(0f, roation, 0f);
+        }
+    }
+    void SetTargetFromMoveInput()
+    {
+        Vector2 moveInput = _moveInput;
+        Vector3 localMovementDirection = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
+        _targetDirection = Quaternion.Euler(localMovementDirection);
     }
 
     void SetTargetRotation()
@@ -146,26 +168,29 @@ public class PlayerController : MonoBehaviour
         Vector2 moveInput = _moveInput;
         Vector3 localMovementDirection = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
         
-        // Vector3 forward = Quaternion.Euler(0f, cameraSettings.Current.m_XAxis.Value, 0f) * Vector3.forward;
         Vector3 forward = _targetDirection * Vector3.forward;
         forward.y = 0f;
         forward.Normalize();
 
         Quaternion targetRotation;
         
-        // If the local movement direction is the opposite of forward then the target rotation should be towards the camera.
-        if (Mathf.Approximately(Vector3.Dot(localMovementDirection, Vector3.forward), -1.0f))
-        {
-            targetRotation = Quaternion.LookRotation(-forward);
-        }
-        else
-        {
-            // Otherwise the rotation should be the offset of the input from the camera's forward.
-            Quaternion cameraToInputOffset = Quaternion.FromToRotation(Vector3.forward, localMovementDirection);
-            targetRotation = Quaternion.LookRotation(cameraToInputOffset * forward);
-        }
+        // // If the local movement direction is the opposite of forward then the target rotation should be towards the camera.
+        // if (Mathf.Approximately(Vector3.Dot(localMovementDirection, Vector3.forward), -1.0f))
+        // {
+        //     targetRotation = Quaternion.LookRotation(-forward);
+        // }
+        // else
+        // {
+        //     // Otherwise the rotation should be the offset of the input from the camera's forward.
+        //     Quaternion cameraToInputOffset = Quaternion.FromToRotation(Vector3.forward, localMovementDirection);
+        //     targetRotation = Quaternion.LookRotation(cameraToInputOffset * forward);
+        // }
+        // targetRotation = Quaternion.LookRotation(-forward);
+        Quaternion cameraToInputOffset = Quaternion.FromToRotation(Vector3.forward, localMovementDirection);
+        targetRotation = Quaternion.LookRotation(cameraToInputOffset * forward);
 
-        // The desired forward direction of Ellen.
+
+        // The desired forward direction.
         Vector3 resultingForward = targetRotation * Vector3.forward;
 
         // Find the difference between the current rotation of the player and the desired rotation of the player in radians.
@@ -175,19 +200,19 @@ public class PlayerController : MonoBehaviour
         _angleDiff = Mathf.DeltaAngle(angleCurrent, targetAngle);
         _targetRotation = targetRotation;
     }    
-    void UpdateOrientation()
+    void UpdateOrientation(float deltaTime)
     {
-        _anim.SetFloat("AngleDeltaRad", _angleDiff * Mathf.Deg2Rad);
+        _anim.SetFloat("angleDeltaRad", _angleDiff * Mathf.Deg2Rad);
 
         Vector3 localInput = new Vector3(_moveInput.x, 0f, _moveInput.y);
         float groundedTurnSpeed = Mathf.Lerp(MaxTurnVelocity, MinTurnVelocity, _forwardVelocity / _desiredForwardSpeed);
         float actualTurnSpeed = _isGrounded ? groundedTurnSpeed : Vector3.Angle(transform.forward, localInput) * kInverseOneEighty * kAirborneTurnSpeedProportion * groundedTurnSpeed;
-        _targetRotation = Quaternion.RotateTowards(transform.rotation, _targetRotation, actualTurnSpeed * Time.deltaTime);
+        _targetRotation = Quaternion.RotateTowards(transform.rotation, _targetRotation, actualTurnSpeed * deltaTime);
 
         transform.rotation = _targetRotation;
     }
 
-    void CalculateForwardMovement()
+    void CalculateForwardMovement(float deltaTime)
     {
         // Cache the move input and cap it's magnitude at 1.
         Vector2 moveInput = _moveInput;
@@ -201,11 +226,49 @@ public class PlayerController : MonoBehaviour
         float acceleration = IsMoveInput ? kGroundAcceleration : kGroundDeceleration;
 
         // Adjust the forward speed towards the desired speed.
-        _forwardVelocity = Mathf.MoveTowards(_forwardVelocity, _desiredForwardSpeed, acceleration * Time.deltaTime);
+        _forwardVelocity = Mathf.MoveTowards(_forwardVelocity, _desiredForwardSpeed, acceleration * deltaTime);
 
         // Set the animator parameter to control what animation is being played.
-        _anim.SetFloat("ForwardVelocity", _forwardVelocity);
+        _anim.SetFloat("forwardVelocity", _forwardVelocity);
     }
+    void CalculateVerticalMovement(float deltaTime)
+    {
+        // If jump is not currently held and is on the ground then ready to jump.
+        if (!_jumpInput && _isGrounded)
+            _readyToJump = true;
 
+        if (_isGrounded)
+        {
+            // When grounded we apply a slight negative vertical speed to make Ellen "stick" to the ground.
+            _verticalVelocity = Physics.gravity.y * kStickingGravityProportion;
 
+            // If jump is held, Ellen is ready to jump and not currently in the middle of a melee combo...
+            if (_jumpInput && _readyToJump && !_inCombo)
+            {
+                // ... then override the previously set vertical speed and make sure she cannot jump again.
+                _verticalVelocity = JumpSpeed;
+                _isGrounded = false;
+                _readyToJump = false;
+            }
+        }
+        else
+        {
+            // If Ellen is airborne, the jump button is not held and Ellen is currently moving upwards...
+            if (!_jumpInput && _verticalVelocity > 0.0f)
+            {
+                // ... decrease Ellen's vertical speed.
+                // This is what causes holding jump to jump higher that tapping jump.
+                _verticalVelocity -= kJumpAbortSpeed * deltaTime;
+            }
+
+            // If a jump is approximately peaking, make it absolute.
+            if (Mathf.Approximately(_verticalVelocity, 0f))
+            {
+                _verticalVelocity = 0f;
+            }
+            
+            // If Ellen is airborne, apply gravity.
+            _verticalVelocity += Physics.gravity.y * deltaTime;
+        }
+    }
 }
