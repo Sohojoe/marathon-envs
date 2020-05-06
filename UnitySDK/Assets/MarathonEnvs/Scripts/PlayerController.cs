@@ -51,7 +51,6 @@ public class PlayerController : MonoBehaviour
         _anim = GetComponent<Animator>();
         _characterController = GetComponent<CharacterController>();
         _targetDirection = Quaternion.Euler(0, 90, 0);
-        _anim.SetBool("falling", true);
     }
 
     void Update()
@@ -113,49 +112,14 @@ public class PlayerController : MonoBehaviour
                 // store material under foot
                 Renderer groundRenderer = hit.collider.GetComponentInChildren<Renderer>();
                 materialUnderFoot = groundRenderer ? groundRenderer.sharedMaterial : null;
-                _anim.SetBool("jumpLaunch", false);
-                _anim.SetBool("falling", false);
             }
             else
             {
                 // fail safe incase ray does not collide
                 movement = _anim.deltaPosition;
                 materialUnderFoot = null;
-                _anim.SetBool("jumpLaunch", false);
-                _anim.SetBool("falling", true);
             }
             _lastGroundForwardVelocity = movement / Time.deltaTime;
-        }
-        else if (_anim.GetBool("jumpLaunch"))
-        {
-            // movement = _forwardVelocity * transform.forward * Time.deltaTime;
-            movement = _lastGroundForwardVelocity * Time.deltaTime;
-            AnimatorStateInfo stateInfo = _anim.GetCurrentAnimatorStateInfo(0);
-
-            // if (stateInfo.normalizedTime < 1f)
-            if (_verticalVelocity > 0)
-            {
-            //     // falling
-            //     _anim.SetBool("jumpLaunch", false);
-            //     _anim.SetBool("falling", true);
-            // }
-            // // in air
-            // else if (_anim.deltaPosition.y < 0f)
-            // {
-            //     // launching
-
-                // verticalVelocity = _anim.deltaPosition.y / Time.deltaTime;
-                // var pos = Mathf.Max(_anim.deltaPosition.y, 1f * Time.deltaTime);
-                // movement += pos * Vector3.up;
-                // verticalVelocity = 0f;
-                // verticalVelocity = JumpSpeed;
-            }
-            else
-            {
-                // falling
-                _anim.SetBool("jumpLaunch", false);
-                _anim.SetBool("falling", true);
-            }
         }
         else
         {
@@ -189,7 +153,7 @@ public class PlayerController : MonoBehaviour
             float roation = _targetDirection.eulerAngles.y;
             float delta = _rotateInput * kGroundTurnSpeedProportion * deltaTime;
             roation += delta;
-            print($"{_targetDirection.eulerAngles.y} delta:{delta}, {roation}");
+            // print($"{_targetDirection.eulerAngles.y} delta:{delta}, {roation}");
             _targetDirection = Quaternion.Euler(0f, roation, 0f);
         }
     }
@@ -287,11 +251,9 @@ public class PlayerController : MonoBehaviour
                 _verticalVelocity = JumpSpeed;
                 _isGrounded = false;
                 _readyToJump = false;
-                _anim.SetBool("jumpLaunch", true);
                 _anim.SetBool("isGrounded", false);
             }
         }
-        // else if (_anim.GetBool("falling") || _anim.GetBool("jumpLaunch"))
         else 
         {
             // If Ellen is airborne, the jump button is not held and Ellen is currently moving upwards...
