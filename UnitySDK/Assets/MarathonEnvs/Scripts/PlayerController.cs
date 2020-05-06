@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
         // _rotateInput = Input.GetAxis("Horizontal");
         _rotateInput = 0f;
         // _jumpInput = Input.GetButtonDown("Fire1");
-        _jumpInput = Input.GetKeyDown(KeyCode.Space);
+        _jumpInput = Input.GetKey(KeyCode.Space);
         if (debugForceJump)
         {
             _jumpInput = true;
