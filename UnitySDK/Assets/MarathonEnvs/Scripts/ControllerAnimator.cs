@@ -28,7 +28,7 @@ public class ControllerAnimator : MonoBehaviour, IOnSensorCollision
     {
         SetupSensors();
         anim = GetComponent<Animator>();
-        anim.Play("Record",0, NormalizedTime);
+        // anim.Play("Record",0, NormalizedTime);
         anim.Update(0f);
 
 		var masters = FindObjectsOfType<StyleTransfer002Master>().ToList();

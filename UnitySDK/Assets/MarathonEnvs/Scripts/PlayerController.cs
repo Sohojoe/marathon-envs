@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public float MinTurnVelocity = 400f;         // Turn velocity when moving at maximum speed.
     public float MaxTurnVelocity = 1200f;        // Turn velocity when stationary.
     public float JumpSpeed = 10f;                // 
+    public bool debugForceJump;
     Animator _anim;
     CharacterController _characterController;
     bool _isGrounded;
@@ -50,6 +51,7 @@ public class PlayerController : MonoBehaviour
         _anim = GetComponent<Animator>();
         _characterController = GetComponent<CharacterController>();
         _targetDirection = Quaternion.Euler(0, 90, 0);
+        _anim.SetBool("falling", true);
     }
 
     void Update()
@@ -61,11 +63,13 @@ public class PlayerController : MonoBehaviour
         );
         // _rotateInput = Input.GetAxis("Horizontal");
         _rotateInput = 0f;
-        _anim.SetFloat("horizontal", _moveInput.x);
-        // _anim.SetFloat("vertical", _moveInput.y);
-        _anim.SetFloat("vertical", _moveInput.normalized.magnitude);
         // _jumpInput = Input.GetButtonDown("Fire1");
         _jumpInput = Input.GetKeyDown(KeyCode.Space);
+        if (debugForceJump)
+        {
+            _jumpInput = true;
+            debugForceJump = false;
+        }
     }
 
     void FixedUpdate()
@@ -94,6 +98,7 @@ public class PlayerController : MonoBehaviour
         if (_anim == null)
             return;
         Vector3 movement;
+        float verticalVelocity = _verticalVelocity;
         if (_isGrounded)
         {
             // find ground
@@ -108,26 +113,59 @@ public class PlayerController : MonoBehaviour
                 // store material under foot
                 Renderer groundRenderer = hit.collider.GetComponentInChildren<Renderer>();
                 materialUnderFoot = groundRenderer ? groundRenderer.sharedMaterial : null;
+                _anim.SetBool("jumpLaunch", false);
+                _anim.SetBool("falling", false);
             }
             else
             {
                 // fail safe incase ray does not collide
                 movement = _anim.deltaPosition;
                 materialUnderFoot = null;
+                _anim.SetBool("jumpLaunch", false);
+                _anim.SetBool("falling", true);
             }
             _lastGroundForwardVelocity = movement / Time.deltaTime;
         }
+        else if (_anim.GetBool("jumpLaunch"))
+        {
+            // movement = _forwardVelocity * transform.forward * Time.deltaTime;
+            movement = _lastGroundForwardVelocity * Time.deltaTime;
+            AnimatorStateInfo stateInfo = _anim.GetCurrentAnimatorStateInfo(0);
+
+            // if (stateInfo.normalizedTime < 1f)
+            if (_verticalVelocity > 0)
+            {
+            //     // falling
+            //     _anim.SetBool("jumpLaunch", false);
+            //     _anim.SetBool("falling", true);
+            // }
+            // // in air
+            // else if (_anim.deltaPosition.y < 0f)
+            // {
+            //     // launching
+
+                // verticalVelocity = _anim.deltaPosition.y / Time.deltaTime;
+                // var pos = Mathf.Max(_anim.deltaPosition.y, 1f * Time.deltaTime);
+                // movement += pos * Vector3.up;
+                // verticalVelocity = 0f;
+                // verticalVelocity = JumpSpeed;
+            }
+            else
+            {
+                // falling
+                _anim.SetBool("jumpLaunch", false);
+                _anim.SetBool("falling", true);
+            }
+        }
         else
         {
-            // in air, use the forward velocity
-            // movement = _forwardVelocity * transform.forward * Time.deltaTime;
             movement = _lastGroundForwardVelocity * Time.deltaTime;
         }
         // Rotate the transform of the character controller by the animation's root rotation.
         _characterController.transform.rotation *= _anim.deltaRotation;
 
         // Add to the movement with the calculated vertical speed.
-        movement += _verticalVelocity * Vector3.up * Time.deltaTime;
+        movement += verticalVelocity * Vector3.up * Time.deltaTime;
 
         // Move the character controller.
         _characterController.Move(movement);
@@ -138,7 +176,7 @@ public class PlayerController : MonoBehaviour
         // If Ellen is not on the ground then send the vertical speed to the animator.
         // This is so the vertical speed is kept when landing so the correct landing animation is played.
         if (!_isGrounded)
-            _anim.SetFloat("verticalVelocity", _verticalVelocity);
+            _anim.SetFloat("verticalVelocity", verticalVelocity);
 
         // Send whether or not Ellen is on the ground to the animator.
         _anim.SetBool("onGround", _isGrounded);
@@ -249,9 +287,12 @@ public class PlayerController : MonoBehaviour
                 _verticalVelocity = JumpSpeed;
                 _isGrounded = false;
                 _readyToJump = false;
+                _anim.SetBool("jumpLaunch", true);
+                _anim.SetBool("isGrounded", false);
             }
         }
-        else
+        // else if (_anim.GetBool("falling") || _anim.GetBool("jumpLaunch"))
+        else 
         {
             // If Ellen is airborne, the jump button is not held and Ellen is currently moving upwards...
             if (!_jumpInput && _verticalVelocity > 0.0f)
