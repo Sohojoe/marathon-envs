@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     Vector2 _moveInput;
     float _rotateInput;
     bool _jumpInput;
+    bool _backflipInput;
     bool _readyToJump;
     bool _inCombo;
 
@@ -64,6 +65,7 @@ public class PlayerController : MonoBehaviour
         _rotateInput = 0f;
         // _jumpInput = Input.GetButtonDown("Fire1");
         _jumpInput = Input.GetKey(KeyCode.Space);
+        _backflipInput = Input.GetKey(KeyCode.B);
         if (debugForceJump)
         {
             _jumpInput = true;
@@ -238,6 +240,8 @@ public class PlayerController : MonoBehaviour
         // If jump is not currently held and is on the ground then ready to jump.
         if (!_jumpInput && _isGrounded)
             _readyToJump = true;
+
+        _anim.SetBool("backflip", _backflipInput);
 
         if (_isGrounded)
         {
