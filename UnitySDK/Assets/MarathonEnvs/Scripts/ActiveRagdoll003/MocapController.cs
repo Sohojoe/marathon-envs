@@ -6,7 +6,7 @@ using MLAgents;
 using UnityEngine;
 
 
-public class ControllerAnimator : MonoBehaviour, IOnSensorCollision 
+public class MocapController : MonoBehaviour, IOnSensorCollision 
 {
 	public List<float> SensorIsInTouch;
 	List<GameObject> _sensors;

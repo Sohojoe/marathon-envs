@@ -22,46 +22,46 @@ public class BodyPartDistance
 
 public class RagDollController : MonoBehaviour 
 {
-    ControllerAnimator _controllerAnimator;
-    List<Rigidbody> _animatorBodyParts;
+    MocapController _mocapController;
+    List<Rigidbody> _mocapBodyParts;
     List<Rigidbody> _bodyParts;
     SpawnableEnv _spawnableEnv;
     public List<BodyPartDistance> BodyPartDistances;
 
     // center of mass
-    Vector3 _animatorCenterOfMass;
+    Vector3 _mocapCenterOfMass;
     Vector3 _ragdollCenterOfMass;
     bool _comLastIsSet;
-    public Vector3 AnimatorCenterOfMassVelocity;
+    public Vector3 MocapCenterOfMassVelocity;
     public Vector3 RagdollCenterOfMassVelocity;
 
 
 
-    public bool debugCopyAnimator;
+    public bool debugCopyMocap;
 
 	void Awake()
     {
         _spawnableEnv = GetComponentInParent<SpawnableEnv>();
-        _controllerAnimator = _spawnableEnv.GetComponentInChildren<ControllerAnimator>();
-        _animatorBodyParts = _controllerAnimator.GetComponentsInChildren<Rigidbody>().ToList();
+        _mocapController = _spawnableEnv.GetComponentInChildren<MocapController>();
+        _mocapBodyParts = _mocapController.GetComponentsInChildren<Rigidbody>().ToList();
         _bodyParts = GetComponentsInChildren<Rigidbody>().ToList();
         BodyPartDistances = _bodyParts.Select(x=>new BodyPartDistance{Name = x.name}).ToList();
     }
     void FixedUpdate()
     {
-        if (debugCopyAnimator)
+        if (debugCopyMocap)
         {
-            debugCopyAnimator = false;
-            CopyAnimator();
+            debugCopyMocap = false;
+            CopyMocap();
         }
         UpdateDistances();
         UpdateCenterOfMasses();
     }
-    void CopyAnimator()
+    void CopyMocap()
     {
         foreach (var bodyPart in _bodyParts)
         {
-            Rigidbody target = _animatorBodyParts.First(x=>x.name == bodyPart.name);
+            Rigidbody target = _mocapBodyParts.First(x=>x.name == bodyPart.name);
             bodyPart.position = target.position;
             bodyPart.rotation = target.rotation;
             bodyPart.velocity = target.velocity;
@@ -75,7 +75,7 @@ public class RagDollController : MonoBehaviour
         foreach (var distance in BodyPartDistances)
         {
             Rigidbody source = _bodyParts.First(x=>x.name == distance.Name);
-            Rigidbody target = _animatorBodyParts.First(x=>x.name == distance.Name);
+            Rigidbody target = _mocapBodyParts.First(x=>x.name == distance.Name);
             if (!distance.LastIsSet)
             {
                 distance.LastPositionSource = source.position;
@@ -101,18 +101,18 @@ public class RagDollController : MonoBehaviour
     }
     void UpdateCenterOfMasses()
     {
-        Vector3 newAnimatorCOM = GetCenterOfMass(_animatorBodyParts);
+        Vector3 newMocapCOM = GetCenterOfMass(_mocapBodyParts);
         Vector3 newRagdollCOM = GetCenterOfMass(_bodyParts);
         if (!_comLastIsSet)
         {
-            _animatorCenterOfMass = newAnimatorCOM;
+            _mocapCenterOfMass = newMocapCOM;
             _ragdollCenterOfMass = newRagdollCOM;
         }
-        AnimatorCenterOfMassVelocity = newAnimatorCOM-_animatorCenterOfMass;
+        MocapCenterOfMassVelocity = newMocapCOM-_mocapCenterOfMass;
         RagdollCenterOfMassVelocity = newRagdollCOM-_ragdollCenterOfMass;
-        AnimatorCenterOfMassVelocity *= Time.fixedDeltaTime;
+        MocapCenterOfMassVelocity *= Time.fixedDeltaTime;
         RagdollCenterOfMassVelocity *= Time.fixedDeltaTime;
-        _animatorCenterOfMass = newAnimatorCOM;
+        _mocapCenterOfMass = newMocapCOM;
         _ragdollCenterOfMass = newRagdollCOM;
         _comLastIsSet = true;
     }
