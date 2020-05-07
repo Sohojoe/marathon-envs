@@ -5133,6 +5133,11 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4220755503070646539, guid: c7f549aabbce548e7aae2b2101ae3062,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -100
+      objectReference: {fileID: 0}
     - target: {fileID: 4475872956784911638, guid: c7f549aabbce548e7aae2b2101ae3062,
         type: 3}
       propertyPath: m_RootOrder
