@@ -116,6 +116,7 @@ public class BodyStats : MonoBehaviour
             bodyPartStat.Velocity = localPosition - bodyPartStat.LastPosition;
             bodyPartStat.Velocity /= timeDelta;
             bodyPartStat.AngualrVelocity = GetAngularVelocity(localRotation, bodyPartStat.LastRotation, timeDelta);
+            bodyPartStat.AngualrVelocity += AngualrVelocity;
             bodyPartStat.LastPosition = localPosition;
             bodyPartStat.LastRotation = localRotation;
             bodyPartStat.LastIsSet = true;
