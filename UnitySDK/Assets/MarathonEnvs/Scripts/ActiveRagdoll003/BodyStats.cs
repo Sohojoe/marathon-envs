@@ -8,7 +8,7 @@ public class BodyStats : MonoBehaviour
 {
 
     public MonoBehaviour ObjectToTrack; // Normalized vector in direction of travel (assume right angle to floor)
-
+    public List<string> BodyPartsToTrack = new List<string>();
 
     [Header("Anchor stats")]
     public Vector3 HorizontalDirection; // Normalized vector in direction of travel (assume right angle to floor)
@@ -47,16 +47,14 @@ public class BodyStats : MonoBehaviour
         _spawnableEnv = GetComponentInParent<SpawnableEnv>();
         _rigidbodyParts = ObjectToTrack.GetComponentsInChildren<Rigidbody>().ToList();
         _bodyParts = new List<Transform>();
-        // foreach (var rb in _rigidbodyParts)
-        // {
-        //     var children = rb.GetComponentsInChildren<Transform>();
-        //     _bodyParts.AddRange(children);
-        // }
-        // _bodyParts = _bodyParts.Distinct().ToList();
         _bodyParts = _rigidbodyParts
             .SelectMany(x=>x.GetComponentsInChildren<Transform>())
             .Distinct()
             .ToList();
+        if (BodyPartsToTrack?.Count > 0)
+            _bodyParts = _bodyParts
+                .Where(x=>BodyPartsToTrack.Contains(x.name))
+                .ToList();
         BodyPartStats = _bodyParts
             .Select(x=> new BodyPartStats{Name = x.name})
             .ToList();

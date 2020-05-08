@@ -675,17 +675,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ObjectToTrack: {fileID: 4179130893711495411}
+  BodyPartsToTrack:
+  - butt
+  - head
+  - left_hand
+  - right_hand
+  - left_left_foot
+  - right_right_foot
   HorizontalDirection: {x: 0, y: 0, z: 0}
-  CenterOfMassInWorldSpace: {x: 0, y: 0, z: 0}
   AngualrVelocity: {x: 0, y: 0, z: 0}
   CenterOfMassVelocity: {x: 0, y: 0, z: 0}
+  CenterOfMassVelocityMagnitude: 0
+  CenterOfMassHorizontalVelocityMagnitude: 0
   BodyPartStats: []
   ButtVelocity: {x: 0, y: 0, z: 0}
   ButtAngualrVelocity: {x: 0, y: 0, z: 0}
-  TrueButtVelocity: {x: 0, y: 0, z: 0}
-  TrueButtAngualrVelocity: {x: 0, y: 0, z: 0}
   ButtMagnatude: 0
-  TrueButtMagnatude: 0
   LastCenterOfMassInWorldSpace: {x: 0, y: 0, z: 0}
   LastRotation: {x: 0, y: 0, z: 0, w: 0}
   LastIsSet: 0
@@ -3823,17 +3828,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ObjectToTrack: {fileID: 8838548477483672433}
+  BodyPartsToTrack:
+  - butt
+  - head
+  - left_hand
+  - right_hand
+  - left_left_foot
+  - right_right_foot
   HorizontalDirection: {x: 0, y: 0, z: 0}
-  CenterOfMassInWorldSpace: {x: 0, y: 0, z: 0}
   AngualrVelocity: {x: 0, y: 0, z: 0}
   CenterOfMassVelocity: {x: 0, y: 0, z: 0}
+  CenterOfMassVelocityMagnitude: 0
+  CenterOfMassHorizontalVelocityMagnitude: 0
   BodyPartStats: []
   ButtVelocity: {x: 0, y: 0, z: 0}
   ButtAngualrVelocity: {x: 0, y: 0, z: 0}
-  TrueButtVelocity: {x: 0, y: 0, z: 0}
-  TrueButtAngualrVelocity: {x: 0, y: 0, z: 0}
   ButtMagnatude: 0
-  TrueButtMagnatude: 0
   LastCenterOfMassInWorldSpace: {x: 0, y: 0, z: 0}
   LastRotation: {x: 0, y: 0, z: 0, w: 0}
   LastIsSet: 0
