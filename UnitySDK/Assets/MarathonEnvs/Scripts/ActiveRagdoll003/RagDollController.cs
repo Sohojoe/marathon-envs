@@ -26,6 +26,8 @@ public class RagDollController : MonoBehaviour
     List<Rigidbody> _mocapBodyParts;
     List<Rigidbody> _bodyParts;
     SpawnableEnv _spawnableEnv;
+    RagDollObservations _ragDollObservations;
+    RagDollRewards _ragDollRewards;
     public List<BodyPartDistance> BodyPartDistances;
 
     // center of mass
@@ -36,9 +38,6 @@ public class RagDollController : MonoBehaviour
     public Vector3 RagdollCenterOfMassVelocity;
 
 
-
-    public bool debugCopyMocap;
-
 	void Awake()
     {
         _spawnableEnv = GetComponentInParent<SpawnableEnv>();
@@ -46,30 +45,18 @@ public class RagDollController : MonoBehaviour
         _mocapBodyParts = _mocapController.GetComponentsInChildren<Rigidbody>().ToList();
         _bodyParts = GetComponentsInChildren<Rigidbody>().ToList();
         BodyPartDistances = _bodyParts.Select(x=>new BodyPartDistance{Name = x.name}).ToList();
+        _ragDollObservations = GetComponent<RagDollObservations>();
+        _ragDollRewards = GetComponent<RagDollRewards>();
+
     }
     void FixedUpdate()
     {
-        if (debugCopyMocap)
-        {
-            debugCopyMocap = false;
-            CopyMocap();
-        }
         UpdateDistances();
         UpdateCenterOfMasses();
+        _ragDollObservations.OnStep();
+        _ragDollRewards.OnStep();
     }
-    void CopyMocap()
-    {
-        foreach (var bodyPart in _bodyParts)
-        {
-            Rigidbody target = _mocapBodyParts.First(x=>x.name == bodyPart.name);
-            bodyPart.position = target.position;
-            bodyPart.rotation = target.rotation;
-            bodyPart.velocity = target.velocity;
-            bodyPart.angularVelocity = target.angularVelocity;
-        }
-        BodyPartDistances = _bodyParts.Select(x=>new BodyPartDistance{Name = x.name}).ToList();
-        _comLastIsSet = false;
-    }
+
     void UpdateDistances()
     {
         foreach (var distance in BodyPartDistances)

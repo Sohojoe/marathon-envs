@@ -70,7 +70,7 @@ public class RagDollObservations : MonoBehaviour
         _trackBodyStatesInWorldSpace = mocapController.GetComponent<TrackBodyStatesInWorldSpace>();
     }
 
-    void FixedUpdate()
+    public void OnStep()
     {
         float timeDelta = Time.fixedDeltaTime;
         _mocapBodyStats.SetStatusForStep(timeDelta);
