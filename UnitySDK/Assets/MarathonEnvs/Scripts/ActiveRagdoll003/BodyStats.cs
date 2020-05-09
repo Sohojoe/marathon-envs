@@ -8,7 +8,7 @@ public class BodyStats : MonoBehaviour
 {
 
     public MonoBehaviour ObjectToTrack; // Normalized vector in direction of travel (assume right angle to floor)
-    public List<string> BodyPartsToTrack = new List<string>();
+    List<string> _bodyPartsToTrack;
 
     [Header("Anchor stats")]
     public Vector3 HorizontalDirection; // Normalized vector in direction of travel (assume right angle to floor)
@@ -39,31 +39,42 @@ public class BodyStats : MonoBehaviour
 
     SpawnableEnv _spawnableEnv;
     List<Transform> _bodyParts;
-    List<Rigidbody> _rigidbodyParts;
+    internal List<Rigidbody> _rigidbodyParts;
 
     // Start is called before the first frame update
     void Awake()
     {
+
+    }
+    public void OnAwake(List<string> bodyPartsToTrack, Transform defaultTransform)
+    {
+        _bodyPartsToTrack = bodyPartsToTrack;
         _spawnableEnv = GetComponentInParent<SpawnableEnv>();
         _rigidbodyParts = ObjectToTrack.GetComponentsInChildren<Rigidbody>().ToList();
-        _bodyParts = new List<Transform>();
         _bodyParts = _rigidbodyParts
             .SelectMany(x=>x.GetComponentsInChildren<Transform>())
             .Distinct()
             .ToList();
-        if (BodyPartsToTrack?.Count > 0)
-            _bodyParts = _bodyParts
-                .Where(x=>BodyPartsToTrack.Contains(x.name))
+        if (_bodyPartsToTrack?.Count > 0)
+            _bodyParts = _bodyPartsToTrack
+                .Where(x=>_bodyPartsToTrack.Contains(x))
+                .Select(x=>_bodyParts.First(y=>y.name == x))
                 .ToList();
         BodyPartStats = _bodyParts
             .Select(x=> new BodyPartStats{Name = x.name})
             .ToList();
         
-        transform.rotation = Quaternion.Euler(Vector3.forward);
+        transform.position = defaultTransform.position;
+        transform.rotation = defaultTransform.rotation;
     }
-    void FixedUpdate()
+
+    public void OnReset()
     {
-        SetStatusForStep(Time.fixedDeltaTime);
+        foreach (var bodyPart in BodyPartStats)
+        {
+            bodyPart.LastIsSet = false;
+        }
+        LastIsSet = false;
     }
 
     public void SetStatusForStep(float timeDelta)
@@ -144,7 +155,7 @@ public class BodyStats : MonoBehaviour
 		centerOfMass -= _spawnableEnv.transform.position;
 		return centerOfMass;
 	}
-    Vector3 GetAngularVelocity(Quaternion rotation, Quaternion lastRotation, float timeDelta)
+    public static Vector3 GetAngularVelocity(Quaternion rotation, Quaternion lastRotation, float timeDelta)
     {
         var q = lastRotation * Quaternion.Inverse(rotation);
         float gain;
