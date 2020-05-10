@@ -14,7 +14,12 @@ public class RagDollRewards : MonoBehaviour
     public float SumOfDistances;
     public float PositionReward;
 
-    // [Header("Velocity Reward")]
+    [Header("Velocity Reward")]
+    public float MocapPointsVelocity;
+    public float RagDollPointsVelocity;    
+    public float PointsVelocityDifference;
+    public float PointsVelocityReward;
+
     // [Header("Local Pose Reward")]
    
     
@@ -96,6 +101,15 @@ public class RagDollRewards : MonoBehaviour
         ComReward = -Mathf.Pow(COMVelocityDifference,2);
         ComReward = Mathf.Exp(ComReward);
 
+        // points velocity
+        MocapPointsVelocity = _mocapBodyStats.PointVelocity.Sum();
+        RagDollPointsVelocity = _ragDollBodyStats.PointVelocity.Sum();
+        var pointsDifference = _mocapBodyStats.PointVelocity
+            .Zip(_ragDollBodyStats.PointVelocity, (a,b )=> a-b);
+        PointsVelocityDifference = pointsDifference.Sum();
+        PointsVelocityReward = Mathf.Pow(PointsVelocityDifference, 2);
+        PointsVelocityReward = (-1f/_mocapBodyStats.PointVelocity.Length) * PointsVelocityReward;
+        PointsVelocityReward = Mathf.Exp(PointsVelocityReward);
         // fall factor
         HeadDistance = (_mocapHead.position - _ragDollHead.position).magnitude;
         FallFactor = Mathf.Pow(HeadDistance,2);
@@ -104,8 +118,15 @@ public class RagDollRewards : MonoBehaviour
         FallFactor = Mathf.Clamp(FallFactor, 0f, 1f);
 
         // reward
-        SumOfSubRewards = PositionReward+ComReward;
+        SumOfSubRewards = PositionReward+ComReward+PointsVelocityReward;
         Reward = FallFactor*SumOfSubRewards;
+    }
+    public void OnReset()
+    {
+        _mocapBodyStats.OnReset();
+        _ragDollBodyStats.OnReset();
+        _ragDollBodyStats.transform.position = _mocapBodyStats.transform.position;
+        _ragDollBodyStats.transform.rotation = _mocapBodyStats.transform.rotation;
     }
 
 

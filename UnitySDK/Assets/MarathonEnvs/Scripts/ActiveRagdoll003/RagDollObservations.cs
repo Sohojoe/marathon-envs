@@ -37,12 +37,10 @@ public class RagDollObservations : MonoBehaviour
 
     [Header("... debug")]
     public Vector2 MocapHorizontalVelocityDifference;
-    public bool debugCopyMocap;
 
 
     InputController _inputController;
     SpawnableEnv _spawnableEnv;
-    TrackBodyStatesInWorldSpace _trackBodyStatesInWorldSpace;
     DReConObservationStats _mocapBodyStats;
     DReConObservationStats _ragDollBodyStats;
 
@@ -66,8 +64,6 @@ public class RagDollObservations : MonoBehaviour
         _ragDollBodyStats.ObjectToTrack = this;
         _ragDollBodyStats.transform.SetParent(_spawnableEnv.transform);
         _ragDollBodyStats.OnAwake(BodyPartsToTrack, transform);
-
-        _trackBodyStatesInWorldSpace = mocapController.GetComponent<TrackBodyStatesInWorldSpace>();
     }
 
     public void OnStep()
@@ -76,15 +72,13 @@ public class RagDollObservations : MonoBehaviour
         _mocapBodyStats.SetStatusForStep(timeDelta);
         _ragDollBodyStats.SetStatusForStep(timeDelta);
         UpdateObservations(timeDelta);
-        if (debugCopyMocap)
-        {
-            debugCopyMocap = false;
-            _trackBodyStatesInWorldSpace.CopyStatesTo(this.gameObject);
-            _mocapBodyStats.OnReset();
-            _ragDollBodyStats.OnReset();
-            _ragDollBodyStats.transform.position = _mocapBodyStats.transform.position;
-            _ragDollBodyStats.transform.rotation = _mocapBodyStats.transform.rotation;
-        }
+    }
+    public void OnReset()
+    {
+        _mocapBodyStats.OnReset();
+        _ragDollBodyStats.OnReset();
+        _ragDollBodyStats.transform.position = _mocapBodyStats.transform.position;
+        _ragDollBodyStats.transform.rotation = _mocapBodyStats.transform.rotation;
     }
 
     public void UpdateObservations(float timeDelta)

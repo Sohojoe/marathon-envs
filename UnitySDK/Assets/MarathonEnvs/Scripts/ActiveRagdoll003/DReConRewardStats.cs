@@ -8,17 +8,15 @@ using UnityEngine.Assertions;
 
 public class DReConRewardStats : MonoBehaviour
 {
-    [System.Serializable]
-    public class Stat
-    {
-        public CapsuleCollider CapsuleCollider;
-        public Vector3 DirectionVector;
-        public float Scale;
-        public float Radius;
-        public float HalfHeight;
-
-    }
-
+    // [System.Serializable]
+    // public class Stat
+    // {
+    //     public CapsuleCollider CapsuleCollider;
+    //     public Vector3 DirectionVector;
+    //     public float Scale;
+    //     public float Radius;
+    //     public float HalfHeight;
+    // }
 
     [Header("Settings")]
 
@@ -67,6 +65,10 @@ public class DReConRewardStats : MonoBehaviour
         
         transform.position = defaultTransform.position;
         transform.rotation = defaultTransform.rotation;
+    }
+    public void OnReset()
+    {
+        LastIsSet = false;
     }
 
     public void SetStatusForStep(float timeDelta)
