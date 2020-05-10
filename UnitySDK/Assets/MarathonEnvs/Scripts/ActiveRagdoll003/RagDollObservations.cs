@@ -43,8 +43,8 @@ public class RagDollObservations : MonoBehaviour
     InputController _inputController;
     SpawnableEnv _spawnableEnv;
     TrackBodyStatesInWorldSpace _trackBodyStatesInWorldSpace;
-    BodyStats _mocapBodyStats;
-    BodyStats _ragDollBodyStats;
+    DReConObservationStats _mocapBodyStats;
+    DReConObservationStats _ragDollBodyStats;
 
 
     // Start is called before the first frame update
@@ -56,13 +56,13 @@ public class RagDollObservations : MonoBehaviour
             .Select(x=> new BodyPartDifferenceStats{Name = x})
             .ToList();
 
-        _mocapBodyStats= new GameObject("MocapCenterOfMass").AddComponent<BodyStats>();
+        _mocapBodyStats= new GameObject("MocapDReConObservationStats").AddComponent<DReConObservationStats>();
         var mocapController = _spawnableEnv.GetComponentInChildren<MocapController>();
         _mocapBodyStats.ObjectToTrack = mocapController;
         _mocapBodyStats.transform.SetParent(_spawnableEnv.transform);
         _mocapBodyStats.OnAwake(BodyPartsToTrack, _mocapBodyStats.ObjectToTrack.transform);
 
-        _ragDollBodyStats= new GameObject("RagDollCenterOfMass").AddComponent<BodyStats>();
+        _ragDollBodyStats= new GameObject("RagDollDReConObservationStats").AddComponent<DReConObservationStats>();
         _ragDollBodyStats.ObjectToTrack = this;
         _ragDollBodyStats.transform.SetParent(_spawnableEnv.transform);
         _ragDollBodyStats.OnAwake(BodyPartsToTrack, transform);
@@ -100,13 +100,13 @@ public class RagDollObservations : MonoBehaviour
         // BodyPartStats = 
         foreach (var differenceStats in BodyPartDifferenceStats)
         {
-            var mocapStats = _mocapBodyStats.BodyPartStats.First(x=>x.Name == differenceStats.Name);
-            var ragDollStats = _ragDollBodyStats.BodyPartStats.First(x=>x.Name == differenceStats.Name);
+            var mocapStats = _mocapBodyStats.Stats.First(x=>x.Name == differenceStats.Name);
+            var ragDollStats = _ragDollBodyStats.Stats.First(x=>x.Name == differenceStats.Name);
 
             differenceStats.Position = mocapStats.Position - ragDollStats.Position;
             differenceStats.Velocity = mocapStats.Velocity - ragDollStats.Velocity;
             differenceStats.AngualrVelocity = mocapStats.AngualrVelocity - ragDollStats.AngualrVelocity;
-            differenceStats.Rotation = BodyStats.GetAngularVelocity(ragDollStats.Rotation, mocapStats.Rotation, timeDelta);
+            differenceStats.Rotation = DReConObservationStats.GetAngularVelocity(ragDollStats.Rotation, mocapStats.Rotation, timeDelta);
         }
         // PreviousActions =         
 

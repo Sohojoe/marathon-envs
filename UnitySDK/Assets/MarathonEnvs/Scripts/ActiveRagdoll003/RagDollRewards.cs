@@ -34,8 +34,8 @@ public class RagDollRewards : MonoBehaviour
     GameObject _mocap;
     GameObject _ragDoll;
 
-    BodyStats _mocapBodyStats;
-    BodyStats _ragDollBodyStats;
+    DReConRewardStats _mocapBodyStats;
+    DReConRewardStats _ragDollBodyStats;
 
     List<Rigidbody> _mocapBodyParts;
     List<Rigidbody> _ragDollBodyParts;
@@ -61,41 +61,31 @@ public class RagDollRewards : MonoBehaviour
         _ragDollHead = _ragDoll
             .GetComponentsInChildren<Transform>()
             .First(x=>x.name == "head");
-    }
+        _mocapBodyStats= new GameObject("MocapDReConRewardStats").AddComponent<DReConRewardStats>();
+        var mocapController = _spawnableEnv.GetComponentInChildren<MocapController>();
+        _mocapBodyStats.ObjectToTrack = mocapController;
+        _mocapBodyStats.transform.SetParent(_spawnableEnv.transform);
+        _mocapBodyStats.OnAwake(_mocapBodyStats.ObjectToTrack.transform);
 
-    void LazyInit()
-    {
-        _hasLazyInit = true;
-        var bodyStats = _spawnableEnv.GetComponentsInChildren<BodyStats>();
-        _mocapBodyStats = bodyStats.First(x=>x.name == "MocapCenterOfMass");
-        _ragDollBodyStats = bodyStats.First(x=>x.name == "RagDollCenterOfMass");
-        Assert.IsNotNull(_mocapBodyStats);
-        Assert.IsNotNull(_ragDollBodyStats);
+        _ragDollBodyStats= new GameObject("RagDollDReConRewardStats").AddComponent<DReConRewardStats>();
+        _ragDollBodyStats.ObjectToTrack = this;
+        _ragDollBodyStats.transform.SetParent(_spawnableEnv.transform);
+        _ragDollBodyStats.OnAwake(transform, _mocapBodyStats);      
+
+        _mocapBodyStats.AssertIsCompatible(_ragDollBodyStats);      
     }
 
     // Update is called once per frame
     public void OnStep()
     {
-        if (!_hasLazyInit)
-            LazyInit();
+        float timeDelta = Time.fixedDeltaTime;
+        _mocapBodyStats.SetStatusForStep(timeDelta);
+        _ragDollBodyStats.SetStatusForStep(timeDelta);
 
         // position reward
-        List<float> distances = new List<float>();
-        foreach (var mocapBodyPart in _mocapBodyParts)
-        {
-            var ragDollBodyPart = _ragDollBodyParts.First(x=>x.name == mocapBodyPart.name);
-            var mocapCapsules = mocapBodyPart.GetComponents<CapsuleCollider>().ToList();
-            var ragDollCapsules = ragDollBodyPart.GetComponents<CapsuleCollider>().ToList();
-            Assert.AreEqual(mocapCapsules.Count, ragDollCapsules.Count);
-            for (int i = 0; i < mocapCapsules.Count; i++)
-            {
-                var capsualSqrDistances = CompareCapusals(mocapCapsules[i], ragDollCapsules[i]);
-                distances.AddRange(capsualSqrDistances);
-            }
-        }
+        List<float> distances = _mocapBodyStats.GetPointDistancesFrom(_ragDollBodyStats);
         SumOfDistances = distances.Sum();
         PositionReward = -10f/distances.Count;
-        // PositionReward = PositionReward * SumOfDistances;
         PositionReward *= Mathf.Pow(SumOfDistances, 2);
         PositionReward = Mathf.Exp(PositionReward);
 
@@ -119,72 +109,73 @@ public class RagDollRewards : MonoBehaviour
     }
 
 
-    List<float> CompareCapusals(CapsuleCollider capsuleA, CapsuleCollider capsuleB)
-    {
-        var pointsA = GetCapusalPoints(capsuleA);
-        var pointsB = GetCapusalPoints(capsuleB);
-        var distances = new List<float>();
-        for (int i = 0; i < pointsB.Count; i++)
-        {
-            var d = (pointsA[i]-pointsB[i]).magnitude;
-            distances.Add(d);
-        }
-        return distances;
-    }
-    List<Vector3> GetCapusalPoints(CapsuleCollider capsule)
-    {
-        Vector3 ls = capsule.transform.lossyScale;
-        Vector3 direction;
-        float rScale;
-        switch (capsule.direction)
-        {
-            case (0):
-                direction = capsule.transform.right;
-                rScale = Mathf.Max(Mathf.Abs(ls.y), Mathf.Abs(ls.z));
-                break;
-            case (1):
-                direction = capsule.transform.forward;
-                rScale = Mathf.Max(Mathf.Abs(ls.x), Mathf.Abs(ls.y));
-                break;
-            default:
-                direction = capsule.transform.up;
-                rScale = Mathf.Max(Mathf.Abs(ls.x), Mathf.Abs(ls.z));
-                break;
-        }
-        Vector3 toCenter = capsule.transform.TransformDirection(new Vector3(capsule.center.x * ls.x, capsule.center.y * ls.y, capsule.center.z * ls.z));
-        Vector3 center = capsule.transform.position + toCenter;
-        float radius = capsule.radius * rScale;
-        float halfHeight = capsule.height * Mathf.Abs(ls[capsule.direction]) * 0.5f;
-        var result = new List<Vector3>();
-        switch (capsule.direction)
-        {
-            case (0):
-                result.Add( new Vector3(center.x + halfHeight, center.y, center.z));
-                result.Add( new Vector3(center.x - halfHeight, center.y, center.z));
-                result.Add( new Vector3(center.x, center.y + radius, center.z));
-                result.Add( new Vector3(center.x, center.y - radius, center.z));
-                result.Add( new Vector3(center.x, center.y, center.z + radius));
-                result.Add( new Vector3(center.x, center.y, center.z - radius));
-                break;
-            case (1):
-                result.Add( new Vector3(center.x + radius, center.y, center.z));
-                result.Add( new Vector3(center.x - radius, center.y, center.z));
-                result.Add( new Vector3(center.x, center.y + halfHeight, center.z));
-                result.Add( new Vector3(center.x, center.y - halfHeight, center.z));
-                result.Add( new Vector3(center.x, center.y, center.z + radius));
-                result.Add( new Vector3(center.x, center.y, center.z - radius));
-                break;
-            case (2):
-                result.Add( new Vector3(center.x + radius, center.y, center.z));
-                result.Add( new Vector3(center.x - radius, center.y, center.z));
-                result.Add( new Vector3(center.x, center.y + radius, center.z));
-                result.Add( new Vector3(center.x, center.y - radius, center.z));
-                result.Add( new Vector3(center.x, center.y, center.z + halfHeight));
-                result.Add( new Vector3(center.x, center.y, center.z - halfHeight));
-                break;
-        }
+    // List<float> CompareCapusals(CapsuleCollider capsuleA, CapsuleCollider capsuleB)
+    // {
+    //     var pointsA = GetCapusalPoints(capsuleA);
+    //     var pointsB = GetCapusalPoints(capsuleB);
+    //     var distances = new List<float>();
+    //     for (int i = 0; i < pointsB.Count; i++)
+    //     {
+    //         var d = (pointsA[i]-pointsB[i]).magnitude;
+    //         distances.Add(d);
+    //     }
+    //     return distances;
+    // }
+    // List<Vector3> GetCapusalPoints(CapsuleCollider capsule)
+    // {
+    //     Vector3 ls = capsule.transform.lossyScale;
+    //     Vector3 direction;
+    //     float rScale;
+    //     switch (capsule.direction)
+    //     {
+    //         case (0):
+    //             direction = capsule.transform.right;
+    //             rScale = Mathf.Max(Mathf.Abs(ls.y), Mathf.Abs(ls.z));
+    //             break;
+    //         default:
+    //         case (1):
+    //             direction = capsule.transform.up;
+    //             rScale = Mathf.Max(Mathf.Abs(ls.x), Mathf.Abs(ls.z));
+    //             break;
+    //         case (2):
+    //             direction = capsule.transform.forward;
+    //             rScale = Mathf.Max(Mathf.Abs(ls.x), Mathf.Abs(ls.y));
+    //             break;
+    //     }
+    //     Vector3 toCenter = capsule.transform.TransformDirection(new Vector3(capsule.center.x * ls.x, capsule.center.y * ls.y, capsule.center.z * ls.z));
+    //     Vector3 center = capsule.transform.position + toCenter;
+    //     float radius = capsule.radius * rScale;
+    //     float halfHeight = capsule.height * Mathf.Abs(ls[capsule.direction]) * 0.5f;
+    //     var result = new List<Vector3>();
+    //     switch (capsule.direction)
+    //     {
+    //         case (0):
+    //             result.Add( new Vector3(center.x + halfHeight, center.y, center.z));
+    //             result.Add( new Vector3(center.x - halfHeight, center.y, center.z));
+    //             result.Add( new Vector3(center.x, center.y + radius, center.z));
+    //             result.Add( new Vector3(center.x, center.y - radius, center.z));
+    //             result.Add( new Vector3(center.x, center.y, center.z + radius));
+    //             result.Add( new Vector3(center.x, center.y, center.z - radius));
+    //             break;
+    //         case (1):
+    //             result.Add( new Vector3(center.x + radius, center.y, center.z));
+    //             result.Add( new Vector3(center.x - radius, center.y, center.z));
+    //             result.Add( new Vector3(center.x, center.y + halfHeight, center.z));
+    //             result.Add( new Vector3(center.x, center.y - halfHeight, center.z));
+    //             result.Add( new Vector3(center.x, center.y, center.z + radius));
+    //             result.Add( new Vector3(center.x, center.y, center.z - radius));
+    //             break;
+    //         case (2):
+    //             result.Add( new Vector3(center.x + radius, center.y, center.z));
+    //             result.Add( new Vector3(center.x - radius, center.y, center.z));
+    //             result.Add( new Vector3(center.x, center.y + radius, center.z));
+    //             result.Add( new Vector3(center.x, center.y - radius, center.z));
+    //             result.Add( new Vector3(center.x, center.y, center.z + halfHeight));
+    //             result.Add( new Vector3(center.x, center.y, center.z - halfHeight));
+    //             break;
+    //     }
 
-        return result;
-        // capsule.transform.forward * 
-    }    
+    //     return result;
+    //     // capsule.transform.forward * 
+    // }    
 }

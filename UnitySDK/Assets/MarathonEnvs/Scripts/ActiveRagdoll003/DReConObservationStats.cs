@@ -4,10 +4,25 @@ using System.Linq;
 using MLAgents;
 using UnityEngine;
 
-public class BodyStats : MonoBehaviour
+public class DReConObservationStats : MonoBehaviour
 {
+    [System.Serializable]
+    public class Stat
+    {
+        public string Name;
+        public Vector3 Position;
+        public Quaternion Rotation;
+        public Vector3 Velocity;
+        public Vector3 AngualrVelocity;
+        [HideInInspector]
+        public Vector3 LastPosition;
+        [HideInInspector]
+        public Quaternion LastRotation;
+        [HideInInspector]
+        public bool LastIsSet;
+    }
 
-    public MonoBehaviour ObjectToTrack; // Normalized vector in direction of travel (assume right angle to floor)
+    public MonoBehaviour ObjectToTrack;
     List<string> _bodyPartsToTrack;
 
     [Header("Anchor stats")]
@@ -19,15 +34,9 @@ public class BodyStats : MonoBehaviour
     public Vector3 CenterOfMassVelocity;
     public float CenterOfMassVelocityMagnitude;
     public float CenterOfMassHorizontalVelocityMagnitude;
-    public List<BodyPartStats> BodyPartStats;
+    public List<Stat> Stats;
 
-    [Header("... for debugging")]
-    public Vector3 ButtVelocity;
-    public Vector3 ButtAngualrVelocity;
-    public float ButtMagnatude;
-    Vector3 _lastButtPossition;
-    Quaternion _lastButtRotation;
-
+    // [Header("... for debugging")]
 
     [HideInInspector]
     public Vector3 LastCenterOfMassInWorldSpace;
@@ -41,11 +50,6 @@ public class BodyStats : MonoBehaviour
     List<Transform> _bodyParts;
     internal List<Rigidbody> _rigidbodyParts;
 
-    // Start is called before the first frame update
-    void Awake()
-    {
-
-    }
     public void OnAwake(List<string> bodyPartsToTrack, Transform defaultTransform)
     {
         _bodyPartsToTrack = bodyPartsToTrack;
@@ -60,8 +64,8 @@ public class BodyStats : MonoBehaviour
                 .Where(x=>_bodyPartsToTrack.Contains(x))
                 .Select(x=>_bodyParts.First(y=>y.name == x))
                 .ToList();
-        BodyPartStats = _bodyParts
-            .Select(x=> new BodyPartStats{Name = x.name})
+        Stats = _bodyParts
+            .Select(x=> new Stat{Name = x.name})
             .ToList();
         
         transform.position = defaultTransform.position;
@@ -70,7 +74,7 @@ public class BodyStats : MonoBehaviour
 
     public void OnReset()
     {
-        foreach (var bodyPart in BodyPartStats)
+        foreach (var bodyPart in Stats)
         {
             bodyPart.LastIsSet = false;
         }
@@ -79,15 +83,11 @@ public class BodyStats : MonoBehaviour
 
     public void SetStatusForStep(float timeDelta)
     {
-        var butt = _bodyParts.First(x=>x.name.ToLower()=="butt");
-        var buttStats = BodyPartStats.First(x=>x.Name.ToLower()=="butt");
         // find Center Of Mass and velocity
         Vector3 newCOM = GetCenterOfMass(_rigidbodyParts);
         if (!LastIsSet)
         {
             LastCenterOfMassInWorldSpace = newCOM;
-            _lastButtPossition = butt.position;
-            _lastButtRotation = butt.rotation;
         }
         transform.position = newCOM;
         CenterOfMassVelocity = transform.position - LastCenterOfMassInWorldSpace;
@@ -113,7 +113,7 @@ public class BodyStats : MonoBehaviour
         // get bodyParts stats in local space
         foreach (var bodyPart in _bodyParts)
         {
-            BodyPartStats bodyPartStat = BodyPartStats.First(x=>x.Name == bodyPart.name);
+            Stat bodyPartStat = Stats.First(x=>x.Name == bodyPart.name);
             Vector3 localPosition = transform.InverseTransformPoint(bodyPart.position);
             // localPosition -= CenterOfMassVelocity * timeDelta;
             Quaternion localRotation = Quaternion.Inverse(transform.rotation) * bodyPart.rotation;
@@ -132,14 +132,6 @@ public class BodyStats : MonoBehaviour
             bodyPartStat.LastRotation = localRotation;
             bodyPartStat.LastIsSet = true;
         }
-
-        // debug stats
-        ButtVelocity = butt.position-_lastButtPossition;
-        ButtVelocity /= timeDelta;
-        ButtAngualrVelocity = GetAngularVelocity(butt.rotation, _lastButtRotation, timeDelta);
-        _lastButtPossition = butt.position;
-        _lastButtRotation = butt.rotation;
-        ButtMagnatude = ButtVelocity.magnitude;
     }
 
 	Vector3 GetCenterOfMass(IEnumerable<Rigidbody> bodies)
