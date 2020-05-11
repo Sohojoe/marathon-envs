@@ -56,6 +56,24 @@ public class TrackBodyStatesInWorldSpace : MonoBehaviour
         }        
     }
 
+    public void Reset()
+    {
+        foreach (var rb in _rigidbodyParts)
+        {
+            Stat stat = Stats.First(x=>x.Name == rb.name);
+            stat.LastPosition = rb.position;
+            stat.LastRotation = rb.rotation;
+            stat.Position = rb.position;
+            stat.Rotation = rb.rotation;
+            stat.Velocity = Vector3.zero;
+            stat.AngualrVelocity = Vector3.zero;
+            stat.LastPosition = rb.position;
+            stat.LastRotation = rb.rotation;
+            stat.LastIsSet = true;
+        }        
+        
+    }
+
     public void CopyStatesTo(GameObject target)
     {
         var targetRbs = target.GetComponentsInChildren<Rigidbody>().ToList();

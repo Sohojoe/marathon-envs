@@ -70,9 +70,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ddf48037c6c1455a8a163a00e342e36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BodyPartDistances: []
-  MocapCenterOfMassVelocity: {x: 0, y: 0, z: 0}
-  RagdollCenterOfMassVelocity: {x: 0, y: 0, z: 0}
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  maxStep: 0
+  debugCopyMocap: 0
 --- !u!114 &5002467186126936294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,11 +87,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ec1e370542a14f3da19024594e4c394, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SumOfSubRewards: 0
   Reward: 0
+  SumOfDistances: 0
+  PositionReward: 0
+  MocapPointsVelocity: 0
+  RagDollPointsVelocity: 0
+  PointsVelocityDifference: 0
+  PointsVelocityReward: 0
+  RotationDifferencesInAngles: []
+  SumOfRotationDifferences: 0
+  LocalPoseReward: 0
   MocapCOMVelocity: {x: 0, y: 0, z: 0}
   RagDollCOMVelocity: {x: 0, y: 0, z: 0}
   COMVelocityDifference: 0
   ComReward: 0
+  HeadDistance: 0
+  FallFactor: 0
 --- !u!114 &8704383841024592634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,7 +132,6 @@ MonoBehaviour:
   - left_left_foot
   - right_right_foot
   MocapHorizontalVelocityDifference: {x: 0, y: 0}
-  debugCopyMocap: 0
 --- !u!1 &421908985547291649
 GameObject:
   m_ObjectHideFlags: 0
@@ -4857,7 +4870,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25f24ef536e54416c9c95e2d222138e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BodyPartStats: []
+  Stats: []
 --- !u!1001 &158529944589636780
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4868,12 +4881,12 @@ PrefabInstance:
     - target: {fileID: 114263248370519032, guid: 27548cbf466924cd699685496025f534,
         type: 3}
       propertyPath: m_BehaviorName
-      value: StyleTransferEnv-v0
+      value: ControllerMarathonMan-v0
       objectReference: {fileID: 0}
     - target: {fileID: 114263248370519032, guid: 27548cbf466924cd699685496025f534,
         type: 3}
       propertyPath: m_BrainParameters.vectorObservationSize
-      value: 255
+      value: 69
       objectReference: {fileID: 0}
     - target: {fileID: 114263248370519032, guid: 27548cbf466924cd699685496025f534,
         type: 3}
@@ -4884,6 +4897,11 @@ PrefabInstance:
     - target: {fileID: 8690789666678175709, guid: 27548cbf466924cd699685496025f534,
         type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8690789666678175709, guid: 27548cbf466924cd699685496025f534,
+        type: 3}
+      propertyPath: MotorScale
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8712265431949821219, guid: 27548cbf466924cd699685496025f534,
@@ -5124,8 +5142,6 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 6637013144633364566, guid: 27548cbf466924cd699685496025f534, type: 3}
     - {fileID: 5859498862604059448, guid: 27548cbf466924cd699685496025f534, type: 3}
-    - {fileID: 114275564199513312, guid: 27548cbf466924cd699685496025f534, type: 3}
-    - {fileID: 114263248370519032, guid: 27548cbf466924cd699685496025f534, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 27548cbf466924cd699685496025f534, type: 3}
 --- !u!1 &8878912891930077695 stripped
 GameObject:

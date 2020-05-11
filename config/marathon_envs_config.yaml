@@ -205,3 +205,17 @@ TerrainMarathonMan-v0:
     buffer_size: 5120
     beta: .1
     max_steps: 50e6
+
+ControllerMarathonMan-v0:
+    num_epoch: 3 
+    time_horizon: 1000 
+    summary_freq: 10000
+    use_recurrent: false
+    normalize: false 
+    num_layers: 2
+    hidden_units: 64
+    learning_rate: 3e-4
+    batch_size: 32
+    buffer_size: 5120
+    beta: .1
+    max_steps: 50e6

@@ -58,7 +58,7 @@ public class DReConRewards : MonoBehaviour
         _spawnableEnv = GetComponentInParent<SpawnableEnv>();
         Assert.IsNotNull(_spawnableEnv);
         _mocap = _spawnableEnv.GetComponentInChildren<MocapController>().gameObject;
-        _ragDoll = _spawnableEnv.GetComponentInChildren<RagDollController>().gameObject;
+        _ragDoll = _spawnableEnv.GetComponentInChildren<RagDollAgent>().gameObject;
         Assert.IsNotNull(_mocap);
         Assert.IsNotNull(_ragDoll);
         _mocapBodyParts = _mocap.GetComponentsInChildren<Rigidbody>().ToList();
