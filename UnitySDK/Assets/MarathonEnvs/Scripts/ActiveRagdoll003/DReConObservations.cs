@@ -4,7 +4,7 @@ using System.Linq;
 using MLAgents;
 using UnityEngine;
 
-public class RagDollObservations : MonoBehaviour
+public class DReConObservations : MonoBehaviour
 {
     [Header("Observations")]
 

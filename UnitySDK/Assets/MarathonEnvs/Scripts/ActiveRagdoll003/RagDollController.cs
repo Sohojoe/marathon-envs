@@ -13,8 +13,8 @@ public class RagDollController : MonoBehaviour
     List<Rigidbody> _mocapBodyParts;
     List<Rigidbody> _bodyParts;
     SpawnableEnv _spawnableEnv;
-    RagDollObservations _ragDollObservations;
-    RagDollRewards _ragDollRewards;
+    DReConObservations _dReConObservations;
+    DReConRewards _dReConRewards;
     TrackBodyStatesInWorldSpace _trackBodyStatesInWorldSpace;
 
 
@@ -24,21 +24,21 @@ public class RagDollController : MonoBehaviour
         _mocapController = _spawnableEnv.GetComponentInChildren<MocapController>();
         _mocapBodyParts = _mocapController.GetComponentsInChildren<Rigidbody>().ToList();
         _bodyParts = GetComponentsInChildren<Rigidbody>().ToList();
-        _ragDollObservations = GetComponent<RagDollObservations>();
-        _ragDollRewards = GetComponent<RagDollRewards>();
+        _dReConObservations = GetComponent<DReConObservations>();
+        _dReConRewards = GetComponent<DReConRewards>();
         var mocapController = _spawnableEnv.GetComponentInChildren<MocapController>();
         _trackBodyStatesInWorldSpace = mocapController.GetComponent<TrackBodyStatesInWorldSpace>();
     }
     void FixedUpdate()
     {
-        _ragDollObservations.OnStep();
-        _ragDollRewards.OnStep();
+        _dReConObservations.OnStep();
+        _dReConRewards.OnStep();
         if (debugCopyMocap)
         {
             debugCopyMocap = false;
             _trackBodyStatesInWorldSpace.CopyStatesTo(this.gameObject);
-            _ragDollObservations.OnReset();
-            _ragDollRewards.OnReset();
+            _dReConObservations.OnReset();
+            _dReConRewards.OnReset();
         }
     }
 }

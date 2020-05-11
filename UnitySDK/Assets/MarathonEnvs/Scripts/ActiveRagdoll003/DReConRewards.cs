@@ -4,7 +4,7 @@ using System.Linq;
 using MLAgents;
 using UnityEngine;
 using UnityEngine.Assertions;
-public class RagDollRewards : MonoBehaviour
+public class DReConRewards : MonoBehaviour
 {
     [Header("Reward")]
     public float SumOfSubRewards;
