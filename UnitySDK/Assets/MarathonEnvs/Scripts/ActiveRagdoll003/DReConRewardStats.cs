@@ -35,6 +35,8 @@ public class DReConRewardStats : MonoBehaviour
     SpawnableEnv _spawnableEnv;
     List<CapsuleCollider> _capsuleColliders;
     List<Rigidbody> _rigidbodyParts;
+    List<Transform> _trackRotations;
+    public List<Quaternion> Rotations;
     public Vector3[] Points;
     Vector3[] _lastPoints;
     public float[] PointVelocity;
@@ -61,7 +63,13 @@ public class DReConRewardStats : MonoBehaviour
             .ToArray();            
         PointVelocity = Enumerable.Range(0,_capsuleColliders.Count * 6)
             .Select(x=>0f)
-            .ToArray();            
+            .ToArray();
+        _trackRotations = _rigidbodyParts
+            .SelectMany(x=>x.GetComponentsInChildren<Transform>())
+            .ToList();
+        Rotations = Enumerable.Range(0,_trackRotations.Count)
+            .Select(x=>Quaternion.identity)
+            .ToList();
         
         transform.position = defaultTransform.position;
         transform.rotation = defaultTransform.rotation;
@@ -100,6 +108,12 @@ public class DReConRewardStats : MonoBehaviour
             PointVelocity[i] = (Points[i] - _lastPoints[i]).magnitude / timeDelta;
         }
         Array.Copy(Points, 0, _lastPoints, 0, Points.Length);
+
+        for (int i = 0; i < _trackRotations.Count; i++)
+        {
+            Quaternion localRotation = Quaternion.Inverse(transform.rotation) * _trackRotations[i].rotation;
+            Rotations[i] = localRotation;
+        }
 
         LastIsSet = true;
     }

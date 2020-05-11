@@ -20,7 +20,11 @@ public class DReConRewards : MonoBehaviour
     public float PointsVelocityDifference;
     public float PointsVelocityReward;
 
-    // [Header("Local Pose Reward")]
+    [Header("Local Pose Reward")]
+    public List<float> RotationDifferencesInAngles;
+    public float SumOfRotationDifferences;
+    public float LocalPoseReward;
+
    
     
     [Header("Center of Mass Velocity Reward")]
@@ -110,6 +114,24 @@ public class DReConRewards : MonoBehaviour
         PointsVelocityReward = Mathf.Pow(PointsVelocityDifference, 2);
         PointsVelocityReward = (-1f/_mocapBodyStats.PointVelocity.Length) * PointsVelocityReward;
         PointsVelocityReward = Mathf.Exp(PointsVelocityReward);
+
+        // local pose reward
+        if (RotationDifferencesInAngles == null || RotationDifferencesInAngles.Count < _mocapBodyStats.Rotations.Count)
+            RotationDifferencesInAngles = Enumerable.Range(0,_mocapBodyStats.Rotations.Count)
+            .Select(x=>0f)
+            .ToList();
+        SumOfRotationDifferences = 0f;
+        for (int i = 0; i < _mocapBodyStats.Rotations.Count; i++)
+        {
+            var angle = Quaternion.Angle(_mocapBodyStats.Rotations[i], _ragDollBodyStats.Rotations[i]);
+            RotationDifferencesInAngles[i] = angle;
+            Assert.IsTrue(angle <= 180f);
+            SumOfRotationDifferences += angle/180f;
+        }
+        LocalPoseReward = -10/_mocapBodyStats.Rotations.Count;
+        LocalPoseReward *= SumOfRotationDifferences;
+        LocalPoseReward = Mathf.Exp(LocalPoseReward);
+
         // fall factor
         HeadDistance = (_mocapHead.position - _ragDollHead.position).magnitude;
         FallFactor = Mathf.Pow(HeadDistance,2);
@@ -118,7 +140,7 @@ public class DReConRewards : MonoBehaviour
         FallFactor = Mathf.Clamp(FallFactor, 0f, 1f);
 
         // reward
-        SumOfSubRewards = PositionReward+ComReward+PointsVelocityReward;
+        SumOfSubRewards = PositionReward+ComReward+PointsVelocityReward+LocalPoseReward;
         Reward = FallFactor*SumOfSubRewards;
     }
     public void OnReset()
@@ -128,75 +150,4 @@ public class DReConRewards : MonoBehaviour
         _ragDollBodyStats.transform.position = _mocapBodyStats.transform.position;
         _ragDollBodyStats.transform.rotation = _mocapBodyStats.transform.rotation;
     }
-
-
-    // List<float> CompareCapusals(CapsuleCollider capsuleA, CapsuleCollider capsuleB)
-    // {
-    //     var pointsA = GetCapusalPoints(capsuleA);
-    //     var pointsB = GetCapusalPoints(capsuleB);
-    //     var distances = new List<float>();
-    //     for (int i = 0; i < pointsB.Count; i++)
-    //     {
-    //         var d = (pointsA[i]-pointsB[i]).magnitude;
-    //         distances.Add(d);
-    //     }
-    //     return distances;
-    // }
-    // List<Vector3> GetCapusalPoints(CapsuleCollider capsule)
-    // {
-    //     Vector3 ls = capsule.transform.lossyScale;
-    //     Vector3 direction;
-    //     float rScale;
-    //     switch (capsule.direction)
-    //     {
-    //         case (0):
-    //             direction = capsule.transform.right;
-    //             rScale = Mathf.Max(Mathf.Abs(ls.y), Mathf.Abs(ls.z));
-    //             break;
-    //         default:
-    //         case (1):
-    //             direction = capsule.transform.up;
-    //             rScale = Mathf.Max(Mathf.Abs(ls.x), Mathf.Abs(ls.z));
-    //             break;
-    //         case (2):
-    //             direction = capsule.transform.forward;
-    //             rScale = Mathf.Max(Mathf.Abs(ls.x), Mathf.Abs(ls.y));
-    //             break;
-    //     }
-    //     Vector3 toCenter = capsule.transform.TransformDirection(new Vector3(capsule.center.x * ls.x, capsule.center.y * ls.y, capsule.center.z * ls.z));
-    //     Vector3 center = capsule.transform.position + toCenter;
-    //     float radius = capsule.radius * rScale;
-    //     float halfHeight = capsule.height * Mathf.Abs(ls[capsule.direction]) * 0.5f;
-    //     var result = new List<Vector3>();
-    //     switch (capsule.direction)
-    //     {
-    //         case (0):
-    //             result.Add( new Vector3(center.x + halfHeight, center.y, center.z));
-    //             result.Add( new Vector3(center.x - halfHeight, center.y, center.z));
-    //             result.Add( new Vector3(center.x, center.y + radius, center.z));
-    //             result.Add( new Vector3(center.x, center.y - radius, center.z));
-    //             result.Add( new Vector3(center.x, center.y, center.z + radius));
-    //             result.Add( new Vector3(center.x, center.y, center.z - radius));
-    //             break;
-    //         case (1):
-    //             result.Add( new Vector3(center.x + radius, center.y, center.z));
-    //             result.Add( new Vector3(center.x - radius, center.y, center.z));
-    //             result.Add( new Vector3(center.x, center.y + halfHeight, center.z));
-    //             result.Add( new Vector3(center.x, center.y - halfHeight, center.z));
-    //             result.Add( new Vector3(center.x, center.y, center.z + radius));
-    //             result.Add( new Vector3(center.x, center.y, center.z - radius));
-    //             break;
-    //         case (2):
-    //             result.Add( new Vector3(center.x + radius, center.y, center.z));
-    //             result.Add( new Vector3(center.x - radius, center.y, center.z));
-    //             result.Add( new Vector3(center.x, center.y + radius, center.z));
-    //             result.Add( new Vector3(center.x, center.y - radius, center.z));
-    //             result.Add( new Vector3(center.x, center.y, center.z + halfHeight));
-    //             result.Add( new Vector3(center.x, center.y, center.z - halfHeight));
-    //             break;
-    //     }
-
-    //     return result;
-    //     // capsule.transform.forward * 
-    // }    
 }
