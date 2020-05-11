@@ -336,9 +336,9 @@ MonoBehaviour:
     - envId: ControllerMarathonMan-v0
       envPrefab: {fileID: 1802870815327278923, guid: 756f6ecffa94a46bab4f0c271abccd87,
         type: 3}
-    envIdDefault: MarathonHopper2d-v0
-    trainingNumEnvsDefault: 64
-    inferenceNumEnvsDefault: 2
+    envIdDefault: ControllerMarathonMan-v0
+    trainingNumEnvsDefault: 16
+    inferenceNumEnvsDefault: 1
   DebugSkipPopUp: 0
 --- !u!1 &1715640920
 GameObject:

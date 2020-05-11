@@ -28,6 +28,8 @@ public class DReConObservations : MonoBehaviour
 
     [Tooltip("Positions and velocities for subset of bodies")]
     public List<BodyPartDifferenceStats> BodyPartDifferenceStats;
+    public List<DReConObservationStats.Stat> MocapBodyStats;
+    public List<DReConObservationStats.Stat> RagDollBodyStats;
 
     [Tooltip("Smoothed actions produced in the previous step of the policy are collected in t −1")]
     public float[] PreviousActions;
@@ -91,6 +93,13 @@ public class DReConObservations : MonoBehaviour
         InputBackflip = _inputController.Backflip;
         Vector2 ragDollHorizontalVelocity = new Vector2(RagDollCOMVelocity.x, RagDollCOMVelocity.z);
         HorizontalVelocityDifference = InputDesiredHorizontalVelocity-ragDollHorizontalVelocity;
+
+        MocapBodyStats = BodyPartsToTrack
+            .Select(x=>_mocapBodyStats.Stats.First(y=>y.Name == x))
+            .ToList();
+        RagDollBodyStats = BodyPartsToTrack
+            .Select(x=>_ragDollBodyStats.Stats.First(y=>y.Name == x))
+            .ToList();
         // BodyPartStats = 
         foreach (var differenceStats in BodyPartDifferenceStats)
         {

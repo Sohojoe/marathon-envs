@@ -123,6 +123,8 @@ MonoBehaviour:
   InputBackflip: 0
   HorizontalVelocityDifference: {x: 0, y: 0}
   BodyPartDifferenceStats: []
+  MocapBodyStats: []
+  RagDollBodyStats: []
   PreviousActions: []
   BodyPartsToTrack:
   - butt
@@ -4886,13 +4888,13 @@ PrefabInstance:
     - target: {fileID: 114263248370519032, guid: 27548cbf466924cd699685496025f534,
         type: 3}
       propertyPath: m_BrainParameters.vectorObservationSize
-      value: 69
+      value: 108
       objectReference: {fileID: 0}
     - target: {fileID: 114263248370519032, guid: 27548cbf466924cd699685496025f534,
         type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 11400000, guid: b7a674254088b4148881ff08b5fe1261,
+      objectReference: {fileID: 11400000, guid: 370d4b1f339744221b3c4c788f19e2af,
         type: 3}
     - target: {fileID: 8690789666678175709, guid: 27548cbf466924cd699685496025f534,
         type: 3}

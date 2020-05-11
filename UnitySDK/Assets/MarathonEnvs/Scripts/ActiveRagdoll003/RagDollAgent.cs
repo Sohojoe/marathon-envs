@@ -39,10 +39,21 @@ public class RagDollAgent : Agent
 
         sensor.AddVectorObs(_dReConObservations.MocapCOMVelocity);
         sensor.AddVectorObs(_dReConObservations.RagDollCOMVelocity);
+        sensor.AddVectorObs(_dReConObservations.RagDollCOMVelocity-_dReConObservations.MocapCOMVelocity);
         sensor.AddVectorObs(_dReConObservations.InputDesiredHorizontalVelocity);
         sensor.AddVectorObs(_dReConObservations.InputJump);
         sensor.AddVectorObs(_dReConObservations.InputBackflip);
         sensor.AddVectorObs(_dReConObservations.HorizontalVelocityDifference);
+        // foreach (var stat in _dReConObservations.MocapBodyStats)
+        // {
+        //     sensor.AddVectorObs(stat.Position);
+        //     sensor.AddVectorObs(stat.Velocity);
+        // }
+        foreach (var stat in _dReConObservations.RagDollBodyStats)
+        {
+            sensor.AddVectorObs(stat.Position);
+            sensor.AddVectorObs(stat.Velocity);
+        }                
         foreach (var stat in _dReConObservations.BodyPartDifferenceStats)
         {
             sensor.AddVectorObs(stat.Position);
