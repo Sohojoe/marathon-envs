@@ -8,6 +8,7 @@ public class RagDollAgent : Agent
 {
     [Header("... debug")]
     public bool debugCopyMocap;
+    public bool ignorActions;
 
     MocapController _mocapController;
     List<Rigidbody> _mocapBodyParts;
@@ -63,6 +64,8 @@ public class RagDollAgent : Agent
     }
 	public override void AgentAction(float[] vectorAction)
     {
+        if (ignorActions)
+            vectorAction = vectorAction.Select(x=>0f).ToArray();
 		int i = 0;
         Vector3 targetNormalizedRotation = Vector3.zero;
 		foreach (var m in _motors)
