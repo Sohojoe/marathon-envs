@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class RagDollAgent : Agent 
 {
+    [Header("Settings for Smoothing Function")]
+    public float SmoothBeta = 0.2f;
     [Header("... debug")]
     public bool debugCopyMocap;
     public bool ignorActions;
@@ -20,6 +22,7 @@ public class RagDollAgent : Agent
     TrackBodyStatesInWorldSpace _trackBodyStatesInWorldSpace;
     List<ConfigurableJoint> _motors;
     bool _hasLazyInitialized;
+    float[] _smoothedActions;
 	override public void CollectObservations()
     {
 		var sensor = this;
@@ -64,6 +67,7 @@ public class RagDollAgent : Agent
     }
 	public override void AgentAction(float[] vectorAction)
     {
+        vectorAction = SmoothActions(vectorAction);
         if (ignorActions)
             vectorAction = vectorAction.Select(x=>0f).ToArray();
 		int i = 0;
@@ -91,6 +95,17 @@ public class RagDollAgent : Agent
         {
             Done();
         }
+    }
+
+    float[] SmoothActions(float[] vectorAction)
+    {
+        // yt =β at +(1−β)yt−1
+        if (_smoothedActions == null)
+            _smoothedActions = vectorAction.Select(x=>0f).ToArray();
+        _smoothedActions = vectorAction
+            .Zip(_smoothedActions, (a, y)=> SmoothBeta * a + (1f-SmoothBeta) * y)
+            .ToArray();
+        return _smoothedActions;
     }
 	public override void AgentReset()
 	{
@@ -120,6 +135,7 @@ public class RagDollAgent : Agent
             _dReConObservations.PreviousActions = individualMotors.ToArray();
 			_hasLazyInitialized = true;
 		}
+        _smoothedActions = null;
         debugCopyMocap = false;
         _trackBodyStatesInWorldSpace.CopyStatesTo(this.gameObject);
         _dReConObservations.OnReset();
