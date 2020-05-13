@@ -73,8 +73,11 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  maxStep: 0
+  maxStep: 2000
+  FixedDeltaTime: 0.016666668
+  SmoothBeta: 0.2
   debugCopyMocap: 0
+  ignorActions: 0
 --- !u!114 &5002467186126936294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4896,6 +4899,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 370d4b1f339744221b3c4c788f19e2af,
         type: 3}
+    - target: {fileID: 114275564199513312, guid: 27548cbf466924cd699685496025f534,
+        type: 3}
+      propertyPath: DecisionPeriod
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8690789666678175709, guid: 27548cbf466924cd699685496025f534,
         type: 3}
       propertyPath: m_Enabled

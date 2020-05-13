@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class RagDollAgent : Agent 
 {
-    [Header("Settings for Smoothing Function")]
+    [Header("Settings")]
+	public float FixedDeltaTime = 1f/60f;
     public float SmoothBeta = 0.2f;
     [Header("... debug")]
     public bool debugCopyMocap;
@@ -111,6 +112,7 @@ public class RagDollAgent : Agent
 	{
 		if (!_hasLazyInitialized)
 		{
+    		Time.fixedDeltaTime = FixedDeltaTime;
             _spawnableEnv = GetComponentInParent<SpawnableEnv>();
             _mocapController = _spawnableEnv.GetComponentInChildren<MocapController>();
             _mocapBodyParts = _mocapController.GetComponentsInChildren<Rigidbody>().ToList();
