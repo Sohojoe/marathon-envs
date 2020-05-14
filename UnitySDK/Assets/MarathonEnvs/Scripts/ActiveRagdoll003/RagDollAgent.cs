@@ -9,6 +9,7 @@ public class RagDollAgent : Agent
     [Header("Settings")]
 	public float FixedDeltaTime = 1f/60f;
     public float SmoothBeta = 0.2f;
+    public bool SkipRewardSmoothing;
     [Header("... debug")]
     public bool debugCopyMocap;
     public bool ignorActions;
@@ -68,7 +69,8 @@ public class RagDollAgent : Agent
     }
 	public override void AgentAction(float[] vectorAction)
     {
-        vectorAction = SmoothActions(vectorAction);
+        if (!SkipRewardSmoothing)
+            vectorAction = SmoothActions(vectorAction);
         if (ignorActions)
             vectorAction = vectorAction.Select(x=>0f).ToArray();
 		int i = 0;
