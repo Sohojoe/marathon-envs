@@ -6,7 +6,7 @@ using MLAgents;
 public class InputController : MonoBehaviour
 {
     [Header("Options")]
-    public float MaxVelocity;
+    public float MaxVelocity = 4f;
 
     [Header("User or Mock input states")]
     public Vector2 MovementVector; // User-input desired horizontal center of mass velocity.

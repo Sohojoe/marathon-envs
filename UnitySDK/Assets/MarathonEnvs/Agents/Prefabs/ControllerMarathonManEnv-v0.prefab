@@ -4601,7 +4601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b028a18f3817e4b768154fd94047e4d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxVelocity: 0
+  MaxVelocity: 4
   MovementVector: {x: 0, y: 0}
   CameraRotation: {x: 0, y: 0}
   Jump: 0
