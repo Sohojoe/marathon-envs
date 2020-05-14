@@ -23,6 +23,7 @@ public class RagDollAgent : Agent
     RagDoll002 _ragDollSettings;
     TrackBodyStatesInWorldSpace _trackBodyStatesInWorldSpace;
     List<ConfigurableJoint> _motors;
+    MarathonTestBedController _debugController;    
     bool _hasLazyInitialized;
     float[] _smoothedActions;
 	override public void CollectObservations()
@@ -69,6 +70,17 @@ public class RagDollAgent : Agent
     }
 	public override void AgentAction(float[] vectorAction)
     {
+        bool shouldDebug = _debugController != null;
+        shouldDebug &= _debugController.isActiveAndEnabled;
+        shouldDebug &= _debugController.gameObject.activeInHierarchy;
+        if (shouldDebug)
+        {
+            if (_debugController.Actions == null || _debugController.Actions.Length == 0)
+            {
+                _debugController.Actions = vectorAction.Select(x=>0f).ToArray();
+            }
+            vectorAction = _debugController.Actions.Select(x=>Mathf.Clamp(x,-1f,1f)).ToArray();
+        }        
         if (!SkipRewardSmoothing)
             vectorAction = SmoothActions(vectorAction);
         if (ignorActions)
@@ -114,6 +126,7 @@ public class RagDollAgent : Agent
 	{
 		if (!_hasLazyInitialized)
 		{
+            _debugController = FindObjectOfType<MarathonTestBedController>();
     		Time.fixedDeltaTime = FixedDeltaTime;
             _spawnableEnv = GetComponentInParent<SpawnableEnv>();
             _mocapController = _spawnableEnv.GetComponentInChildren<MocapController>();

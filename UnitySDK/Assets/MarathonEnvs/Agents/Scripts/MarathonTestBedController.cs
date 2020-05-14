@@ -47,6 +47,12 @@ public class MarathonTestBedController : MonoBehaviour
                     if (FreezeHead && !FreezeHips)
                         rb.GetComponentInChildren<FixedJoint>().connectedBody = head;
                     break;
+                case "RagDoll":
+                    _hasFrozen = true;
+                    children = agent.GetComponentsInChildren<Rigidbody>();
+                    head = children.FirstOrDefault(x=>x.name=="torso");
+                    butt = children.FirstOrDefault(x=>x.name=="butt");
+                    break;
                 case "humanoid":
                     _hasFrozen = true;
                     children = agent.GetComponentsInChildren<Rigidbody>();
@@ -68,5 +74,9 @@ public class MarathonTestBedController : MonoBehaviour
     {
         if (!_hasFrozen)
             FreezeBodyParts();
+        if (ApplyRandomActions)
+        {
+            Actions = Actions.Select(x=>Random.Range(-1f,1f)).ToArray();
+        }
     }
 }
