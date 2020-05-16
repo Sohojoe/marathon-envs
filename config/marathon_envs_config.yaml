@@ -215,8 +215,10 @@ ControllerMarathonMan-v0:
     num_layers: 2
     hidden_units: 128
     learning_rate: 1e-4
-    batch_size: 10000 # buffer_size/4
-    buffer_size: 40000
+    # batch_size: 10000 # buffer_size/4
+    # buffer_size: 40000
+    batch_size: 64
+    buffer_size: 10240    
     beta: .003
     max_steps: 50e6
-    # max_steps: 50e6
+    # max_steps: 128e6
