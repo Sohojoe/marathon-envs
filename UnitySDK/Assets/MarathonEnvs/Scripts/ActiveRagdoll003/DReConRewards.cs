@@ -125,10 +125,11 @@ public class DReConRewards : MonoBehaviour
         {
             var angle = Quaternion.Angle(_mocapBodyStats.Rotations[i], _ragDollBodyStats.Rotations[i]);
             RotationDifferencesInAngles[i] = angle;
+            angle = Mathf.Abs(angle);
             Assert.IsTrue(angle <= 180f);
             SumOfRotationDifferences += angle/180f;
         }
-        LocalPoseReward = -10/_mocapBodyStats.Rotations.Count;
+        LocalPoseReward = -10f/_mocapBodyStats.Rotations.Count;
         LocalPoseReward *= SumOfRotationDifferences;
         LocalPoseReward = Mathf.Exp(LocalPoseReward);
 
