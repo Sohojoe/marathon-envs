@@ -10,18 +10,20 @@ public class RagDollAgent : Agent
 	public float FixedDeltaTime = 1f/60f;
     public float SmoothBeta = 0.2f;
     [Header("... debug")]
+    public bool SkipRewardSmoothing;
     public bool debugCopyMocap;
     public bool ignorActions;
 
     MocapController _mocapController;
-    List<Rigidbody> _mocapBodyParts;
-    List<Rigidbody> _bodyParts;
+    List<ArticulationBody> _mocapBodyParts;
+    List<ArticulationBody> _bodyParts;
     SpawnableEnv _spawnableEnv;
     DReConObservations _dReConObservations;
     DReConRewards _dReConRewards;
     RagDoll002 _ragDollSettings;
     TrackBodyStatesInWorldSpace _trackBodyStatesInWorldSpace;
-    List<ConfigurableJoint> _motors;
+    List<ArticulationBody> _motors;
+    MarathonTestBedController _debugController;    
     bool _hasLazyInitialized;
     float[] _smoothedActions;
 	override public void CollectObservations()
@@ -68,25 +70,32 @@ public class RagDollAgent : Agent
     }
 	public override void AgentAction(float[] vectorAction)
     {
-        vectorAction = SmoothActions(vectorAction);
+        bool shouldDebug = _debugController != null;
+        shouldDebug &= _debugController.isActiveAndEnabled;
+        shouldDebug &= _debugController.gameObject.activeInHierarchy;
+        if (shouldDebug)
+        {
+            if (_debugController.Actions == null || _debugController.Actions.Length == 0)
+            {
+                _debugController.Actions = vectorAction.Select(x=>0f).ToArray();
+            }
+            vectorAction = _debugController.Actions.Select(x=>Mathf.Clamp(x,-1f,1f)).ToArray();
+        }
+        if (!SkipRewardSmoothing)
+            vectorAction = SmoothActions(vectorAction);
         if (ignorActions)
             vectorAction = vectorAction.Select(x=>0f).ToArray();
 		int i = 0;
         Vector3 targetNormalizedRotation = Vector3.zero;
 		foreach (var m in _motors)
 		{
-            Vector3 maximumForce = _ragDollSettings.MusclePowers
-                .First(x=>x.Muscle == m.name)
-                .PowerVector;
-            maximumForce *= _ragDollSettings.MotorScale;
-
-			if (m.angularXMotion != ConfigurableJointMotion.Locked)
+            if (m.swingYLock == ArticulationDofLock.LimitedMotion)
 				targetNormalizedRotation.x = vectorAction[i++];
-			if (m.angularYMotion != ConfigurableJointMotion.Locked)
+            if (m.swingZLock == ArticulationDofLock.LimitedMotion)
 				targetNormalizedRotation.y = vectorAction[i++];
-			if (m.angularZMotion != ConfigurableJointMotion.Locked)
+			if (m.twistLock == ArticulationDofLock.LimitedMotion)
 				targetNormalizedRotation.z = vectorAction[i++];
-            UpdateMotor(m, targetNormalizedRotation, maximumForce);
+            UpdateMotor(m, targetNormalizedRotation);
             
         }
         _dReConObservations.PreviousActions = vectorAction;
@@ -112,26 +121,31 @@ public class RagDollAgent : Agent
 	{
 		if (!_hasLazyInitialized)
 		{
+            _debugController = FindObjectOfType<MarathonTestBedController>();
     		Time.fixedDeltaTime = FixedDeltaTime;
             _spawnableEnv = GetComponentInParent<SpawnableEnv>();
             _mocapController = _spawnableEnv.GetComponentInChildren<MocapController>();
-            _mocapBodyParts = _mocapController.GetComponentsInChildren<Rigidbody>().ToList();
-            _bodyParts = GetComponentsInChildren<Rigidbody>().ToList();
+            _mocapBodyParts = _mocapController.GetComponentsInChildren<ArticulationBody>().ToList();
+            _bodyParts = GetComponentsInChildren<ArticulationBody>().ToList();
             _dReConObservations = GetComponent<DReConObservations>();
             _dReConRewards = GetComponent<DReConRewards>();
             var mocapController = _spawnableEnv.GetComponentInChildren<MocapController>();
             _trackBodyStatesInWorldSpace = mocapController.GetComponent<TrackBodyStatesInWorldSpace>();
             _ragDollSettings = GetComponent<RagDoll002>();
 
-            _motors = GetComponentsInChildren<ConfigurableJoint>().ToList();
+            _motors = GetComponentsInChildren<ArticulationBody>()
+                .Where(x=>x.jointType == ArticulationJointType.SphericalJoint)
+                .Where(x=>!x.isRoot)
+                .Distinct()
+                .ToList();
             var individualMotors = new List<float>();
             foreach (var m in _motors)
             {
-                if (m.angularXMotion != ConfigurableJointMotion.Locked)
+                if (m.swingYLock == ArticulationDofLock.LimitedMotion)
                     individualMotors.Add(0f);
-                if (m.angularYMotion != ConfigurableJointMotion.Locked)
+                if (m.swingZLock == ArticulationDofLock.LimitedMotion)
                     individualMotors.Add(0f);
-                if (m.angularZMotion != ConfigurableJointMotion.Locked)
+                if (m.twistLock == ArticulationDofLock.LimitedMotion)
                     individualMotors.Add(0f);
             }
             _dReConObservations.PreviousActions = individualMotors.ToArray();
@@ -139,37 +153,35 @@ public class RagDollAgent : Agent
 		}
         _smoothedActions = null;
         debugCopyMocap = false;
-        _trackBodyStatesInWorldSpace.CopyStatesTo(this.gameObject);
+        // _trackBodyStatesInWorldSpace.CopyStatesTo(this.gameObject);
         _dReConObservations.OnReset();
         _dReConRewards.OnReset();
         _dReConObservations.OnStep();
         _dReConRewards.OnStep();
     }    
 
-    void UpdateMotor(ConfigurableJoint configurableJoint, Vector3 targetNormalizedRotation, Vector3 maximumForce)
+    void UpdateMotor(ArticulationBody joint, Vector3 targetNormalizedRotation)
     {
-        float powerMultiplier = 2.5f;
-		var t = configurableJoint.targetAngularVelocity;
-		t.x = targetNormalizedRotation.x * maximumForce.x;
-		t.y = targetNormalizedRotation.y * maximumForce.y;
-		t.z = targetNormalizedRotation.z * maximumForce.z;
-		configurableJoint.targetAngularVelocity = t;
+		var drive = joint.yDrive;
+        var scale = (drive.upperLimit-drive.lowerLimit) / 2f;
+        var midpoint = drive.lowerLimit + scale;
+        var target = midpoint + (targetNormalizedRotation.x *scale);
+        drive.target = target;
+		joint.yDrive = drive;
 
-		var angX = configurableJoint.angularXDrive;
-		angX.positionSpring = 1f;
-		var scale = maximumForce.x * Mathf.Pow(Mathf.Abs(targetNormalizedRotation.x), 3);
-		angX.positionDamper = Mathf.Max(1f, scale);
-		angX.maximumForce = Mathf.Max(1f, maximumForce.x * powerMultiplier);
-		configurableJoint.angularXDrive = angX;
+		drive = joint.zDrive;
+        scale = (drive.upperLimit-drive.lowerLimit) / 2f;
+        midpoint = drive.lowerLimit + scale;
+        target = midpoint + (targetNormalizedRotation.y *scale);
+        drive.target = target;
+		joint.zDrive = drive;
 
-        var maxForce = Mathf.Max(maximumForce.y, maximumForce.z);
-		var angYZ = configurableJoint.angularYZDrive;
-		angYZ.positionSpring = 1f;
-        var maxAbsRotXY = Mathf.Max(Mathf.Abs(targetNormalizedRotation.y) + Mathf.Abs(targetNormalizedRotation.z));
-		scale = maxForce * Mathf.Pow(maxAbsRotXY, 3);
-		angYZ.positionDamper = Mathf.Max(1f, scale);
-		angYZ.maximumForce = Mathf.Max(1f, maxForce * powerMultiplier);
-		configurableJoint.angularYZDrive = angYZ;
+		drive = joint.xDrive;
+        scale = (drive.upperLimit-drive.lowerLimit) / 2f;
+        midpoint = drive.lowerLimit + scale;
+        target = midpoint + (targetNormalizedRotation.z *scale);
+        drive.target = target;
+		joint.xDrive = drive;
 	}
 
     void FixedUpdate()

@@ -46,8 +46,8 @@ public class DReConRewards : MonoBehaviour
     DReConRewardStats _mocapBodyStats;
     DReConRewardStats _ragDollBodyStats;
 
-    List<Rigidbody> _mocapBodyParts;
-    List<Rigidbody> _ragDollBodyParts;
+    // List<ArticulationBody> _mocapBodyParts;
+    // List<ArticulationBody> _ragDollBodyParts;
     Transform _mocapHead;
     Transform _ragDollHead;
 
@@ -61,9 +61,9 @@ public class DReConRewards : MonoBehaviour
         _ragDoll = _spawnableEnv.GetComponentInChildren<RagDollAgent>().gameObject;
         Assert.IsNotNull(_mocap);
         Assert.IsNotNull(_ragDoll);
-        _mocapBodyParts = _mocap.GetComponentsInChildren<Rigidbody>().ToList();
-        _ragDollBodyParts = _ragDoll.GetComponentsInChildren<Rigidbody>().ToList();
-        Assert.AreEqual(_mocapBodyParts.Count, _ragDollBodyParts.Count);
+        // _mocapBodyParts = _mocap.GetComponentsInChildren<ArticulationBody>().ToList();
+        // _ragDollBodyParts = _ragDoll.GetComponentsInChildren<ArticulationBody>().ToList();
+        // Assert.AreEqual(_mocapBodyParts.Count, _ragDollBodyParts.Count);
         _mocapHead = _mocap
             .GetComponentsInChildren<Transform>()
             .First(x=>x.name == "head");
@@ -128,7 +128,7 @@ public class DReConRewards : MonoBehaviour
             Assert.IsTrue(angle <= 180f);
             SumOfRotationDifferences += angle/180f;
         }
-        LocalPoseReward = -10/_mocapBodyStats.Rotations.Count;
+        LocalPoseReward = -10f/_mocapBodyStats.Rotations.Count;
         LocalPoseReward *= SumOfRotationDifferences;
         LocalPoseReward = Mathf.Exp(LocalPoseReward);
 

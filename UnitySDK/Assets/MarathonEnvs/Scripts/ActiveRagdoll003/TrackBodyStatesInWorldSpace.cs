@@ -22,13 +22,13 @@ public class TrackBodyStatesInWorldSpace : MonoBehaviour
     }
     public List<TrackBodyStatesInWorldSpace.Stat> Stats;
 
-    internal List<Rigidbody> _rigidbodyParts;
+    internal List<ArticulationBody> _articulationBodies;
 
     // Start is called before the first frame update
     void Awake()
     {
-        _rigidbodyParts = GetComponentsInChildren<Rigidbody>().ToList();
-        Stats = _rigidbodyParts
+        _articulationBodies = GetComponentsInChildren<ArticulationBody>().ToList();
+        Stats = _articulationBodies
             .Select(x=> new TrackBodyStatesInWorldSpace.Stat{Name = x.name})
             .ToList();        
     }
@@ -37,38 +37,38 @@ public class TrackBodyStatesInWorldSpace : MonoBehaviour
     {
         float timeDelta = Time.fixedDeltaTime;
 
-        foreach (var rb in _rigidbodyParts)
+        foreach (var rb in _articulationBodies)
         {
             Stat stat = Stats.First(x=>x.Name == rb.name);
             if (!stat.LastIsSet)
             {
-                stat.LastPosition = rb.position;
-                stat.LastRotation = rb.rotation;
+                stat.LastPosition = rb.transform.position;
+                stat.LastRotation = rb.transform.rotation;
             }
-            stat.Position = rb.position;
-            stat.Rotation = rb.rotation;
-            stat.Velocity = rb.position - stat.LastPosition;
+            stat.Position = rb.transform.position;
+            stat.Rotation = rb.transform.rotation;
+            stat.Velocity = rb.transform.position - stat.LastPosition;
             stat.Velocity /= timeDelta;
-            stat.AngualrVelocity = DReConObservationStats.GetAngularVelocity(rb.rotation, stat.LastRotation, timeDelta);
-            stat.LastPosition = rb.position;
-            stat.LastRotation = rb.rotation;
+            stat.AngualrVelocity = DReConObservationStats.GetAngularVelocity(rb.transform.rotation, stat.LastRotation, timeDelta);
+            stat.LastPosition = rb.transform.position;
+            stat.LastRotation = rb.transform.rotation;
             stat.LastIsSet = true;
         }        
     }
 
     public void Reset()
     {
-        foreach (var rb in _rigidbodyParts)
+        foreach (var rb in _articulationBodies)
         {
             Stat stat = Stats.First(x=>x.Name == rb.name);
-            stat.LastPosition = rb.position;
-            stat.LastRotation = rb.rotation;
-            stat.Position = rb.position;
-            stat.Rotation = rb.rotation;
+            stat.LastPosition = rb.transform.position;
+            stat.LastRotation = rb.transform.rotation;
+            stat.Position = rb.transform.position;
+            stat.Rotation = rb.transform.rotation;
             stat.Velocity = Vector3.zero;
             stat.AngualrVelocity = Vector3.zero;
-            stat.LastPosition = rb.position;
-            stat.LastRotation = rb.rotation;
+            stat.LastPosition = rb.transform.position;
+            stat.LastRotation = rb.transform.rotation;
             stat.LastIsSet = true;
         }        
         
@@ -76,14 +76,14 @@ public class TrackBodyStatesInWorldSpace : MonoBehaviour
 
     public void CopyStatesTo(GameObject target)
     {
-        var targetRbs = target.GetComponentsInChildren<Rigidbody>().ToList();
+        var targets = target.GetComponentsInChildren<ArticulationBody>().ToList();
         foreach (var stat in Stats)
         {
-            var targetRb = targetRbs.First(x=>x.name == stat.Name);
+            var targetRb = targets.First(x=>x.name == stat.Name);
             targetRb.transform.position = stat.Position;
             targetRb.transform.rotation = stat.Rotation;
-            targetRb.velocity = stat.Velocity;
-            targetRb.angularVelocity = stat.AngualrVelocity;
+            // targetRb.velocity = stat.Velocity;
+            // targetRb.angularVelocity = stat.AngualrVelocity;
         }
     }
 }

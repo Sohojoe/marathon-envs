@@ -49,16 +49,24 @@ public class DReConObservationStats : MonoBehaviour
     SpawnableEnv _spawnableEnv;
     List<Transform> _bodyParts;
     internal List<Rigidbody> _rigidbodyParts;
+    internal List<ArticulationBody> _articulationBodyParts;
 
     public void OnAwake(List<string> bodyPartsToTrack, Transform defaultTransform)
     {
         _bodyPartsToTrack = bodyPartsToTrack;
         _spawnableEnv = GetComponentInParent<SpawnableEnv>();
         _rigidbodyParts = ObjectToTrack.GetComponentsInChildren<Rigidbody>().ToList();
-        _bodyParts = _rigidbodyParts
-            .SelectMany(x=>x.GetComponentsInChildren<Transform>())
-            .Distinct()
-            .ToList();
+        _articulationBodyParts = ObjectToTrack.GetComponentsInChildren<ArticulationBody>().ToList();
+        if (_rigidbodyParts?.Count > 0)
+            _bodyParts = _rigidbodyParts
+                .SelectMany(x=>x.GetComponentsInChildren<Transform>())
+                .Distinct()
+                .ToList();
+        else
+            _bodyParts = _articulationBodyParts
+                .SelectMany(x=>x.GetComponentsInChildren<Transform>())
+                .Distinct()
+                .ToList();
         if (_bodyPartsToTrack?.Count > 0)
             _bodyParts = _bodyPartsToTrack
                 .Where(x=>_bodyPartsToTrack.Contains(x))
@@ -84,7 +92,11 @@ public class DReConObservationStats : MonoBehaviour
     public void SetStatusForStep(float timeDelta)
     {
         // find Center Of Mass and velocity
-        Vector3 newCOM = GetCenterOfMass(_rigidbodyParts);
+        Vector3 newCOM;
+        if (_rigidbodyParts?.Count > 0)
+            newCOM = GetCenterOfMass(_rigidbodyParts);
+        else
+            newCOM = GetCenterOfMass(_articulationBodyParts);
         if (!LastIsSet)
         {
             LastCenterOfMassInWorldSpace = newCOM;
@@ -138,10 +150,23 @@ public class DReConObservationStats : MonoBehaviour
 	{
 		var centerOfMass = Vector3.zero;
 		float totalMass = 0f;
-		foreach (Rigidbody rb in bodies)
+		foreach (Rigidbody ab in bodies)
 		{
-			centerOfMass += rb.worldCenterOfMass * rb.mass;
-			totalMass += rb.mass;
+			centerOfMass += ab.worldCenterOfMass * ab.mass;
+			totalMass += ab.mass;
+		}
+		centerOfMass /= totalMass;
+		centerOfMass -= _spawnableEnv.transform.position;
+		return centerOfMass;
+	}
+	Vector3 GetCenterOfMass(IEnumerable<ArticulationBody> bodies)
+	{
+		var centerOfMass = Vector3.zero;
+		float totalMass = 0f;
+		foreach (ArticulationBody ab in bodies)
+		{
+			centerOfMass += ab.worldCenterOfMass * ab.mass;
+			totalMass += ab.mass;
 		}
 		centerOfMass /= totalMass;
 		centerOfMass -= _spawnableEnv.transform.position;

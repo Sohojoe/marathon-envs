@@ -35,6 +35,9 @@ public class DReConRewardStats : MonoBehaviour
     SpawnableEnv _spawnableEnv;
     List<CapsuleCollider> _capsuleColliders;
     List<Rigidbody> _rigidbodyParts;
+    List<ArticulationBody> _articulationBodyParts;
+    List<GameObject> _bodyParts;
+
     List<Transform> _trackRotations;
     public List<Quaternion> Rotations;
     public Vector3[] Points;
@@ -45,16 +48,38 @@ public class DReConRewardStats : MonoBehaviour
     public void OnAwake(Transform defaultTransform, DReConRewardStats orderToCopy = null)
     {
         _spawnableEnv = GetComponentInParent<SpawnableEnv>();
-        _rigidbodyParts = ObjectToTrack.GetComponentsInChildren<Rigidbody>().ToList();
+        _articulationBodyParts = ObjectToTrack
+            .GetComponentsInChildren<ArticulationBody>()
+            .Distinct()
+            .ToList();
+        _rigidbodyParts = ObjectToTrack
+            .GetComponentsInChildren<Rigidbody>()
+            .Distinct()
+            .ToList();
+        if (_rigidbodyParts?.Count>0)
+            _bodyParts = _rigidbodyParts.Select(x=>x.gameObject).ToList();
+        else
+            _bodyParts = _articulationBodyParts.Select(x=>x.gameObject).ToList();
+        _trackRotations = _bodyParts
+            .SelectMany(x=>x.GetComponentsInChildren<Transform>())
+            .Distinct()
+            .ToList();
+        _capsuleColliders = _bodyParts
+            .SelectMany(x=>x.GetComponentsInChildren<CapsuleCollider>())
+            .Distinct()
+            .ToList();
         if (orderToCopy != null)
         {
-            _rigidbodyParts = orderToCopy._rigidbodyParts
-                .Select(x=>_rigidbodyParts.First(y=>y.name == x.name))
+            _bodyParts = orderToCopy._bodyParts
+                .Select(x=>_bodyParts.First(y=>y.name == x.name))
+                .ToList();
+            _trackRotations = orderToCopy._trackRotations
+                .Select(x=>_trackRotations.First(y=>y.name == x.name))
+                .ToList();
+            _capsuleColliders = orderToCopy._capsuleColliders
+                .Select(x=>_capsuleColliders.First(y=>y.name == x.name))
                 .ToList();
         }
-        _capsuleColliders = _rigidbodyParts
-            .SelectMany(x=>x.GetComponents<CapsuleCollider>())
-            .ToList();
         Points = Enumerable.Range(0,_capsuleColliders.Count * 6)
             .Select(x=>Vector3.zero)
             .ToArray();
@@ -64,9 +89,6 @@ public class DReConRewardStats : MonoBehaviour
         PointVelocity = Enumerable.Range(0,_capsuleColliders.Count * 6)
             .Select(x=>0f)
             .ToArray();
-        _trackRotations = _rigidbodyParts
-            .SelectMany(x=>x.GetComponentsInChildren<Transform>())
-            .ToList();
         Rotations = Enumerable.Range(0,_trackRotations.Count)
             .Select(x=>Quaternion.identity)
             .ToList();
@@ -82,7 +104,11 @@ public class DReConRewardStats : MonoBehaviour
     public void SetStatusForStep(float timeDelta)
     {
         // find Center Of Mass and velocity
-        Vector3 newCOM = GetCenterOfMass(_rigidbodyParts);
+        Vector3 newCOM;
+        if (_rigidbodyParts?.Count > 0)
+            newCOM = GetCenterOfMass(_rigidbodyParts);
+        else
+            newCOM = GetCenterOfMass(_articulationBodyParts);
         if (!LastIsSet)
         {
             LastCenterOfMassInWorldSpace = newCOM;
@@ -138,10 +164,11 @@ public class DReConRewardStats : MonoBehaviour
         Assert.AreEqual(_capsuleColliders.Count, target._capsuleColliders.Count);
         for (int i = 0; i < _capsuleColliders.Count; i++)
         {
-            Assert.AreEqual(_capsuleColliders[i].name, target._capsuleColliders[i].name);
-            Assert.AreEqual(_capsuleColliders[i].direction, target._capsuleColliders[i].direction);
-            Assert.AreEqual(_capsuleColliders[i].height, target._capsuleColliders[i].height);
-            Assert.AreEqual(_capsuleColliders[i].radius, target._capsuleColliders[i].radius);
+            string debugStr = $" _capsuleColliders.{_capsuleColliders[i].name} vs target._capsuleColliders.{target._capsuleColliders[i].name}";
+            Assert.AreEqual(_capsuleColliders[i].name, target._capsuleColliders[i].name, $"name:{debugStr}");
+            Assert.AreEqual(_capsuleColliders[i].direction, target._capsuleColliders[i].direction, $"direction:{debugStr}");
+            Assert.AreEqual(_capsuleColliders[i].height, target._capsuleColliders[i].height, $"height:{debugStr}");
+            Assert.AreEqual(_capsuleColliders[i].radius, target._capsuleColliders[i].radius, $"radius:{debugStr}");
         }
     }
 
@@ -219,17 +246,30 @@ public class DReConRewardStats : MonoBehaviour
     //     }
     //     return distances;
     // }    
-	Vector3 GetCenterOfMass(IEnumerable<Rigidbody> bodies)
+	Vector3 GetCenterOfMass(IEnumerable<ArticulationBody> bodies)
 	{
 		var centerOfMass = Vector3.zero;
 		float totalMass = 0f;
-		foreach (Rigidbody rb in bodies)
+		foreach (ArticulationBody ab in bodies)
 		{
-			centerOfMass += rb.worldCenterOfMass * rb.mass;
-			totalMass += rb.mass;
+			centerOfMass += ab.worldCenterOfMass * ab.mass;
+			totalMass += ab.mass;
 		}
 		centerOfMass /= totalMass;
 		centerOfMass -= _spawnableEnv.transform.position;
 		return centerOfMass;
 	}
+	Vector3 GetCenterOfMass(IEnumerable<Rigidbody> bodies)
+	{
+		var centerOfMass = Vector3.zero;
+		float totalMass = 0f;
+		foreach (Rigidbody ab in bodies)
+		{
+			centerOfMass += ab.worldCenterOfMass * ab.mass;
+			totalMass += ab.mass;
+		}
+		centerOfMass /= totalMass;
+		centerOfMass -= _spawnableEnv.transform.position;
+		return centerOfMass;
+	}    
 }
