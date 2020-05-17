@@ -30,6 +30,9 @@ public class DReConRewards : MonoBehaviour
     [Header("Center of Mass Velocity Reward")]
     public Vector3 MocapCOMVelocity;
     public Vector3 RagDollCOMVelocity;
+    public float MocapCOMVelocityMagnitude;
+    public float RagDollCOMVelocityMagnitude;
+
     public float COMVelocityDifference;
     public float ComReward;
 
@@ -101,6 +104,8 @@ public class DReConRewards : MonoBehaviour
         // center of mass velocity reward
         MocapCOMVelocity = _mocapBodyStats.CenterOfMassVelocity;
         RagDollCOMVelocity = _ragDollBodyStats.CenterOfMassVelocity;
+        MocapCOMVelocityMagnitude = MocapCOMVelocity.magnitude;
+        RagDollCOMVelocityMagnitude = RagDollCOMVelocity.magnitude;
         COMVelocityDifference = (MocapCOMVelocity-RagDollCOMVelocity).magnitude;
         ComReward = -Mathf.Pow(COMVelocityDifference,2);
         ComReward = Mathf.Exp(ComReward);

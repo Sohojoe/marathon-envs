@@ -23,7 +23,8 @@ public class RagDollAgent : Agent
     RagDoll002 _ragDollSettings;
     TrackBodyStatesInWorldSpace _trackBodyStatesInWorldSpace;
     List<ArticulationBody> _motors;
-    MarathonTestBedController _debugController;    
+    MarathonTestBedController _debugController;  
+    InputController _inputController;
     bool _hasLazyInitialized;
     float[] _smoothedActions;
 	override public void CollectObservations()
@@ -86,9 +87,11 @@ public class RagDollAgent : Agent
         if (ignorActions)
             vectorAction = vectorAction.Select(x=>0f).ToArray();
 		int i = 0;
-        Vector3 targetNormalizedRotation = Vector3.zero;
 		foreach (var m in _motors)
 		{
+            if (m.isRoot)
+                continue;
+            Vector3 targetNormalizedRotation = Vector3.zero;
             if (m.swingYLock == ArticulationDofLock.LimitedMotion)
 				targetNormalizedRotation.x = vectorAction[i++];
             if (m.swingZLock == ArticulationDofLock.LimitedMotion)
@@ -132,6 +135,7 @@ public class RagDollAgent : Agent
             var mocapController = _spawnableEnv.GetComponentInChildren<MocapController>();
             _trackBodyStatesInWorldSpace = mocapController.GetComponent<TrackBodyStatesInWorldSpace>();
             _ragDollSettings = GetComponent<RagDoll002>();
+            _inputController = _spawnableEnv.GetComponentInChildren<InputController>();
 
             _motors = GetComponentsInChildren<ArticulationBody>()
                 .Where(x=>x.jointType == ArticulationJointType.SphericalJoint)
@@ -153,6 +157,10 @@ public class RagDollAgent : Agent
 		}
         _smoothedActions = null;
         debugCopyMocap = false;
+        _inputController.OnReset();
+        _mocapController.GetComponentInChildren<MocapAnimatorController>().OnReset();
+        _mocapController.OnReset();
+        _mocapController.CopyStatesTo(this.gameObject);
         // _trackBodyStatesInWorldSpace.CopyStatesTo(this.gameObject);
         _dReConObservations.OnReset();
         _dReConRewards.OnReset();
@@ -162,11 +170,17 @@ public class RagDollAgent : Agent
 
     void UpdateMotor(ArticulationBody joint, Vector3 targetNormalizedRotation)
     {
+        Vector3 power = _ragDollSettings.MusclePowers.First(x=>x.Muscle == joint.name).PowerVector;
+        power *= _ragDollSettings.Stiffness;
+        float damping = _ragDollSettings.Damping;
+
 		var drive = joint.yDrive;
         var scale = (drive.upperLimit-drive.lowerLimit) / 2f;
         var midpoint = drive.lowerLimit + scale;
         var target = midpoint + (targetNormalizedRotation.x *scale);
         drive.target = target;
+        drive.stiffness = power.x;
+        drive.damping = damping;
 		joint.yDrive = drive;
 
 		drive = joint.zDrive;
@@ -174,6 +188,8 @@ public class RagDollAgent : Agent
         midpoint = drive.lowerLimit + scale;
         target = midpoint + (targetNormalizedRotation.y *scale);
         drive.target = target;
+        drive.stiffness = power.y;
+        drive.damping = damping;
 		joint.zDrive = drive;
 
 		drive = joint.xDrive;
@@ -181,6 +197,8 @@ public class RagDollAgent : Agent
         midpoint = drive.lowerLimit + scale;
         target = midpoint + (targetNormalizedRotation.z *scale);
         drive.target = target;
+        drive.stiffness = power.z;
+        drive.damping = damping;
 		joint.xDrive = drive;
 	}
 

@@ -161,6 +161,10 @@ public class DReConObservationStats : MonoBehaviour
 	}
 	Vector3 GetCenterOfMass(IEnumerable<ArticulationBody> bodies)
 	{
+        // var root = bodies.First(x=>x.isRoot);
+        // var centerOfMass = root.worldCenterOfMass;
+		// centerOfMass -= _spawnableEnv.transform.position;
+		// return centerOfMass;
 		var centerOfMass = Vector3.zero;
 		float totalMass = 0f;
 		foreach (ArticulationBody ab in bodies)
@@ -170,8 +174,8 @@ public class DReConObservationStats : MonoBehaviour
 		}
 		centerOfMass /= totalMass;
 		centerOfMass -= _spawnableEnv.transform.position;
-		return centerOfMass;
-	}
+		return centerOfMass;    
+    }
     public static Vector3 GetAngularVelocity(Quaternion rotation, Quaternion lastRotation, float timeDelta)
     {
         var q = lastRotation * Quaternion.Inverse(rotation);

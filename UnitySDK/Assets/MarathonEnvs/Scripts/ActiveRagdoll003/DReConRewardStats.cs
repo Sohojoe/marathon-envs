@@ -26,6 +26,10 @@ public class DReConRewardStats : MonoBehaviour
     public Vector3 CenterOfMassVelocity;
     public float CenterOfMassVelocityMagnitude;
 
+    [Header("debug")]
+    public Vector3 debugA;
+    public Vector3 debugB;
+    public Vector3 debugC;
 
     [HideInInspector]
     public Vector3 LastCenterOfMassInWorldSpace;
@@ -38,7 +42,10 @@ public class DReConRewardStats : MonoBehaviour
     List<ArticulationBody> _articulationBodyParts;
     List<GameObject> _bodyParts;
 
-    List<Transform> _trackRotations;
+    GameObject _root;
+    Quaternion _rootDefaultTransorm;
+
+    List<GameObject> _trackRotations;
     public List<Quaternion> Rotations;
     public Vector3[] Points;
     Vector3[] _lastPoints;
@@ -62,6 +69,7 @@ public class DReConRewardStats : MonoBehaviour
             _bodyParts = _articulationBodyParts.Select(x=>x.gameObject).ToList();
         _trackRotations = _bodyParts
             .SelectMany(x=>x.GetComponentsInChildren<Transform>())
+            .Select(x=>x.gameObject)
             .Distinct()
             .ToList();
         _capsuleColliders = _bodyParts
@@ -92,13 +100,37 @@ public class DReConRewardStats : MonoBehaviour
         Rotations = Enumerable.Range(0,_trackRotations.Count)
             .Select(x=>Quaternion.identity)
             .ToList();
-        
+        if (_root == null)
+        {
+            _root = _bodyParts
+                .First(x=>x.name=="butt");
+            _rootDefaultTransorm = _root.transform.rotation;
+        }        
         transform.position = defaultTransform.position;
         transform.rotation = defaultTransform.rotation;
     }
     public void OnReset()
     {
+        OnAwake(this.transform, this);
+        ResetStatus();
         LastIsSet = false;
+    }
+    public void ResetStatus()
+    {
+        CenterOfMassVelocity = Vector3.zero;
+        CenterOfMassVelocityMagnitude = 0f;
+        LastCenterOfMassInWorldSpace = transform.position;
+        GetAllPoints(Points);
+        Array.Copy(Points, 0, _lastPoints, 0, Points.Length);
+        for (int i = 0; i < Points.Length; i++)
+        {
+            PointVelocity[i] = 0f;
+        }
+        for (int i = 0; i < _trackRotations.Count; i++)
+        {
+            Quaternion localRotation = Quaternion.Inverse(transform.rotation) * _trackRotations[i].transform.rotation;
+            Rotations[i] = localRotation;
+        }
     }
 
     public void SetStatusForStep(float timeDelta)
@@ -116,12 +148,41 @@ public class DReConRewardStats : MonoBehaviour
         transform.position = newCOM;
         CenterOfMassVelocity = transform.position - LastCenterOfMassInWorldSpace;
         CenterOfMassVelocity /= timeDelta;
-        var newHorizontalDirection = new Vector3(CenterOfMassVelocity.x, 0f, CenterOfMassVelocity.z);
         CenterOfMassVelocityMagnitude = CenterOfMassVelocity.magnitude;
-        if (newHorizontalDirection.magnitude > 0.1f)
-        {
-            transform.rotation = Quaternion.LookRotation(newHorizontalDirection.normalized, Vector3.up);
-        }
+        // var newHorizontalDirection = new Vector3(CenterOfMassVelocity.x, 0f, CenterOfMassVelocity.z);
+        // if (newHorizontalDirection.magnitude > 0.1f)
+        // {
+        //     transform.rotation = Quaternion.LookRotation(newHorizontalDirection.normalized, Vector3.up);
+        // }
+        var newHorizontalDirection = new Vector3(
+            _rootDefaultTransorm.eulerAngles.x, 
+            _root.transform.rotation.y,
+            _rootDefaultTransorm.eulerAngles.z);
+        // debugA = _root.transform.TransformDirection(_root.transform.localRotation.eulerAngles);
+        // debugB = _root.transform.localRotation.eulerAngles;
+        // debugC = _root.transform.rotation.eulerAngles;
+        debugA = _root.transform.forward;
+        // debugB = _root.transform.TransformDirection(_root.transform.forward);
+        debugB = _root.transform.localRotation.eulerAngles;
+        debugC = _root.transform.up;
+        debugA *= 180f;
+        // debugB *= 180f;
+        debugC *= 180f;
+        debugA += new Vector3(180f, 180f, 180f);
+        // debugB += new Vector3(180f, 180f, 180f);
+        debugC += new Vector3(180f, 180f, 180f);
+        newHorizontalDirection = new Vector3(
+            _rootDefaultTransorm.eulerAngles.x,
+            debugC.z,
+            _rootDefaultTransorm.eulerAngles.z);        
+        this.transform.rotation = Quaternion.Euler(newHorizontalDirection);
+        // transform.rotation = Quaternion.LookRotation(newHorizontalDirection.normalized, _rootDefaultTransorm.eulerAngles);
+        // transform.rotation = Quaternion.LookRotation(newHorizontalDirection.normalized, _rootDefaultTransorm.eulerAngles.normalized);
+        // transform.rotation = Quaternion.LookRotation(newHorizontalDirection);
+        // transform.rotation = _root.transform.TransformDirection(newHorizontalDirection);
+        // debugA = newHorizontalDirection;
+        // debugB = _rootDefaultTransorm.eulerAngles;
+        // debugC = transform.rotation.eulerAngles;
         LastCenterOfMassInWorldSpace = newCOM;
         
         GetAllPoints(Points);
@@ -137,7 +198,7 @@ public class DReConRewardStats : MonoBehaviour
 
         for (int i = 0; i < _trackRotations.Count; i++)
         {
-            Quaternion localRotation = Quaternion.Inverse(transform.rotation) * _trackRotations[i].rotation;
+            Quaternion localRotation = Quaternion.Inverse(transform.rotation) * _trackRotations[i].transform.rotation;
             Rotations[i] = localRotation;
         }
 
@@ -248,6 +309,10 @@ public class DReConRewardStats : MonoBehaviour
     // }    
 	Vector3 GetCenterOfMass(IEnumerable<ArticulationBody> bodies)
 	{
+        // var root = bodies.First(x=>x.isRoot);
+        // var centerOfMass = root.worldCenterOfMass;
+		// centerOfMass -= _spawnableEnv.transform.position;
+		// return centerOfMass;
 		var centerOfMass = Vector3.zero;
 		float totalMass = 0f;
 		foreach (ArticulationBody ab in bodies)
@@ -257,8 +322,8 @@ public class DReConRewardStats : MonoBehaviour
 		}
 		centerOfMass /= totalMass;
 		centerOfMass -= _spawnableEnv.transform.position;
-		return centerOfMass;
-	}
+		return centerOfMass;        
+	}    
 	Vector3 GetCenterOfMass(IEnumerable<Rigidbody> bodies)
 	{
 		var centerOfMass = Vector3.zero;

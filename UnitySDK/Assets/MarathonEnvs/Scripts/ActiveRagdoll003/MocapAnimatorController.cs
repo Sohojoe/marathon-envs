@@ -62,6 +62,10 @@ public class MocapAnimatorController : MonoBehaviour
 
     void FixedUpdate()
     {
+        OnFixedUpdate();
+    }
+    void OnFixedUpdate()
+    {
         // RotateTarget(Time.fixedDeltaTime);
         SetTargetFromMoveInput();
         CalculateForwardMovement(Time.fixedDeltaTime);
@@ -77,6 +81,33 @@ public class MocapAnimatorController : MonoBehaviour
         // TimeoutToIdle();
 
         _previouslyGrounded = _isGrounded;
+    }
+
+    public void OnReset()
+    {
+        _isGrounded = true;
+        _previouslyGrounded = true;
+        _inCombo = false;
+        _readyToJump = false;
+        _forwardVelocity = 0f;
+        _lastGroundForwardVelocity = Vector3.zero;
+        _desiredForwardSpeed = 0f;
+        _verticalVelocity = 0f;
+        _angleDiff = 0f;
+
+        _anim.SetBool("onGround", _isGrounded);
+        _anim.SetFloat("verticalVelocity", _verticalVelocity);
+        _anim.SetFloat("angleDeltaRad", _angleDiff * Mathf.Deg2Rad);
+        _anim.SetFloat("forwardVelocity", _forwardVelocity);
+        _anim.SetBool("backflip", false);
+        _anim.Rebind();
+        _anim.SetBool("onGround", _isGrounded);
+        _anim.SetFloat("verticalVelocity", _verticalVelocity);
+        _anim.SetFloat("angleDeltaRad", _angleDiff * Mathf.Deg2Rad);
+        _anim.SetFloat("forwardVelocity", _forwardVelocity);
+        _anim.SetBool("backflip", false);
+        OnFixedUpdate();
+        _anim.Update(0f);
     }
 
 

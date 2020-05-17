@@ -23,6 +23,9 @@ public class MocapController : MonoBehaviour, IOnSensorCollision
 	public bool CameraFollowMe;
 	public Transform CameraTarget;
 
+	Vector3 _resetPosition;
+	Quaternion _resetRotation;
+
 
 	void Awake()
     {
@@ -39,7 +42,8 @@ public class MocapController : MonoBehaviour, IOnSensorCollision
             var follow = camera.GetComponent<SmoothFollow>();
             follow.target = CameraTarget;
         }
-
+		_resetPosition = transform.position;
+		_resetRotation = transform.rotation;
     }
 	void SetupSensors()
 	{
@@ -191,7 +195,12 @@ public class MocapController : MonoBehaviour, IOnSensorCollision
 
 	}
 
-
+	public void OnReset()
+	{
+		transform.position = _resetPosition;
+		transform.rotation = _resetRotation;
+        MimicAnimation();
+	}
 
     public void OnSensorCollisionEnter(Collider sensorCollider, GameObject other)
 	{
@@ -216,5 +225,22 @@ public class MocapController : MonoBehaviour, IOnSensorCollision
 			var idx = _sensors.IndexOf(sensor);
 			SensorIsInTouch[idx] = 0f;
 		}
-	}      
+	}   
+    public void CopyStatesTo(GameObject target)
+    {
+        var targets = target.GetComponentsInChildren<ArticulationBody>().ToList();
+        var root = targets.First(x=>x.isRoot);
+        root.gameObject.SetActive(false);
+        foreach (var targetRb in targets)
+        {
+			var stat = GetComponentsInChildren<Rigidbody>().First(x=>x.name == targetRb.name);
+            targetRb.transform.position = stat.position;
+            targetRb.transform.rotation = stat.rotation;
+            if (targetRb.isRoot)
+            {
+                targetRb.TeleportRoot(stat.position, stat.rotation);
+            }
+        }
+        root.gameObject.SetActive(true);
+    }	   
 }

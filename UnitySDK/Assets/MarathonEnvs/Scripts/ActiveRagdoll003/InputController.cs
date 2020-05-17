@@ -30,6 +30,10 @@ public class InputController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        DoUpdate();
+    }
+    void DoUpdate()
+    {
         if (UseHumanInput)
             GetHumanInput();
         else
@@ -37,6 +41,11 @@ public class InputController : MonoBehaviour
         if (MovementVector.magnitude > 0f)
             HorizontalDirection = new Vector3(MovementVector.normalized.x, 0f, MovementVector.normalized.y);
         DesiredHorizontalVelocity = MovementVector * MaxVelocity;
+    }
+    public void OnReset()
+    {
+        _delayUntilNextAction = -1f;
+        DoUpdate();
     }
     void GetHumanInput()
     {

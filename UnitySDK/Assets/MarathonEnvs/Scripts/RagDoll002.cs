@@ -15,6 +15,8 @@ public class RagDoll002 : MonoBehaviour {
     public List<MusclePower> MusclePowers;
 
     public float MotorScale = 1f;
+    public float Stiffness = 100f;
+    public float Damping = 100f;
 
 	// Use this for initialization
 	void Start () {

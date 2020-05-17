@@ -22,13 +22,13 @@ public class TrackBodyStatesInWorldSpace : MonoBehaviour
     }
     public List<TrackBodyStatesInWorldSpace.Stat> Stats;
 
-    internal List<ArticulationBody> _articulationBodies;
+    internal List<Rigidbody> _rigidbodies;
 
     // Start is called before the first frame update
     void Awake()
     {
-        _articulationBodies = GetComponentsInChildren<ArticulationBody>().ToList();
-        Stats = _articulationBodies
+        _rigidbodies = GetComponentsInChildren<Rigidbody>().ToList();
+        Stats = _rigidbodies
             .Select(x=> new TrackBodyStatesInWorldSpace.Stat{Name = x.name})
             .ToList();        
     }
@@ -37,7 +37,7 @@ public class TrackBodyStatesInWorldSpace : MonoBehaviour
     {
         float timeDelta = Time.fixedDeltaTime;
 
-        foreach (var rb in _articulationBodies)
+        foreach (var rb in _rigidbodies)
         {
             Stat stat = Stats.First(x=>x.Name == rb.name);
             if (!stat.LastIsSet)
@@ -58,7 +58,7 @@ public class TrackBodyStatesInWorldSpace : MonoBehaviour
 
     public void Reset()
     {
-        foreach (var rb in _articulationBodies)
+        foreach (var rb in _rigidbodies)
         {
             Stat stat = Stats.First(x=>x.Name == rb.name);
             stat.LastPosition = rb.transform.position;
@@ -77,6 +77,8 @@ public class TrackBodyStatesInWorldSpace : MonoBehaviour
     public void CopyStatesTo(GameObject target)
     {
         var targets = target.GetComponentsInChildren<ArticulationBody>().ToList();
+        var root = targets.First(x=>x.isRoot);
+        root.gameObject.SetActive(false);
         foreach (var stat in Stats)
         {
             var targetRb = targets.First(x=>x.name == stat.Name);
@@ -84,6 +86,26 @@ public class TrackBodyStatesInWorldSpace : MonoBehaviour
             targetRb.transform.rotation = stat.Rotation;
             // targetRb.velocity = stat.Velocity;
             // targetRb.angularVelocity = stat.AngualrVelocity;
+
+            // var drive = targetRb.yDrive;
+            // drive.targetVelocity = stat.AngualrVelocity.x;
+            // targetRb.yDrive = drive;
+
+            // drive = targetRb.zDrive;
+            // drive.targetVelocity = stat.AngualrVelocity.y;
+            // targetRb.zDrive = drive;
+
+            // drive = targetRb.xDrive;
+            // drive.targetVelocity = stat.AngualrVelocity.z;
+            // targetRb.xDrive = drive;
+
+            targetRb.inertiaTensor = stat.Velocity;
+            targetRb.inertiaTensorRotation = Quaternion.Euler(stat.AngualrVelocity);
+            if (targetRb.isRoot)
+            {
+                targetRb.TeleportRoot(stat.Position, stat.Rotation);
+            }
         }
+        root.gameObject.SetActive(true);
     }
 }
