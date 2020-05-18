@@ -71,6 +71,7 @@ public class DReConRewardStats : MonoBehaviour
             .SelectMany(x=>x.GetComponentsInChildren<Transform>())
             .Select(x=>x.gameObject)
             .Distinct()
+            .Where(x=>x.GetComponent<Rigidbody>() != null || x.GetComponent<ArticulationBody>() != null)
             .ToList();
         _capsuleColliders = _bodyParts
             .SelectMany(x=>x.GetComponentsInChildren<CapsuleCollider>())

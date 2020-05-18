@@ -13,6 +13,7 @@ public class RagDollAgent : Agent
     public bool SkipRewardSmoothing;
     public bool debugCopyMocap;
     public bool ignorActions;
+    public bool dontResetOnZeroReward;
 
     MocapController _mocapController;
     List<ArticulationBody> _mocapBodyParts;
@@ -106,7 +107,8 @@ public class RagDollAgent : Agent
         AddReward(_dReConRewards.Reward);
         if (_dReConRewards.Reward <= 0f)
         {
-            Done();
+            if (!dontResetOnZeroReward)
+                Done();
         }
     }
 

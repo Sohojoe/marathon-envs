@@ -74,45 +74,42 @@ public class MocapController : MonoBehaviour, IOnSensorCollision
 		if (!anim.enabled)
 			return;
 
-        // MimicBone("butt", "mixamorig:Hips", new Vector3(.01f, -.057f, .004f), Quaternion.Euler(90, 88.2f, 88.8f));
-        // MimicBone("butt", 			"mixamorig:Hips", 			new Vector3(.0f, .0f, .0f), 			Quaternion.Euler(90, 88.2f, 88.8f));
-        // MimicBone("butt", 			"mixamorig:Hips", 			new Vector3(.0f, -.055f, .0f), 			Quaternion.Euler(90, 0f, 0f));
-        MimicBone("butt", 			"mixamorig:Hips", 			new Vector3(.0f, -.055f, .0f), 			Quaternion.Euler(90, 0f, 0f));
-        MimicBone("lower_waist",    "mixamorig:Spine",          new Vector3(.0f, .0153f, .0f), 			Quaternion.Euler(90, 0f, 0f));
-        // MimicBone("upper_waist",    "mixamorig:Spine1",         new Vector3(.0f, .0465f, .0f), 			Quaternion.Euler(90, 0f, 0f));
-        MimicBone("torso",          "mixamorig:Spine2",         new Vector3(.0f, .04f, .0f), 			Quaternion.Euler(90, 0f, 0f));
-		//Quaternion.Euler(90, -90f, 180f));
+        MimicBone("butt", 			"mixamorig:Hips", 			new Vector3(.0f, -.055f, .0f), 			Quaternion.Euler(0f, -90f, 0f));
+        MimicBone("lower_waist",    "mixamorig:Spine",          new Vector3(.0f, .0153f, .0f), 			Quaternion.Euler(0f, -90f, 0f));
+        MimicBone("upper_waist",    "mixamorig:Spine1",         new Vector3(.0f, .0465f, .0f), 			Quaternion.Euler(0f, -90f, 0f));
+        // MimicBone("torso",          "mixamorig:Spine2",         new Vector3(.0f, .04f, .0f), 			Quaternion.Euler(90, 0f, 0f));
         // MimicBone("head",           "mixamorig:Head",           new Vector3(.0f, .05f, .0f), 			Quaternion.Euler(0, 0f, 0f));
 
-        MimicBone("left_upper_arm",   "mixamorig:LeftArm", "mixamorig:LeftForeArm", new Vector3(.0f, .0f, .0f), Quaternion.Euler(0, 45, 180));
-        MimicBone("left_larm",        "mixamorig:LeftForeArm",  "mixamorig:LeftHand", new Vector3(.0f, .0f, .0f), Quaternion.Euler(0, -180-45, 180));
-        //MimicBone("left_hand",        "mixamorig:LeftHand", new Vector3(.0f, .0f, .0f), 			Quaternion.Euler(0, 90, 90+180));
-        
-        MimicBone("right_upper_arm",  "mixamorig:RightArm", "mixamorig:RightForeArm",      new Vector3(.0f, .0f, .0f), Quaternion.Euler(0, 180-45, 180));
-        MimicBone("right_larm",       "mixamorig:RightForeArm", "mixamorig:RightHand",  new Vector3(.0f, .0f, .0f), Quaternion.Euler(0, 90-45, 180));
-        // MimicBone("right_hand",       "mixamorig:RightHand",      new Vector3(.0f, .0f, .0f), Quaternion.Euler(0, 180-90, -90));
 
-        MimicBone("left_thigh",       "mixamorig:LeftUpLeg",  "mixamorig:LeftLeg",    new Vector3(.0f, .0f, .0f), 			Quaternion.Euler(0, 0, 180));
-        MimicBone("left_shin",        "mixamorig:LeftLeg",    "mixamorig:LeftFoot",   new Vector3(.0f, .02f, .0f), 			Quaternion.Euler(0, 0, 180));
+        // MimicBone("left_upper_arm",   "mixamorig:LeftArm", "mixamorig:LeftForeArm", new Vector3(.0f, .0f, .0f), Quaternion.Euler(0, 45, 180));
+        // MimicBone("left_larm",        "mixamorig:LeftForeArm",  "mixamorig:LeftHand", new Vector3(.0f, .0f, .0f), Quaternion.Euler(0f, -180-45, 180));
+        // //MimicBone("left_hand",        "mixamorig:LeftHand", new Vector3(.0f, .0f, .0f), 			Quaternion.Euler(0, 90, 90+180));
+        MimicBone("left_upper_arm",   "mixamorig:LeftArm", "mixamorig:LeftForeArm", new Vector3(.0f, .0f, .0f), Quaternion.Euler(0f, 45f+90f, 180f));
+        MimicBone("left_larm",        "mixamorig:LeftForeArm",  "mixamorig:LeftHand", new Vector3(.0f, .0f, .0f), Quaternion.Euler(0f, 45f+90f, 180f));
+        // MimicBone("left_hand",        "mixamorig:LeftForeArm",  "mixamorig:LeftHand", new Vector3(.0f, .0f, .0f), Quaternion.Euler(0, 45f, 0));
+        
+        // MimicBone("right_upper_arm",  "mixamorig:RightArm", "mixamorig:RightForeArm",      new Vector3(.0f, .0f, .0f), Quaternion.Euler(0, 180-45, 180));
+        // MimicBone("right_larm",       "mixamorig:RightForeArm", "mixamorig:RightHand",  new Vector3(.0f, .0f, .0f), Quaternion.Euler(0, 90-45, 180));
+        // // MimicBone("right_hand",       "mixamorig:RightHand",      new Vector3(.0f, .0f, .0f), Quaternion.Euler(0, 180-90, -90));
+        MimicBone("right_upper_arm",  "mixamorig:RightArm", "mixamorig:RightForeArm",      new Vector3(.0f, .0f, .0f), Quaternion.Euler(0f, 45f+180f, 180f));
+        MimicBone("right_larm",       "mixamorig:RightForeArm", "mixamorig:RightHand",  new Vector3(.0f, .0f, .0f), Quaternion.Euler(0f, 45f+180f, 180f));
+
+
+        MimicBone("left_thigh",       "mixamorig:LeftUpLeg",  "mixamorig:LeftLeg",    new Vector3(.0f, .0f, .0f), 			Quaternion.Euler(0, 90, 180));
+        MimicBone("left_shin",        "mixamorig:LeftLeg",    "mixamorig:LeftFoot",   new Vector3(.0f, .02f, .0f), 			Quaternion.Euler(0, 90, 180));
         // MimicBone("left_left_foot",   "mixamorig:LeftToeBase",    new Vector3(.024f, .044f, -.06f), 			Quaternion.Euler(3, -90, 180));//3));
         // MimicBone("right_left_foot",  "mixamorig:LeftToeBase",    new Vector3(-.024f, .044f, -.06f),  			Quaternion.Euler(-8, -90, 180));//-8));
         // MimicLeftFoot("left_left_foot",   new Vector3(.024f, -.01215f, -.06f), 			Quaternion.Euler(3, -90, 180));//3));
         // MimicLeftFoot("right_left_foot",  new Vector3(-.024f, -.01215f, -.06f),  			Quaternion.Euler(-8, -90, 180));//-8));
         // MimicLeftFoot("left_left_foot",   new Vector3(-.024f, -.01215f, -.06f), 			Quaternion.Euler(-8, -90, 180));//3));
 
-        MimicBone("right_thigh",      "mixamorig:RightUpLeg", "mixamorig:RightLeg", new Vector3(.0f, .0f, .0f), 			Quaternion.Euler(0, 0, 180));
-        MimicBone("right_shin",       "mixamorig:RightLeg",   "mixamorig:RightFoot", new Vector3(.0f, .02f, .0f), 			Quaternion.Euler(0, 0, 180));
-        // MimicBone("right_right_foot", "mixamorig:RightToeBase",   new Vector3(.024f, .044f, -.06f),  			Quaternion.Euler(3, -90, 180));//3));
-        // MimicBone("left_right_foot",  "mixamorig:RightToeBase",   new Vector3(-.024f, .044f, -.06f), 		Quaternion.Euler(-8, -90, 180));//-8));
-        // MimicRightFoot("right_right_foot", new Vector3(.024f, .044f, -.06f),  			Quaternion.Euler(3, -90, 180));//3));
-        // MimicRightFoot("left_right_foot",  new Vector3(-.024f, .044f, -.06f), 		Quaternion.Euler(-8, -90, 180));//-8));
-        // MimicRightFoot("right_right_foot", new Vector3(.024f, -.01215f, -.06f),  			Quaternion.Euler(3, -90, 180));//3));
-        // MimicRightFoot("left_right_foot",  new Vector3(-.024f, -.01215f, -.06f), 		Quaternion.Euler(-8, -90, 180));//-8));
-        // MimicRightFoot("right_right_foot", new Vector3(.024f, -.01215f, -.06f),  			Quaternion.Euler(3, -90, 180));//3));
-        // MimicRightFoot("right_right_foot", new Vector3(.0243f, -.0f, -.0243f),  			Quaternion.Euler(3, -90, 180));//3));
-        // MimicLeftFoot("left_left_foot",   new Vector3(-.0243f, -.0f, -.0243f), 			Quaternion.Euler(-8, -90, 180));//3));
-        MimicRightFoot("right_right_foot", new Vector3(.0f, -.0f, -.0f),  			Quaternion.Euler(3, -90, 180));//3));
-        MimicLeftFoot("left_left_foot",   new Vector3(-.0f, -.0f, -.0f), 			Quaternion.Euler(-8, -90, 180));//3));
+        MimicBone("right_thigh",      "mixamorig:RightUpLeg", "mixamorig:RightLeg", new Vector3(.0f, .0f, .0f), 			Quaternion.Euler(0, 90, 180));
+        MimicBone("right_shin",       "mixamorig:RightLeg",   "mixamorig:RightFoot", new Vector3(.0f, .02f, .0f), 			Quaternion.Euler(0, 90, 180));
+
+        // MimicRightFoot("right_right_foot", new Vector3(.0f, -.0f, -.0f),  			Quaternion.Euler(3, -90, 180));//3));
+        // MimicLeftFoot("left_left_foot",   new Vector3(-.0f, -.0f, -.0f), 			Quaternion.Euler(-8, -90, 180));//3));
+        MimicRightFoot("right_right_foot", new Vector3(.0f, -.0f, -.0f),  			Quaternion.Euler(-90, 0, 180));//3));
+        MimicLeftFoot("left_left_foot",   new Vector3(-.0f, -.0f, -.0f), 			Quaternion.Euler(-90, 0, 180));//3));
 		
 
 	}
