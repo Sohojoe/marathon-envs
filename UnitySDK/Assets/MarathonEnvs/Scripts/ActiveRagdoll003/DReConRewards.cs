@@ -12,6 +12,7 @@ public class DReConRewards : MonoBehaviour
 
     [Header("Position Reward")]
     public float SumOfDistances;
+    public float SumOfSqrDistances;
     public float PositionReward;
 
     [Header("Velocity Reward")]
@@ -21,8 +22,9 @@ public class DReConRewards : MonoBehaviour
     public float PointsVelocityReward;
 
     [Header("Local Pose Reward")]
-    public List<float> RotationDifferencesInAngles;
+    public List<float> RotationDifferences;
     public float SumOfRotationDifferences;
+    public float SumOfRotationSqrDifferences;
     public float LocalPoseReward;
 
    
@@ -96,9 +98,11 @@ public class DReConRewards : MonoBehaviour
 
         // position reward
         List<float> distances = _mocapBodyStats.GetPointDistancesFrom(_ragDollBodyStats);
+        PositionReward = -7.37f/(distances.Count/6f);
+        List<float> sqrDistances = distances.Select(x=> x*x).ToList();
         SumOfDistances = distances.Sum();
-        PositionReward = -10f/distances.Count;
-        PositionReward *= Mathf.Pow(SumOfDistances, 2);
+        SumOfSqrDistances = sqrDistances.Sum();
+        PositionReward *= SumOfSqrDistances;
         PositionReward = Mathf.Exp(PositionReward);
 
         // center of mass velocity reward
@@ -121,20 +125,24 @@ public class DReConRewards : MonoBehaviour
         PointsVelocityReward = Mathf.Exp(PointsVelocityReward);
 
         // local pose reward
-        if (RotationDifferencesInAngles == null || RotationDifferencesInAngles.Count < _mocapBodyStats.Rotations.Count)
-            RotationDifferencesInAngles = Enumerable.Range(0,_mocapBodyStats.Rotations.Count)
+        if (RotationDifferences == null || RotationDifferences.Count < _mocapBodyStats.Rotations.Count)
+            RotationDifferences = Enumerable.Range(0,_mocapBodyStats.Rotations.Count)
             .Select(x=>0f)
             .ToList();
         SumOfRotationDifferences = 0f;
+        SumOfRotationSqrDifferences = 0f;
         for (int i = 0; i < _mocapBodyStats.Rotations.Count; i++)
-        {
+        { 
             var angle = Quaternion.Angle(_mocapBodyStats.Rotations[i], _ragDollBodyStats.Rotations[i]);
-            RotationDifferencesInAngles[i] = angle;
             Assert.IsTrue(angle <= 180f);
-            SumOfRotationDifferences += angle/180f;
+            angle /=180f;
+            var sqrAngle = angle * angle;
+            RotationDifferences[i] = angle;
+            SumOfRotationDifferences += angle;
+            SumOfRotationSqrDifferences += sqrAngle;
         }
-        LocalPoseReward = -10f/_mocapBodyStats.Rotations.Count;
-        LocalPoseReward *= SumOfRotationDifferences;
+        LocalPoseReward = -6.5f/RotationDifferences.Count;
+        LocalPoseReward *= SumOfRotationSqrDifferences;
         LocalPoseReward = Mathf.Exp(LocalPoseReward);
 
         // fall factor

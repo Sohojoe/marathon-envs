@@ -37,7 +37,7 @@ public class DReConRewardStats : MonoBehaviour
     public Vector3[] Points;
     Vector3[] _lastPoints;
     public float[] PointVelocity;
-    
+
     public void OnAwake(Transform defaultTransform, DReConRewardStats orderToCopy = null)
     {
         _spawnableEnv = GetComponentInParent<SpawnableEnv>();
@@ -113,7 +113,8 @@ public class DReConRewardStats : MonoBehaviour
         }
         for (int i = 0; i < _trackRotations.Count; i++)
         {
-            Quaternion localRotation = Quaternion.Inverse(transform.rotation) * _trackRotations[i].transform.rotation;
+            // Quaternion localRotation = Quaternion.Inverse(transform.rotation) * _trackRotations[i].transform.rotation;
+            Quaternion localRotation = _trackRotations[i].transform.localRotation;
             Rotations[i] = localRotation;
         }
     }
@@ -150,7 +151,8 @@ public class DReConRewardStats : MonoBehaviour
 
         for (int i = 0; i < _trackRotations.Count; i++)
         {
-            Quaternion localRotation = Quaternion.Inverse(transform.rotation) * _trackRotations[i].transform.rotation;
+            // Quaternion localRotation = Quaternion.Inverse(transform.rotation) * _trackRotations[i].transform.rotation;
+            Quaternion localRotation = _trackRotations[i].transform.localRotation;
             Rotations[i] = localRotation;
         }
 
