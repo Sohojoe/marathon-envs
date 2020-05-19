@@ -2111,17 +2111,17 @@ MonoBehaviour:
   - Muscle: upper_waist
     PowerVector: {x: 40, y: 40, z: 40}
   - Muscle: right_thigh
-    PowerVector: {x: 40, y: 120, z: 40}
+    PowerVector: {x: 120, y: 40, z: 40}
   - Muscle: right_shin
     PowerVector: {x: 80, y: 80, z: 80}
   - Muscle: right_right_foot
-    PowerVector: {x: 20, y: 40, z: 20}
+    PowerVector: {x: 20, y: 20, z: 40}
   - Muscle: left_thigh
-    PowerVector: {x: 40, y: 120, z: 40}
+    PowerVector: {x: 120, y: 40, z: 40}
   - Muscle: left_shin
     PowerVector: {x: 80, y: 80, z: 80}
   - Muscle: left_left_foot
-    PowerVector: {x: 20, y: 40, z: 20}
+    PowerVector: {x: 20, y: 20, z: 40}
   - Muscle: right_upper_arm
     PowerVector: {x: 20, y: 20, z: 20}
   - Muscle: right_larm
