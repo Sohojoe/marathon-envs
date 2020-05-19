@@ -150,40 +150,14 @@ public class DReConRewardStats : MonoBehaviour
         CenterOfMassVelocity = transform.position - LastCenterOfMassInWorldSpace;
         CenterOfMassVelocity /= timeDelta;
         CenterOfMassVelocityMagnitude = CenterOfMassVelocity.magnitude;
-        // var newHorizontalDirection = new Vector3(CenterOfMassVelocity.x, 0f, CenterOfMassVelocity.z);
-        // if (newHorizontalDirection.magnitude > 0.1f)
-        // {
-        //     transform.rotation = Quaternion.LookRotation(newHorizontalDirection.normalized, Vector3.up);
-        // }
-        var newHorizontalDirection = new Vector3(
-            _rootDefaultTransorm.eulerAngles.x, 
-            _root.transform.rotation.y,
-            _rootDefaultTransorm.eulerAngles.z);
-        // debugA = _root.transform.TransformDirection(_root.transform.localRotation.eulerAngles);
-        // debugB = _root.transform.localRotation.eulerAngles;
-        // debugC = _root.transform.rotation.eulerAngles;
-        debugA = _root.transform.forward;
-        // debugB = _root.transform.TransformDirection(_root.transform.forward);
-        debugB = _root.transform.localRotation.eulerAngles;
-        debugC = _root.transform.up;
-        debugA *= 180f;
-        // debugB *= 180f;
-        debugC *= 180f;
-        debugA += new Vector3(180f, 180f, 180f);
-        // debugB += new Vector3(180f, 180f, 180f);
-        debugC += new Vector3(180f, 180f, 180f);
-        newHorizontalDirection = new Vector3(
-            _rootDefaultTransorm.eulerAngles.x,
-            debugC.z,
-            _rootDefaultTransorm.eulerAngles.z);        
-        this.transform.rotation = Quaternion.Euler(newHorizontalDirection);
-        // transform.rotation = Quaternion.LookRotation(newHorizontalDirection.normalized, _rootDefaultTransorm.eulerAngles);
-        // transform.rotation = Quaternion.LookRotation(newHorizontalDirection.normalized, _rootDefaultTransorm.eulerAngles.normalized);
-        // transform.rotation = Quaternion.LookRotation(newHorizontalDirection);
-        // transform.rotation = _root.transform.TransformDirection(newHorizontalDirection);
-        // debugA = newHorizontalDirection;
-        // debugB = _rootDefaultTransorm.eulerAngles;
-        // debugC = transform.rotation.eulerAngles;
+        // var angle = _root.transform.eulerAngles.y * Mathf.Deg2Rad;
+        // var targetDir = new Vector3(Mathf.Sin(angle), 0, Mathf.Cos(angle));
+        // targetDir *= 10;
+        // transform.LookAt(transform.position + targetDir);
+        // debugA = targetDir;
+        transform.rotation = Quaternion.Euler(0f, _root.transform.eulerAngles.y, 0f);
+        debugB = _root.transform.eulerAngles;
+        debugC = transform.rotation.eulerAngles;
         LastCenterOfMassInWorldSpace = newCOM;
         
         GetAllPoints(Points);
