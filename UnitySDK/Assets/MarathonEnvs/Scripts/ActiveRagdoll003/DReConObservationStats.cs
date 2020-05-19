@@ -50,6 +50,7 @@ public class DReConObservationStats : MonoBehaviour
     List<Transform> _bodyParts;
     internal List<Rigidbody> _rigidbodyParts;
     internal List<ArticulationBody> _articulationBodyParts;
+    GameObject _root;
 
     public void OnAwake(List<string> bodyPartsToTrack, Transform defaultTransform)
     {
@@ -75,7 +76,10 @@ public class DReConObservationStats : MonoBehaviour
         Stats = _bodyParts
             .Select(x=> new Stat{Name = x.name})
             .ToList();
-        
+        if (_root == null)
+        {
+            _root = _bodyParts.First(x=>x.name=="butt").gameObject;
+        }             
         transform.position = defaultTransform.position;
         transform.rotation = defaultTransform.rotation;
     }
@@ -105,14 +109,12 @@ public class DReConObservationStats : MonoBehaviour
         CenterOfMassVelocity = transform.position - LastCenterOfMassInWorldSpace;
         CenterOfMassVelocity /= timeDelta;
         // generate Horizontal Direction
-        var newHorizontalDirection = new Vector3(CenterOfMassVelocity.x, 0f, CenterOfMassVelocity.z);
         CenterOfMassVelocityMagnitude = CenterOfMassVelocity.magnitude;
+        var newHorizontalDirection = new Vector3(0f, _root.transform.eulerAngles.y, 0f);
+        HorizontalDirection = newHorizontalDirection.normalized;
+        transform.rotation = Quaternion.Euler(newHorizontalDirection);
         CenterOfMassHorizontalVelocityMagnitude = newHorizontalDirection.magnitude;
-        if (newHorizontalDirection.magnitude > 0.1f)
-        {
-            HorizontalDirection = newHorizontalDirection.normalized;
-            transform.rotation = Quaternion.LookRotation(newHorizontalDirection.normalized, Vector3.up);
-        }
+        CenterOfMassHorizontalVelocityMagnitude = newHorizontalDirection.magnitude;
         if (!LastIsSet)
         {
             LastRotation = transform.rotation;
@@ -161,10 +163,6 @@ public class DReConObservationStats : MonoBehaviour
 	}
 	Vector3 GetCenterOfMass(IEnumerable<ArticulationBody> bodies)
 	{
-        // var root = bodies.First(x=>x.isRoot);
-        // var centerOfMass = root.worldCenterOfMass;
-		// centerOfMass -= _spawnableEnv.transform.position;
-		// return centerOfMass;
 		var centerOfMass = Vector3.zero;
 		float totalMass = 0f;
 		foreach (ArticulationBody ab in bodies)

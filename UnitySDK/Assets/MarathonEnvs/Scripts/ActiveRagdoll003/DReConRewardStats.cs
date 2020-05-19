@@ -8,16 +8,6 @@ using UnityEngine.Assertions;
 
 public class DReConRewardStats : MonoBehaviour
 {
-    // [System.Serializable]
-    // public class Stat
-    // {
-    //     public CapsuleCollider CapsuleCollider;
-    //     public Vector3 DirectionVector;
-    //     public float Scale;
-    //     public float Radius;
-    //     public float HalfHeight;
-    // }
-
     [Header("Settings")]
 
     public MonoBehaviour ObjectToTrack;
@@ -26,10 +16,10 @@ public class DReConRewardStats : MonoBehaviour
     public Vector3 CenterOfMassVelocity;
     public float CenterOfMassVelocityMagnitude;
 
-    [Header("debug")]
-    public Vector3 debugA;
-    public Vector3 debugB;
-    public Vector3 debugC;
+    // [Header("debug")]
+    // public Vector3 debugA;
+    // public Vector3 debugB;
+    // public Vector3 debugC;
 
     [HideInInspector]
     public Vector3 LastCenterOfMassInWorldSpace;
@@ -41,17 +31,13 @@ public class DReConRewardStats : MonoBehaviour
     List<Rigidbody> _rigidbodyParts;
     List<ArticulationBody> _articulationBodyParts;
     List<GameObject> _bodyParts;
-
     GameObject _root;
-    Quaternion _rootDefaultTransorm;
-
     List<GameObject> _trackRotations;
     public List<Quaternion> Rotations;
     public Vector3[] Points;
     Vector3[] _lastPoints;
     public float[] PointVelocity;
-
-
+    
     public void OnAwake(Transform defaultTransform, DReConRewardStats orderToCopy = null)
     {
         _spawnableEnv = GetComponentInParent<SpawnableEnv>();
@@ -103,9 +89,7 @@ public class DReConRewardStats : MonoBehaviour
             .ToList();
         if (_root == null)
         {
-            _root = _bodyParts
-                .First(x=>x.name=="butt");
-            _rootDefaultTransorm = _root.transform.rotation;
+            _root = _bodyParts.First(x=>x.name=="butt");
         }        
         transform.position = defaultTransform.position;
         transform.rotation = defaultTransform.rotation;
@@ -150,14 +134,7 @@ public class DReConRewardStats : MonoBehaviour
         CenterOfMassVelocity = transform.position - LastCenterOfMassInWorldSpace;
         CenterOfMassVelocity /= timeDelta;
         CenterOfMassVelocityMagnitude = CenterOfMassVelocity.magnitude;
-        // var angle = _root.transform.eulerAngles.y * Mathf.Deg2Rad;
-        // var targetDir = new Vector3(Mathf.Sin(angle), 0, Mathf.Cos(angle));
-        // targetDir *= 10;
-        // transform.LookAt(transform.position + targetDir);
-        // debugA = targetDir;
         transform.rotation = Quaternion.Euler(0f, _root.transform.eulerAngles.y, 0f);
-        debugB = _root.transform.eulerAngles;
-        debugC = transform.rotation.eulerAngles;
         LastCenterOfMassInWorldSpace = newCOM;
         
         GetAllPoints(Points);
