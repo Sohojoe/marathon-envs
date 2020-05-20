@@ -54,7 +54,7 @@ public class InputController : MonoBehaviour
             Input.GetAxis("Horizontal"),
             Input.GetAxis("Vertical")
         );
-        // if (!Mathf.Approximately(newMovementVector.sqrMagnitude, 0f))
+        if (!Mathf.Approximately(newMovementVector.sqrMagnitude, 0f))
             MovementVector = newMovementVector;
         CameraRotation = Vector2.zero;
         Jump = Input.GetKey(KeyCode.Space); //Input.GetButtonDown("Fire1");
