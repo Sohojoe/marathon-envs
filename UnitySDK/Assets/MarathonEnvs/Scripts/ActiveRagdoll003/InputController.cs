@@ -38,21 +38,24 @@ public class InputController : MonoBehaviour
             GetHumanInput();
         else
             GetMockInput();
-        if (MovementVector.magnitude > 0f)
+        if (!Mathf.Approximately(MovementVector.sqrMagnitude, 0f))
             HorizontalDirection = new Vector3(MovementVector.normalized.x, 0f, MovementVector.normalized.y);
         DesiredHorizontalVelocity = MovementVector * MaxVelocity;
     }
     public void OnReset()
     {
+        SetRandomHorizontalDirection();
         _delayUntilNextAction = -1f;
         DoUpdate();
     }
     void GetHumanInput()
     {
-        MovementVector = new Vector2(
+        var newMovementVector = new Vector2(
             Input.GetAxis("Horizontal"),
             Input.GetAxis("Vertical")
         );
+        if (!Mathf.Approximately(newMovementVector.sqrMagnitude, 0f))
+            MovementVector = newMovementVector;
         CameraRotation = Vector2.zero;
         Jump = Input.GetKey(KeyCode.Space); //Input.GetButtonDown("Fire1");
         Backflip = Input.GetKey(KeyCode.B);
@@ -86,6 +89,14 @@ public class InputController : MonoBehaviour
     {
         var rnd = UnityEngine.Random.Range(0, 5);
         return rnd == 0;
+    }
+    void SetRandomHorizontalDirection()
+    {
+        float direction = UnityEngine.Random.Range(0f, 360f);
+        var movementVector = new Vector2(Mathf.Cos(direction), Mathf.Sin(direction));
+        HorizontalDirection = new Vector3(movementVector.normalized.x, 0f, movementVector.normalized.y);
+        movementVector /= float.MinValue;
+        MovementVector = new Vector2(movementVector.x, movementVector.y);
     }
 
 }

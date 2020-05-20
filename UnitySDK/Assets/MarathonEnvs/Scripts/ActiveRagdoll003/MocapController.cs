@@ -192,10 +192,10 @@ public class MocapController : MonoBehaviour, IOnSensorCollision
 
 	}
 
-	public void OnReset()
+	public void OnReset(Quaternion resetRotation)
 	{
 		transform.position = _resetPosition;
-		transform.rotation = _resetRotation;
+		transform.rotation = resetRotation;
         MimicAnimation();
 	}
 
