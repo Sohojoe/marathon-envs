@@ -86,11 +86,22 @@ public class DReConObservationStats : MonoBehaviour
 
     public void OnReset()
     {
+        ResetStatus();
         foreach (var bodyPart in Stats)
         {
             bodyPart.LastIsSet = false;
         }
         LastIsSet = false;
+    }
+    void ResetStatus()
+    {
+        foreach (var bodyPart in Stats)
+        {
+            bodyPart.LastIsSet = false;
+        }
+        LastIsSet = false;
+        var timeDelta = float.MinValue;
+        SetStatusForStep(timeDelta);
     }
 
     public void SetStatusForStep(float timeDelta)
@@ -111,10 +122,10 @@ public class DReConObservationStats : MonoBehaviour
         // generate Horizontal Direction
         CenterOfMassVelocityMagnitude = CenterOfMassVelocity.magnitude;
         var newHorizontalDirection = new Vector3(0f, _root.transform.eulerAngles.y, 0f);
-        HorizontalDirection = newHorizontalDirection.normalized;
+        HorizontalDirection = newHorizontalDirection / 180f;
         transform.rotation = Quaternion.Euler(newHorizontalDirection);
-        CenterOfMassHorizontalVelocityMagnitude = newHorizontalDirection.magnitude;
-        CenterOfMassHorizontalVelocityMagnitude = newHorizontalDirection.magnitude;
+        var comHorizontalDirection = new Vector3(CenterOfMassVelocity.x, 0f, CenterOfMassVelocity.z);
+        CenterOfMassHorizontalVelocityMagnitude = comHorizontalDirection.magnitude;
         if (!LastIsSet)
         {
             LastRotation = transform.rotation;

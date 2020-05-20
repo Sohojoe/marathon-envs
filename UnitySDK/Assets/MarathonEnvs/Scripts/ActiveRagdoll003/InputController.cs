@@ -40,7 +40,7 @@ public class InputController : MonoBehaviour
             GetMockInput();
         if (!Mathf.Approximately(MovementVector.sqrMagnitude, 0f))
             HorizontalDirection = new Vector3(MovementVector.normalized.x, 0f, MovementVector.normalized.y);
-        DesiredHorizontalVelocity = MovementVector * MaxVelocity;
+        DesiredHorizontalVelocity = MovementVector.normalized * MaxVelocity * MovementVector.magnitude;
     }
     public void OnReset()
     {
@@ -54,7 +54,7 @@ public class InputController : MonoBehaviour
             Input.GetAxis("Horizontal"),
             Input.GetAxis("Vertical")
         );
-        if (!Mathf.Approximately(newMovementVector.sqrMagnitude, 0f))
+        // if (!Mathf.Approximately(newMovementVector.sqrMagnitude, 0f))
             MovementVector = newMovementVector;
         CameraRotation = Vector2.zero;
         Jump = Input.GetKey(KeyCode.Space); //Input.GetButtonDown("Fire1");

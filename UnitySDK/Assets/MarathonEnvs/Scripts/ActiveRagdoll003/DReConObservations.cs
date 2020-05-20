@@ -38,7 +38,9 @@ public class DReConObservations : MonoBehaviour
     public List<string> BodyPartsToTrack;
 
     [Header("... debug")]
-    public Vector2 MocapHorizontalVelocityDifference;
+    public Vector2 InputMinusMocapHorizontalVelocityDifference;
+    public Vector2 InputMinusRagDollHorizontalVelocityDifference;
+    public Vector2 MocapMinusRagDollHorizontalVelocityDifference;
 
 
     InputController _inputController;
@@ -81,6 +83,8 @@ public class DReConObservations : MonoBehaviour
         _ragDollBodyStats.OnReset();
         _ragDollBodyStats.transform.position = _mocapBodyStats.transform.position;
         _ragDollBodyStats.transform.rotation = _mocapBodyStats.transform.rotation;
+        var timeDelta = float.MinValue;
+        UpdateObservations(timeDelta);
     }
 
     public void UpdateObservations(float timeDelta)
@@ -115,7 +119,8 @@ public class DReConObservations : MonoBehaviour
 
         // debug
         Vector2 mocapHorizontalVelocity = new Vector2(MocapCOMVelocity.x, MocapCOMVelocity.z);
-        MocapHorizontalVelocityDifference = InputDesiredHorizontalVelocity-mocapHorizontalVelocity;
-
+        InputMinusMocapHorizontalVelocityDifference = InputDesiredHorizontalVelocity-mocapHorizontalVelocity;
+        InputMinusRagDollHorizontalVelocityDifference = InputDesiredHorizontalVelocity-ragDollHorizontalVelocity;
+        MocapMinusRagDollHorizontalVelocityDifference = mocapHorizontalVelocity-ragDollHorizontalVelocity;
     }
 }
