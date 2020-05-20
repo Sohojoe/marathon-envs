@@ -113,8 +113,9 @@ public class DReConRewardStats : MonoBehaviour
         }
         for (int i = 0; i < _trackRotations.Count; i++)
         {
-            // Quaternion localRotation = Quaternion.Inverse(transform.rotation) * _trackRotations[i].transform.rotation;
             Quaternion localRotation = _trackRotations[i].transform.localRotation;
+            if (_trackRotations[i].gameObject == _root)
+                localRotation = Quaternion.Inverse(transform.rotation) * _trackRotations[i].transform.rotation;
             Rotations[i] = localRotation;
         }
     }
@@ -151,9 +152,11 @@ public class DReConRewardStats : MonoBehaviour
 
         for (int i = 0; i < _trackRotations.Count; i++)
         {
-            // Quaternion localRotation = Quaternion.Inverse(transform.rotation) * _trackRotations[i].transform.rotation;
             Quaternion localRotation = _trackRotations[i].transform.localRotation;
+            if (_trackRotations[i].gameObject == _root)
+                localRotation = Quaternion.Inverse(transform.rotation) * _trackRotations[i].transform.rotation;
             Rotations[i] = localRotation;
+
         }
 
         LastIsSet = true;
