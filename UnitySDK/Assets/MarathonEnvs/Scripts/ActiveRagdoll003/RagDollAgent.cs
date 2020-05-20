@@ -14,6 +14,7 @@ public class RagDollAgent : Agent
     public bool debugCopyMocap;
     public bool ignorActions;
     public bool dontResetOnZeroReward;
+    public bool DebugPauseOnReset;
 
     MocapController _mocapController;
     List<ArticulationBody> _mocapBodyParts;
@@ -161,13 +162,19 @@ public class RagDollAgent : Agent
         debugCopyMocap = false;
         _inputController.OnReset();
         _mocapController.GetComponentInChildren<MocapAnimatorController>().OnReset();
-        _mocapController.OnReset();
+        _mocapController.OnReset(Quaternion.FromToRotation(Vector3.forward, _inputController.HorizontalDirection));
         _mocapController.CopyStatesTo(this.gameObject);
         // _trackBodyStatesInWorldSpace.CopyStatesTo(this.gameObject);
         _dReConObservations.OnReset();
         _dReConRewards.OnReset();
         _dReConObservations.OnStep();
         _dReConRewards.OnStep();
+#if UNITY_EDITOR		
+		if (DebugPauseOnReset)
+		{
+	        UnityEditor.EditorApplication.isPaused = true;
+		}
+#endif	        
     }    
 
     void UpdateMotor(ArticulationBody joint, Vector3 targetNormalizedRotation)
