@@ -220,4 +220,23 @@ public class RagDollAgent : Agent
             Done();
         }
     }
+    void OnDrawGizmos()
+    {
+        var comTransform = _dReConRewards._ragDollBodyStats.transform;
+        var vector = new Vector3( _inputController.MovementVector.x, 0f, _inputController.MovementVector.y);
+        var pos = new Vector3(comTransform.position.x, 0.001f, comTransform.position.z);
+        DrawArrow(pos, vector, Color.black);
+    }
+    void DrawArrow(Vector3 start, Vector3 vector, Color color)
+    {
+        float headSize = 0.25f;
+        float headAngle = 20.0f;
+        Gizmos.color = color;
+		Gizmos.DrawRay(start, vector);
+ 
+		Vector3 right = Quaternion.LookRotation(vector) * Quaternion.Euler(0,180+headAngle,0) * new Vector3(0,0,1);
+		Vector3 left = Quaternion.LookRotation(vector) * Quaternion.Euler(0,180-headAngle,0) * new Vector3(0,0,1);
+		Gizmos.DrawRay(start + vector, right * headSize);
+		Gizmos.DrawRay(start + vector, left * headSize);
+    }
 }

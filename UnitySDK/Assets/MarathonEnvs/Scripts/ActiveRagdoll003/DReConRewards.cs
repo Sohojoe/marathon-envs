@@ -44,12 +44,15 @@ public class DReConRewards : MonoBehaviour
     public float HeadDistance;
     public float FallFactor;
 
+    [Header("Gizmos")]
+    public int ObjectForPointDistancesGizmo;
+
     SpawnableEnv _spawnableEnv;
     GameObject _mocap;
     GameObject _ragDoll;
 
-    DReConRewardStats _mocapBodyStats;
-    DReConRewardStats _ragDollBodyStats;
+    internal DReConRewardStats _mocapBodyStats;
+    internal DReConRewardStats _ragDollBodyStats;
 
     // List<ArticulationBody> _mocapBodyParts;
     // List<ArticulationBody> _ragDollBodyParts;
@@ -162,5 +165,11 @@ public class DReConRewards : MonoBehaviour
         _ragDollBodyStats.OnReset();
         _ragDollBodyStats.transform.position = _mocapBodyStats.transform.position;
         _ragDollBodyStats.transform.rotation = _mocapBodyStats.transform.rotation;
+    }
+    void OnDrawGizmos()
+    {
+        var max = (_ragDollBodyStats.Points.Length/6)-1;
+        ObjectForPointDistancesGizmo = Mathf.Clamp(ObjectForPointDistancesGizmo, 0, max);
+        _mocapBodyStats.DrawPointDistancesFrom(_ragDollBodyStats, ObjectForPointDistancesGizmo);
     }
 }

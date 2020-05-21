@@ -202,74 +202,54 @@ public class DReConRewardStats : MonoBehaviour
     int SetCapusalPoints(CapsuleCollider capsule, Vector3[] pointBuffer, int idx)
     {
         Vector3 ls = capsule.transform.lossyScale;
-        Vector3 direction;
         float rScale;
         switch (capsule.direction)
         {
             case (0):
-                direction = capsule.transform.right;
                 rScale = Mathf.Max(Mathf.Abs(ls.y), Mathf.Abs(ls.z));
                 break;
             case (1):
-                direction = capsule.transform.forward;
                 rScale = Mathf.Max(Mathf.Abs(ls.x), Mathf.Abs(ls.y));
                 break;
             default:
-                direction = capsule.transform.up;
                 rScale = Mathf.Max(Mathf.Abs(ls.x), Mathf.Abs(ls.z));
                 break;
         }
-        Vector3 toCenter = capsule.transform.TransformDirection(new Vector3(capsule.center.x * ls.x, capsule.center.y * ls.y, capsule.center.z * ls.z));
-        Vector3 center = capsule.transform.position + toCenter;
+        // Vector3 toCenter = capsule.transform.TransformDirection(new Vector3(capsule.center.x * ls.x, capsule.center.y * ls.y, capsule.center.z * ls.z));
+        // Vector3 center = capsule.transform.position + toCenter;
         float radius = capsule.radius * rScale;
         float halfHeight = capsule.height * Mathf.Abs(ls[capsule.direction]) * 0.5f;
         switch (capsule.direction)
         {
             case (0):
-                pointBuffer[idx++] = new Vector3(center.x + halfHeight, center.y, center.z);
-                pointBuffer[idx++] = new Vector3(center.x - halfHeight, center.y, center.z);
-                pointBuffer[idx++] = new Vector3(center.x, center.y + radius, center.z);
-                pointBuffer[idx++] = new Vector3(center.x, center.y - radius, center.z);
-                pointBuffer[idx++] = new Vector3(center.x, center.y, center.z + radius);
-                pointBuffer[idx++] = new Vector3(center.x, center.y, center.z - radius);
+                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(halfHeight, 0f, 0f));
+                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(-halfHeight, 0f, 0f));
+                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(0f, radius, 0f));
+                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(0f, -radius, 0f));
+                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(0f, 0f, radius));
+                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(0f, 0f, -radius));
                 break;
             case (1):
-                pointBuffer[idx++] = new Vector3(center.x + radius, center.y, center.z);
-                pointBuffer[idx++] = new Vector3(center.x - radius, center.y, center.z);
-                pointBuffer[idx++] = new Vector3(center.x, center.y + halfHeight, center.z);
-                pointBuffer[idx++] = new Vector3(center.x, center.y - halfHeight, center.z);
-                pointBuffer[idx++] = new Vector3(center.x, center.y, center.z + radius);
-                pointBuffer[idx++] = new Vector3(center.x, center.y, center.z - radius);
+                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(radius, 0f, 0f));
+                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(-radius, 0f, 0f));
+                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(0f, halfHeight, 0f));
+                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(0f, -halfHeight, 0f));
+                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(0f, 0f, radius));
+                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(0f, 0f, -radius));
                 break;
             case (2):
-                pointBuffer[idx++] = new Vector3(center.x + radius, center.y, center.z);
-                pointBuffer[idx++] = new Vector3(center.x - radius, center.y, center.z);
-                pointBuffer[idx++] = new Vector3(center.x, center.y + radius, center.z);
-                pointBuffer[idx++] = new Vector3(center.x, center.y - radius, center.z);
-                pointBuffer[idx++] = new Vector3(center.x, center.y, center.z + halfHeight);
-                pointBuffer[idx++] = new Vector3(center.x, center.y, center.z - halfHeight);
+                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(radius, 0f, 0f));
+                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(-radius, 0f, 0f));
+                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(0f, radius, 0f));
+                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(0f, -radius, 0f));
+                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(0f, 0f, halfHeight));
+                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(0f, 0f, -halfHeight));
                 break;
         }
         return idx;
     }
-    // List<float> CompareCapusals(CapsuleCollider capsuleA, CapsuleCollider capsuleB)
-    // {
-    //     var pointsA = GetCapusalPoints(capsuleA);
-    //     var pointsB = GetCapusalPoints(capsuleB);
-    //     var distances = new List<float>();
-    //     for (int i = 0; i < pointsB.Count; i++)
-    //     {
-    //         var d = (pointsA[i]-pointsB[i]).magnitude;
-    //         distances.Add(d);
-    //     }
-    //     return distances;
-    // }    
 	Vector3 GetCenterOfMass(IEnumerable<ArticulationBody> bodies)
 	{
-        // var root = bodies.First(x=>x.isRoot);
-        // var centerOfMass = root.worldCenterOfMass;
-		// centerOfMass -= _spawnableEnv.transform.position;
-		// return centerOfMass;
 		var centerOfMass = Vector3.zero;
 		float totalMass = 0f;
 		foreach (ArticulationBody ab in bodies)
@@ -294,4 +274,14 @@ public class DReConRewardStats : MonoBehaviour
 		centerOfMass -= _spawnableEnv.transform.position;
 		return centerOfMass;
 	}    
+    public void DrawPointDistancesFrom(DReConRewardStats target, int objIdex)
+    {
+        for (int i = objIdex*6; i < (objIdex*6)+6; i++)
+        {
+            Gizmos.color = Color.white;
+            var from = Points[i];
+            var to = target.Points[i];
+            Gizmos.DrawLine(from, to);
+        }
+    }
 }
