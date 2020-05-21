@@ -219,33 +219,50 @@ public class DReConRewardStats : MonoBehaviour
         // Vector3 center = capsule.transform.position + toCenter;
         float radius = capsule.radius * rScale;
         float halfHeight = capsule.height * Mathf.Abs(ls[capsule.direction]) * 0.5f;
+        Vector3 point1, point2, point3, point4, point5, point6;
         switch (capsule.direction)
         {
+            default:
             case (0):
-                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(halfHeight, 0f, 0f));
-                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(-halfHeight, 0f, 0f));
-                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(0f, radius, 0f));
-                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(0f, -radius, 0f));
-                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(0f, 0f, radius));
-                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(0f, 0f, -radius));
+                point1 = capsule.transform.TransformPoint(new Vector3(halfHeight, 0f, 0f));
+                point2 = capsule.transform.TransformPoint(new Vector3(-halfHeight, 0f, 0f));
+                point3 = capsule.transform.TransformPoint(new Vector3(0f, radius, 0f));
+                point4 = capsule.transform.TransformPoint(new Vector3(0f, -radius, 0f));
+                point5 = capsule.transform.TransformPoint(new Vector3(0f, 0f, radius));
+                point6 = capsule.transform.TransformPoint(new Vector3(0f, 0f, -radius));
                 break;
             case (1):
-                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(radius, 0f, 0f));
-                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(-radius, 0f, 0f));
-                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(0f, halfHeight, 0f));
-                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(0f, -halfHeight, 0f));
-                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(0f, 0f, radius));
-                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(0f, 0f, -radius));
+                point1 = capsule.transform.TransformPoint(new Vector3(radius, 0f, 0f));
+                point2 = capsule.transform.TransformPoint(new Vector3(-radius, 0f, 0f));
+                point3 = capsule.transform.TransformPoint(new Vector3(0f, halfHeight, 0f));
+                point4 = capsule.transform.TransformPoint(new Vector3(0f, -halfHeight, 0f));
+                point5 = capsule.transform.TransformPoint(new Vector3(0f, 0f, radius));
+                point6 = capsule.transform.TransformPoint(new Vector3(0f, 0f, -radius));
                 break;
             case (2):
-                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(radius, 0f, 0f));
-                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(-radius, 0f, 0f));
-                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(0f, radius, 0f));
-                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(0f, -radius, 0f));
-                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(0f, 0f, halfHeight));
-                pointBuffer[idx++] = capsule.transform.TransformPoint(new Vector3(0f, 0f, -halfHeight));
+                point1 = capsule.transform.TransformPoint(new Vector3(radius, 0f, 0f));
+                point2 = capsule.transform.TransformPoint(new Vector3(-radius, 0f, 0f));
+                point3 = capsule.transform.TransformPoint(new Vector3(0f, radius, 0f));
+                point4 = capsule.transform.TransformPoint(new Vector3(0f, -radius, 0f));
+                point5 = capsule.transform.TransformPoint(new Vector3(0f, 0f, halfHeight));
+                point6 = capsule.transform.TransformPoint(new Vector3(0f, 0f, -halfHeight));
                 break;
         }
+        // transform from world space, into local space for COM 
+        point1 = this.transform.InverseTransformPoint(point1);
+        point2 = this.transform.InverseTransformPoint(point2);
+        point3 = this.transform.InverseTransformPoint(point3);
+        point4 = this.transform.InverseTransformPoint(point4);
+        point5 = this.transform.InverseTransformPoint(point5);
+        point6 = this.transform.InverseTransformPoint(point6);
+
+        pointBuffer[idx++] = point1;
+        pointBuffer[idx++] = point2;
+        pointBuffer[idx++] = point3;
+        pointBuffer[idx++] = point4;
+        pointBuffer[idx++] = point5;
+        pointBuffer[idx++] = point6;
+
         return idx;
     }
 	Vector3 GetCenterOfMass(IEnumerable<ArticulationBody> bodies)
@@ -276,12 +293,36 @@ public class DReConRewardStats : MonoBehaviour
 	}    
     public void DrawPointDistancesFrom(DReConRewardStats target, int objIdex)
     {
-        for (int i = objIdex*6; i < (objIdex*6)+6; i++)
+        int start = 0;
+        int end = Points.Length-1;
+        if (objIdex >=0)
+        {
+            start = objIdex*6;
+            end = (objIdex*6)+6;
+        }
+        for (int i = start; i < end; i++)
         {
             Gizmos.color = Color.white;
             var from = Points[i];
             var to = target.Points[i];
+            var toTarget = target.Points[i];
+            // transform to this object's world space
+            from = this.transform.TransformPoint(from);
+            to = this.transform.TransformPoint(to);
+            Gizmos.color = Color.yellow;
             Gizmos.DrawLine(from, to);
+            // transform to target's world space
+            toTarget = target.transform.TransformPoint(toTarget);
+            Gizmos.color = Color.white;
+            Gizmos.DrawLine(from, toTarget);
+            // show this objects velocity
+            Vector3 velocityTarget = new Vector3(0f, PointVelocity[i], 0f);
+            Gizmos.color = Color.blue;
+            Gizmos.DrawRay(from, velocityTarget);
+            // show targets velocity
+            velocityTarget = new Vector3(0f, target.PointVelocity[i], 0f);
+            Gizmos.color = Color.green;
+            Gizmos.DrawRay(toTarget, velocityTarget);
         }
     }
 }

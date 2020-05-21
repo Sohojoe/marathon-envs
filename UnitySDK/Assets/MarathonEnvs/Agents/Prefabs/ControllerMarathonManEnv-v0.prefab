@@ -56,6 +56,7 @@ MonoBehaviour:
   ComReward: 0
   HeadDistance: 0
   FallFactor: 0
+  ObjectForPointDistancesGizmo: 3
 --- !u!114 &8704383841024592634
 MonoBehaviour:
   m_ObjectHideFlags: 0
