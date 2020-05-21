@@ -209,4 +209,17 @@ public class DReConObservationStats : MonoBehaviour
         );
         return safeResult;
     }    
+    // public void DrawPointDistancesFrom(DReConRewardStats target, int objIdex)
+    // {
+    //     for (int i = objIdex*6; i < (objIdex*6)+6; i++)
+    //     {
+    //         Gizmos.color = Color.white;
+    //         var from = Points[i];
+    //         var to = target.Points[i];
+    //         // transform to this object's world space
+    //         from = this.transform.TransformPoint(from);
+    //         to = this.transform.TransformPoint(to);
+    //         Gizmos.DrawLine(from, to);
+    //     }
+    // }    
 }
