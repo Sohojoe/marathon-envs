@@ -15,9 +15,9 @@ public class DReConObservationStats : MonoBehaviour
         public Vector3 Velocity;
         public Vector3 AngualrVelocity;
         [HideInInspector]
-        public Vector3 LastPosition;
+        public Vector3 LastWorldPosition;
         [HideInInspector]
-        public Quaternion LastRotation;
+        public Quaternion LastWorldRotation;
         [HideInInspector]
         public bool LastIsSet;
     }
@@ -32,11 +32,17 @@ public class DReConObservationStats : MonoBehaviour
 
     [Header("Stats, relative to HorizontalDirection & Center Of Mass")]
     public Vector3 CenterOfMassVelocity;
+    public Vector3 CenterOfMassHorizontalVelocity;
     public float CenterOfMassVelocityMagnitude;
     public float CenterOfMassHorizontalVelocityMagnitude;
+    public Vector3 DesiredCenterOfMassVelocity;
+    public Vector3 CenterOfMassVelocityDifference;
     public List<Stat> Stats;
 
     // [Header("... for debugging")]
+    [Header("Gizmos")]
+    public bool VelocityInWorldSpace = true;
+    public bool HorizontalVelocity = true;
 
     [HideInInspector]
     public Vector3 LastCenterOfMassInWorldSpace;
@@ -51,11 +57,13 @@ public class DReConObservationStats : MonoBehaviour
     internal List<Rigidbody> _rigidbodyParts;
     internal List<ArticulationBody> _articulationBodyParts;
     GameObject _root;
+    InputController _inputController;
 
     public void OnAwake(List<string> bodyPartsToTrack, Transform defaultTransform)
     {
         _bodyPartsToTrack = bodyPartsToTrack;
         _spawnableEnv = GetComponentInParent<SpawnableEnv>();
+        _inputController = _spawnableEnv.GetComponentInChildren<InputController>();
         _rigidbodyParts = ObjectToTrack.GetComponentsInChildren<Rigidbody>().ToList();
         _articulationBodyParts = ObjectToTrack.GetComponentsInChildren<ArticulationBody>().ToList();
         if (_rigidbodyParts?.Count > 0)
@@ -106,7 +114,7 @@ public class DReConObservationStats : MonoBehaviour
 
     public void SetStatusForStep(float timeDelta)
     {
-        // find Center Of Mass and velocity
+        // find Center Of Mass
         Vector3 newCOM;
         if (_rigidbodyParts?.Count > 0)
             newCOM = GetCenterOfMass(_rigidbodyParts);
@@ -116,16 +124,36 @@ public class DReConObservationStats : MonoBehaviour
         {
             LastCenterOfMassInWorldSpace = newCOM;
         }
-        transform.position = newCOM;
-        CenterOfMassVelocity = transform.position - LastCenterOfMassInWorldSpace;
-        CenterOfMassVelocity /= timeDelta;
+
         // generate Horizontal Direction
-        CenterOfMassVelocityMagnitude = CenterOfMassVelocity.magnitude;
         var newHorizontalDirection = new Vector3(0f, _root.transform.eulerAngles.y, 0f);
         HorizontalDirection = newHorizontalDirection / 180f;
+
+        // set this object to be f space
+        transform.position = newCOM;
         transform.rotation = Quaternion.Euler(newHorizontalDirection);
-        var comHorizontalDirection = new Vector3(CenterOfMassVelocity.x, 0f, CenterOfMassVelocity.z);
-        CenterOfMassHorizontalVelocityMagnitude = comHorizontalDirection.magnitude;
+
+        // get Center Of Mass velocity in f space
+        var velocity = transform.position - LastCenterOfMassInWorldSpace;
+        velocity /= timeDelta;
+        CenterOfMassVelocity = transform.InverseTransformVector(velocity);
+        CenterOfMassVelocityMagnitude = CenterOfMassVelocity.magnitude;
+
+        // get Center Of Mass horizontal velocity in f space
+        var comHorizontalDirection = new Vector3(velocity.x, 0f, velocity.z);
+        CenterOfMassHorizontalVelocity = transform.InverseTransformVector(comHorizontalDirection);
+        CenterOfMassHorizontalVelocityMagnitude = CenterOfMassHorizontalVelocity.magnitude;
+
+        // get Desired Center Of Mass horizontal velocity in f space
+        Vector3 desiredCom = new Vector3(
+            _inputController.DesiredHorizontalVelocity.x,
+            0f,
+            _inputController.DesiredHorizontalVelocity.y);
+        DesiredCenterOfMassVelocity = transform.InverseTransformVector(desiredCom);
+            
+        // get Desired Center Of Mass horizontal velocity in f space
+        CenterOfMassVelocityDifference = DesiredCenterOfMassVelocity-CenterOfMassHorizontalVelocity;
+        
         if (!LastIsSet)
         {
             LastRotation = transform.rotation;
@@ -139,22 +167,24 @@ public class DReConObservationStats : MonoBehaviour
         foreach (var bodyPart in _bodyParts)
         {
             Stat bodyPartStat = Stats.First(x=>x.Name == bodyPart.name);
-            Vector3 localPosition = transform.InverseTransformPoint(bodyPart.position);
-            // localPosition -= CenterOfMassVelocity * timeDelta;
-            Quaternion localRotation = Quaternion.Inverse(transform.rotation) * bodyPart.rotation;
+            Vector3 worldPosition = bodyPart.position;
+            Quaternion worldRotation = bodyPart.rotation;
             if (!bodyPartStat.LastIsSet)
             {
-                bodyPartStat.LastPosition = localPosition;
-                bodyPartStat.LastRotation = localRotation;
+                bodyPartStat.LastWorldPosition = worldPosition;
+                bodyPartStat.LastWorldRotation = worldRotation;
             }
+            Vector3 localPosition = transform.InverseTransformPoint(worldPosition);
+            Quaternion localRotation = Quaternion.Inverse(transform.rotation) * worldRotation;
             bodyPartStat.Position = localPosition;
             bodyPartStat.Rotation = localRotation;
-            bodyPartStat.Velocity = localPosition - bodyPartStat.LastPosition;
+            bodyPartStat.Velocity = worldPosition - bodyPartStat.LastWorldPosition;
             bodyPartStat.Velocity /= timeDelta;
-            bodyPartStat.AngualrVelocity = GetAngularVelocity(localRotation, bodyPartStat.LastRotation, timeDelta);
+            bodyPartStat.Velocity = transform.InverseTransformVector(bodyPartStat.Velocity);
+            bodyPartStat.AngualrVelocity = GetAngularVelocity(worldRotation, bodyPartStat.LastWorldRotation, timeDelta);
             bodyPartStat.AngualrVelocity += AngualrVelocity;
-            bodyPartStat.LastPosition = localPosition;
-            bodyPartStat.LastRotation = localRotation;
+            bodyPartStat.LastWorldPosition = worldPosition;
+            bodyPartStat.LastWorldRotation = worldRotation;
             bodyPartStat.LastIsSet = true;
         }
     }
@@ -221,5 +251,63 @@ public class DReConObservationStats : MonoBehaviour
     //         to = this.transform.TransformPoint(to);
     //         Gizmos.DrawLine(from, to);
     //     }
-    // }    
+    // }
+
+    void OnDrawGizmosSelected()
+    {
+        // draw arrow for desired input velocity
+        // Vector3 pos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        Vector3 pos = new Vector3(transform.position.x, .3f, transform.position.z);
+        Vector3 vector = DesiredCenterOfMassVelocity;
+        if (VelocityInWorldSpace)
+            vector = transform.TransformVector(vector);
+        DrawArrow(pos, vector, Color.green);
+        Vector3 desiredInputPos = pos+vector;
+
+        if (HorizontalVelocity)
+        {
+            // arrow for actual velocity
+            vector = CenterOfMassHorizontalVelocity;
+            if (VelocityInWorldSpace)
+                vector = transform.TransformVector(vector);
+            DrawArrow(pos, vector, Color.blue);
+            Vector3 actualPos = pos+vector;
+
+            // arrow for actual velocity difference
+            vector = CenterOfMassVelocityDifference;
+            if (VelocityInWorldSpace)
+                vector = transform.TransformVector(vector);
+            DrawArrow(actualPos, vector, Color.red);
+        }
+        else
+        {
+            vector = CenterOfMassVelocity;
+            if (VelocityInWorldSpace)
+                vector = transform.TransformVector(vector);
+            DrawArrow(pos, vector, Color.blue);
+            Vector3 actualPos = pos+vector;
+
+            // arrow for actual velocity difference
+            vector = DesiredCenterOfMassVelocity-CenterOfMassVelocity;
+            if (VelocityInWorldSpace)
+                vector = transform.TransformVector(vector);
+            DrawArrow(actualPos, vector, Color.red);
+
+        }
+    }
+    void DrawArrow(Vector3 start, Vector3 vector, Color color)
+    {
+        float headSize = 0.25f;
+        float headAngle = 20.0f;
+        Gizmos.color = color;
+		Gizmos.DrawRay(start, vector);
+ 
+        if (vector.magnitude > 0f)
+        { 
+            Vector3 right = Quaternion.LookRotation(vector) * Quaternion.Euler(0,180+headAngle,0) * new Vector3(0,0,1);
+            Vector3 left = Quaternion.LookRotation(vector) * Quaternion.Euler(0,180-headAngle,0) * new Vector3(0,0,1);
+            Gizmos.DrawRay(start + vector, right * headSize);
+            Gizmos.DrawRay(start + vector, left * headSize);
+        }
+    }
 }

@@ -37,10 +37,9 @@ public class DReConObservations : MonoBehaviour
     [Header("Settings")]
     public List<string> BodyPartsToTrack;
 
-    [Header("... debug")]
-    public Vector2 InputMinusMocapHorizontalVelocityDifference;
-    public Vector2 InputMinusRagDollHorizontalVelocityDifference;
-    public Vector2 MocapMinusRagDollHorizontalVelocityDifference;
+    [Header("Gizmos")]
+    public bool VelocityInWorldSpace = true;
+    public bool PositionInWorldSpace = true;
 
 
     InputController _inputController;
@@ -92,11 +91,14 @@ public class DReConObservations : MonoBehaviour
 
         MocapCOMVelocity = _mocapBodyStats.CenterOfMassVelocity;
         RagDollCOMVelocity = _ragDollBodyStats.CenterOfMassVelocity;
-        InputDesiredHorizontalVelocity = _inputController.DesiredHorizontalVelocity;
+        InputDesiredHorizontalVelocity = new Vector2(
+            _ragDollBodyStats.DesiredCenterOfMassVelocity.x, 
+            _ragDollBodyStats.DesiredCenterOfMassVelocity.z);
         InputJump = _inputController.Jump;
         InputBackflip = _inputController.Backflip;
-        Vector2 ragDollHorizontalVelocity = new Vector2(RagDollCOMVelocity.x, RagDollCOMVelocity.z);
-        HorizontalVelocityDifference = InputDesiredHorizontalVelocity-ragDollHorizontalVelocity;
+        HorizontalVelocityDifference = new Vector2(
+            _ragDollBodyStats.CenterOfMassVelocityDifference.x,
+            _ragDollBodyStats.CenterOfMassVelocityDifference.z);
 
         MocapBodyStats = BodyPartsToTrack
             .Select(x=>_mocapBodyStats.Stats.First(y=>y.Name == x))
@@ -115,12 +117,78 @@ public class DReConObservations : MonoBehaviour
             differenceStats.AngualrVelocity = mocapStats.AngualrVelocity - ragDollStats.AngualrVelocity;
             differenceStats.Rotation = DReConObservationStats.GetAngularVelocity(ragDollStats.Rotation, mocapStats.Rotation, timeDelta);
         }
-        // PreviousActions =         
+    }
+    void OnDrawGizmos()
+    {
+        // MocapCOMVelocity
+        Vector3 pos = new Vector3(transform.position.x, .3f, transform.position.z);
+        Vector3 vector = MocapCOMVelocity;
+        if (VelocityInWorldSpace)
+            vector = _mocapBodyStats.transform.TransformVector(vector);
+        DrawArrow(pos, vector, Color.grey);
 
-        // debug
-        Vector2 mocapHorizontalVelocity = new Vector2(MocapCOMVelocity.x, MocapCOMVelocity.z);
-        InputMinusMocapHorizontalVelocityDifference = InputDesiredHorizontalVelocity-mocapHorizontalVelocity;
-        InputMinusRagDollHorizontalVelocityDifference = InputDesiredHorizontalVelocity-ragDollHorizontalVelocity;
-        MocapMinusRagDollHorizontalVelocityDifference = mocapHorizontalVelocity-ragDollHorizontalVelocity;
+        // RagDollCOMVelocity;
+        vector = RagDollCOMVelocity;
+        if (VelocityInWorldSpace)
+            vector = _ragDollBodyStats.transform.TransformVector(vector);
+        DrawArrow(pos, vector, Color.blue);
+        Vector3 actualPos = pos+vector;
+
+        // InputDesiredHorizontalVelocity;
+        vector = new Vector3(InputDesiredHorizontalVelocity.x, 0f, InputDesiredHorizontalVelocity.y);
+        if (VelocityInWorldSpace)
+            vector = _ragDollBodyStats.transform.TransformVector(vector);
+        DrawArrow(pos, vector, Color.green);
+
+        // HorizontalVelocityDifference;
+        vector = new Vector3(HorizontalVelocityDifference.x, 0f, HorizontalVelocityDifference.y);
+        if (VelocityInWorldSpace)
+            vector = _ragDollBodyStats.transform.TransformVector(vector);
+        DrawArrow(actualPos, vector, Color.red);
+
+        for (int i = 0; i < RagDollBodyStats.Count; i++)
+        {
+            var stat = RagDollBodyStats[i];
+            var differenceStat = BodyPartDifferenceStats[i];
+            pos = stat.Position;
+            vector = stat.Velocity;
+            if (PositionInWorldSpace)
+                pos = _ragDollBodyStats.transform.TransformPoint(pos);
+            if (VelocityInWorldSpace)
+                vector = _ragDollBodyStats.transform.TransformVector(vector);
+            DrawArrow(pos, vector, Color.cyan);
+            Vector3 velocityPos = pos+vector;
+
+            pos = stat.Position;
+            vector = differenceStat.Position;
+            if (PositionInWorldSpace)
+                pos = _ragDollBodyStats.transform.TransformPoint(pos);
+            if (VelocityInWorldSpace)
+                vector = _ragDollBodyStats.transform.TransformVector(vector);
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawRay(pos, vector);
+            Vector3 differencePos = pos+vector;
+
+            vector = differenceStat.Velocity;
+            if (VelocityInWorldSpace)
+                vector = _ragDollBodyStats.transform.TransformVector(vector);
+            DrawArrow(velocityPos, vector, Color.red);
+        }
+        
+    }
+    void DrawArrow(Vector3 start, Vector3 vector, Color color)
+    {
+        float headSize = 0.25f;
+        float headAngle = 20.0f;
+        Gizmos.color = color;
+		Gizmos.DrawRay(start, vector);
+ 
+        if (vector.magnitude > 0f)
+        { 
+            Vector3 right = Quaternion.LookRotation(vector) * Quaternion.Euler(0,180+headAngle,0) * new Vector3(0,0,1);
+            Vector3 left = Quaternion.LookRotation(vector) * Quaternion.Euler(0,180-headAngle,0) * new Vector3(0,0,1);
+            Gizmos.DrawRay(start + vector, right * headSize);
+            Gizmos.DrawRay(start + vector, left * headSize);
+        }
     }
 }

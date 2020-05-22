@@ -233,10 +233,12 @@ public class RagDollAgent : Agent
         float headAngle = 20.0f;
         Gizmos.color = color;
 		Gizmos.DrawRay(start, vector);
- 
-		Vector3 right = Quaternion.LookRotation(vector) * Quaternion.Euler(0,180+headAngle,0) * new Vector3(0,0,1);
-		Vector3 left = Quaternion.LookRotation(vector) * Quaternion.Euler(0,180-headAngle,0) * new Vector3(0,0,1);
-		Gizmos.DrawRay(start + vector, right * headSize);
-		Gizmos.DrawRay(start + vector, left * headSize);
+        if (vector != Vector3.zero)
+        { 
+            Vector3 right = Quaternion.LookRotation(vector) * Quaternion.Euler(0,180+headAngle,0) * new Vector3(0,0,1);
+            Vector3 left = Quaternion.LookRotation(vector) * Quaternion.Euler(0,180-headAngle,0) * new Vector3(0,0,1);
+            Gizmos.DrawRay(start + vector, right * headSize);
+            Gizmos.DrawRay(start + vector, left * headSize);
+        }
     }
 }
