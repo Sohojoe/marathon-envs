@@ -1097,7 +1097,7 @@ ArticulationBody:
   m_GameObject: {fileID: 8721563140769238539}
   m_Enabled: 1
   m_Mass: 5
-  m_ParentAnchorPosition: {x: 0.0000000018626451, y: 0.30840003, z: 0.0000000018626451}
+  m_ParentAnchorPosition: {x: 0.0000000018626451, y: 0.17840004, z: 0.0000000018626451}
   m_ParentAnchorRotation: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
   m_AnchorPosition: {x: 0, y: -0.12, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
@@ -2480,15 +2480,15 @@ ArticulationBody:
   m_Twist: 1
   m_XDrive:
     lowerLimit: -20
-    upperLimit: 70
+    upperLimit: 50
     stiffness: 0
     damping: 0
     forceLimit: 3.4028235e+38
     target: 0
     targetVelocity: 0
   m_YDrive:
-    lowerLimit: -20
-    upperLimit: 45
+    lowerLimit: -25
+    upperLimit: 35
     stiffness: 20000
     damping: 100
     forceLimit: 3.402823e+38
@@ -2628,7 +2628,7 @@ ArticulationBody:
   m_GameObject: {fileID: 8722238855668260183}
   m_Enabled: 1
   m_Mass: 3.67
-  m_ParentAnchorPosition: {x: -0.19000001, y: 0.18582392, z: -0.020000007}
+  m_ParentAnchorPosition: {x: -0.19000001, y: 0.055823922, z: -0.020000007}
   m_ParentAnchorRotation: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
   m_AnchorPosition: {x: 0, y: 0.135, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
@@ -2790,7 +2790,7 @@ ArticulationBody:
   m_GameObject: {fileID: 8722317409419288527}
   m_Enabled: 1
   m_Mass: 3.67
-  m_ParentAnchorPosition: {x: 0.19000001, y: 0.18743086, z: -0.020000007}
+  m_ParentAnchorPosition: {x: 0.19000001, y: 0.057430863, z: -0.020000007}
   m_ParentAnchorRotation: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
   m_AnchorPosition: {x: 0, y: 0.135, z: 0}
   m_AnchorRotation: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
@@ -3264,15 +3264,15 @@ ArticulationBody:
   m_Twist: 1
   m_XDrive:
     lowerLimit: -20
-    upperLimit: 70
+    upperLimit: 50
     stiffness: 0
     damping: 0
     forceLimit: 3.4028235e+38
     target: 0
     targetVelocity: 0
   m_YDrive:
-    lowerLimit: -45
-    upperLimit: 20
+    lowerLimit: -35
+    upperLimit: 25
     stiffness: 20000
     damping: 100
     forceLimit: 3.402823e+38
