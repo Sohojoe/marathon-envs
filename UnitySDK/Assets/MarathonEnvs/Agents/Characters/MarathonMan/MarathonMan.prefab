@@ -1520,8 +1520,8 @@ ArticulationBody:
     target: 0
     targetVelocity: 0
   m_YDrive:
-    lowerLimit: -140
-    upperLimit: 22
+    lowerLimit: -130
+    upperLimit: 20
     stiffness: 0
     damping: 0
     forceLimit: 3.4028235e+38
@@ -2973,8 +2973,8 @@ ArticulationBody:
     target: 0
     targetVelocity: 0
   m_YDrive:
-    lowerLimit: -140
-    upperLimit: 22
+    lowerLimit: -130
+    upperLimit: 20
     stiffness: 0
     damping: 0
     forceLimit: 3.4028235e+38
