@@ -230,8 +230,9 @@ public class MocapAnimatorController : MonoBehaviour
         float groundedTurnSpeed = Mathf.Lerp(MaxTurnVelocity, MinTurnVelocity, _forwardVelocity / _desiredForwardSpeed);
         float actualTurnSpeed = _isGrounded ? groundedTurnSpeed : Vector3.Angle(transform.forward, localInput) * kInverseOneEighty * kAirborneTurnSpeedProportion * groundedTurnSpeed;
         _targetRotation = Quaternion.RotateTowards(transform.rotation, _targetRotation, actualTurnSpeed * deltaTime);
-
-        transform.rotation = _targetRotation;
+        bool hasNan = float.IsNaN(_targetRotation.x) || float.IsNaN(_targetRotation.y) ||float.IsNaN(_targetRotation.z);
+        if (!hasNan)
+            transform.rotation = _targetRotation;
     }
 
     void CalculateForwardMovement(float deltaTime)
