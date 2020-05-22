@@ -18,14 +18,14 @@ MonoBehaviour:
   maxStep: 2000
   FixedDeltaTime: 0.016666668
   SmoothBeta: 0.2
+  RequestCamera: 1
+  CameraFollowMe: 0
+  CameraTarget: {fileID: 8876778131031204105}
   SkipRewardSmoothing: 0
   debugCopyMocap: 0
   ignorActions: 0
   dontResetOnZeroReward: 0
   DebugPauseOnReset: 0
-  RequestCamera: 1
-  CameraFollowMe: 0
-  CameraTarget: {fileID: 8876778131031204105}
 --- !u!114 &5002467186126936294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -909,6 +909,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxVelocity: 8
+  ClipInput: 0.33
+  NoJumpsInMockMode: 1
   MovementVector: {x: 0, y: 0}
   CameraRotation: {x: 0, y: 0}
   Jump: 0
