@@ -199,6 +199,14 @@ public class MocapController : MonoBehaviour, IOnSensorCollision
 	public void OnReset(Quaternion resetRotation)
 	{
 		transform.position = _resetPosition;
+		// handle character controller skin width
+		var characterController = GetComponent<CharacterController>();
+		if (characterController != null)
+		{
+			var pos = transform.position;
+			pos.y += characterController.skinWidth;
+			transform.position = pos;
+		}
 		transform.rotation = resetRotation;
         MimicAnimation();
 	}
