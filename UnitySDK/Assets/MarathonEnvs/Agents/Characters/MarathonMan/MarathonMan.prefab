@@ -3077,8 +3077,8 @@ ArticulationBody:
   m_SwingZ: 0
   m_Twist: 1
   m_XDrive:
-    lowerLimit: -10
-    upperLimit: 90
+    lowerLimit: -30
+    upperLimit: 75
     stiffness: 40000
     damping: 100
     forceLimit: 3.4028235e+38
