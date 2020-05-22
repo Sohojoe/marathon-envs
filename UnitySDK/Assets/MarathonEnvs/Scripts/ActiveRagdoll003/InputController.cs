@@ -7,6 +7,9 @@ public class InputController : MonoBehaviour
 {
     [Header("Options")]
     public float MaxVelocity;
+    [Range(0f,1f)]
+    public float ClipInput;
+    public bool NoJumpsInMockMode;
 
     [Header("User or Mock input states")]
     public Vector2 MovementVector; // User-input desired horizontal center of mass velocity.
@@ -40,6 +43,8 @@ public class InputController : MonoBehaviour
             GetMockInput();
         if (!Mathf.Approximately(MovementVector.sqrMagnitude, 0f))
             HorizontalDirection = new Vector3(MovementVector.normalized.x, 0f, MovementVector.normalized.y);
+        if (MovementVector.magnitude < .1f)
+            MovementVector = Vector2.zero;
         DesiredHorizontalVelocity = MovementVector.normalized * MaxVelocity * MovementVector.magnitude;
     }
     public void OnReset()
@@ -54,6 +59,12 @@ public class InputController : MonoBehaviour
             Input.GetAxis("Horizontal"),
             Input.GetAxis("Vertical")
         );
+        if (ClipInput > 0f)
+        {
+            newMovementVector = new Vector2(
+                Mathf.Clamp(newMovementVector.x, -ClipInput, ClipInput),
+                Mathf.Clamp(newMovementVector.y, -ClipInput, ClipInput));
+        }
         if (!Mathf.Approximately(newMovementVector.sqrMagnitude, 0f))
             MovementVector = newMovementVector;
         CameraRotation = Vector2.zero;
@@ -75,6 +86,10 @@ public class InputController : MonoBehaviour
         Jump = false;
         float direction = UnityEngine.Random.Range(0f, 360f);
         float power = UnityEngine.Random.value;
+        if (ClipInput > 0f)
+        {
+            power *= ClipInput;
+        }
         MovementVector = new Vector2(Mathf.Cos(direction), Mathf.Sin(direction));
         MovementVector *= power;
         Jump = ChooseJump();
@@ -82,11 +97,15 @@ public class InputController : MonoBehaviour
     }
     bool ChooseBackflip()
     {
+        if (NoJumpsInMockMode)
+            return false;
         var rnd = UnityEngine.Random.Range(0, 10);
         return rnd == 0;
     }
     bool ChooseJump()
     {
+        if (NoJumpsInMockMode)
+            return false;
         var rnd = UnityEngine.Random.Range(0, 5);
         return rnd == 0;
     }

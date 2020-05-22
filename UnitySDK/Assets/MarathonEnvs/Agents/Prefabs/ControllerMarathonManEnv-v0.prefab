@@ -23,6 +23,9 @@ MonoBehaviour:
   ignorActions: 0
   dontResetOnZeroReward: 0
   DebugPauseOnReset: 0
+  RequestCamera: 1
+  CameraFollowMe: 0
+  CameraTarget: {fileID: 8876778131031204105}
 --- !u!114 &5002467186126936294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42,7 +45,7 @@ MonoBehaviour:
   PositionReward: 0
   MocapPointsVelocity: 0
   RagDollPointsVelocity: 0
-  PointsVelocityDifference: 0
+  PointsVelocityDifferenceSquared: 0
   PointsVelocityReward: 0
   RotationDifferences: []
   SumOfRotationDifferences: 0
@@ -86,9 +89,8 @@ MonoBehaviour:
   - right_hand
   - left_left_foot
   - right_right_foot
-  InputMinusMocapHorizontalVelocityDifference: {x: 0, y: 0}
-  InputMinusRagDollHorizontalVelocityDifference: {x: 0, y: 0}
-  MocapMinusRagDollHorizontalVelocityDifference: {x: 0, y: 0}
+  VelocityInWorldSpace: 1
+  PositionInWorldSpace: 1
 --- !u!1 &421908985547291649
 GameObject:
   m_ObjectHideFlags: 0
@@ -986,6 +988,7 @@ MonoBehaviour:
   NormalizedTime: 0
   Lenght: 0
   IsLoopingAnimation: 0
+  RequestCamera: 0
   CameraFollowMe: 0
   CameraTarget: {fileID: 2742018560325911098}
   toePositionOffset: 0.3
@@ -1715,6 +1718,12 @@ PrefabInstance:
     - {fileID: 6637013144633364566, guid: 27548cbf466924cd699685496025f534, type: 3}
     - {fileID: 5859498862604059448, guid: 27548cbf466924cd699685496025f534, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 27548cbf466924cd699685496025f534, type: 3}
+--- !u!4 &8876778131031204105 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8719972220993353125, guid: 27548cbf466924cd699685496025f534,
+    type: 3}
+  m_PrefabInstance: {fileID: 158529944589636780}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8878912891930077695 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8722076229893094739, guid: 27548cbf466924cd699685496025f534,

@@ -9,6 +9,13 @@ public class RagDollAgent : Agent
     [Header("Settings")]
 	public float FixedDeltaTime = 1f/60f;
     public float SmoothBeta = 0.2f;
+
+    [Header("Camera")]
+
+    public bool RequestCamera;
+	public bool CameraFollowMe;
+	public Transform CameraTarget;    
+
     [Header("... debug")]
     public bool SkipRewardSmoothing;
     public bool debugCopyMocap;
@@ -29,6 +36,21 @@ public class RagDollAgent : Agent
     InputController _inputController;
     bool _hasLazyInitialized;
     float[] _smoothedActions;
+
+    void Awake()
+    {
+		if (RequestCamera && CameraTarget != null)
+		{
+			var instances = FindObjectsOfType<MocapController>().ToList();
+			if (instances.Count(x=>x.CameraFollowMe) < 1)
+				CameraFollowMe = true;
+		}
+        if (CameraFollowMe){
+            var camera = FindObjectOfType<Camera>();
+            var follow = camera.GetComponent<SmoothFollow>();
+            follow.target = CameraTarget;
+        }        
+    }
 	override public void CollectObservations()
     {
 		var sensor = this;

@@ -374,7 +374,7 @@ MonoBehaviour:
     envIdDefault: ControllerMarathonMan-v0
     trainingNumEnvsDefault: 16
     inferenceNumEnvsDefault: 1
-  DebugSkipPopUp: 1
+  DebugSkipPopUp: 0
 --- !u!1 &1715640920
 GameObject:
   m_ObjectHideFlags: 0

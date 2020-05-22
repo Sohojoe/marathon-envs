@@ -20,6 +20,7 @@ public class MocapController : MonoBehaviour, IOnSensorCollision
 	private List<Rigidbody> _rigidbodies;
 	private List<Transform> _transforms;
 
+	public bool RequestCamera;
 	public bool CameraFollowMe;
 	public Transform CameraTarget;
 
@@ -34,9 +35,12 @@ public class MocapController : MonoBehaviour, IOnSensorCollision
         // anim.Play("Record",0, NormalizedTime);
         anim.Update(0f);
 
-		var masters = FindObjectsOfType<StyleTransfer002Master>().ToList();
-		if (masters.Count(x=>x.CameraFollowMe) < 1)
-			CameraFollowMe = true;
+		if (RequestCamera && CameraTarget != null)
+		{
+			var instances = FindObjectsOfType<MocapController>().ToList();
+			if (instances.Count(x=>x.CameraFollowMe) < 1)
+				CameraFollowMe = true;
+		}
         if (CameraFollowMe){
             var camera = FindObjectOfType<Camera>();
             var follow = camera.GetComponent<SmoothFollow>();
