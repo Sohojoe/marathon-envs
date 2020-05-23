@@ -137,6 +137,13 @@ public class RagDollAgent : Agent
             if (!dontResetOnZeroReward)
                 Done();
         }
+        else if (_dReConRewards.Reward <= .5f)
+        {
+            Transform ragDollCom = _dReConObservations.GetRagDollCOM();
+            Vector3 snapPosition = ragDollCom.position;
+            snapPosition.y = 0f;
+            _mocapController.SnapTo(snapPosition);
+        }
     }
 
     float[] SmoothActions(float[] vectorAction)

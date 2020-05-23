@@ -281,4 +281,8 @@ public class MocapController : MonoBehaviour, IOnSensorCollision
         }
         root.gameObject.SetActive(true);
     }	   
+	public void SnapTo(Vector3 snapPosition)
+	{
+		transform.position = snapPosition;
+	}
 }

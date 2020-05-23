@@ -118,6 +118,10 @@ public class DReConObservations : MonoBehaviour
             differenceStats.Rotation = DReConObservationStats.GetAngularVelocity(ragDollStats.Rotation, mocapStats.Rotation, timeDelta);
         }
     }
+    public Transform GetRagDollCOM()
+    {
+        return _ragDollBodyStats.transform;
+    }
     void OnDrawGizmos()
     {
         // MocapCOMVelocity
