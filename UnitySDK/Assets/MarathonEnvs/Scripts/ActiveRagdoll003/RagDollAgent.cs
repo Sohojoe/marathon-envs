@@ -34,6 +34,7 @@ public class RagDollAgent : Agent
     List<ArticulationBody> _motors;
     MarathonTestBedController _debugController;  
     InputController _inputController;
+    SensorObservations _sensorObservations;
     bool _hasLazyInitialized;
     float[] _smoothedActions;
 
@@ -92,6 +93,9 @@ public class RagDollAgent : Agent
             sensor.AddVectorObs(stat.Velocity);
         }
         sensor.AddVectorObs(_dReConObservations.PreviousActions);
+        
+        // add sensors (feet etc)
+        sensor.AddVectorObs(_sensorObservations.SensorIsInTouch);
     }
 	public override void AgentAction(float[] vectorAction)
     {
@@ -161,6 +165,7 @@ public class RagDollAgent : Agent
             _trackBodyStatesInWorldSpace = mocapController.GetComponent<TrackBodyStatesInWorldSpace>();
             _ragDollSettings = GetComponent<RagDoll002>();
             _inputController = _spawnableEnv.GetComponentInChildren<InputController>();
+            _sensorObservations = GetComponent<SensorObservations>();
 
             foreach (var body in GetComponentsInChildren<ArticulationBody>())
             {

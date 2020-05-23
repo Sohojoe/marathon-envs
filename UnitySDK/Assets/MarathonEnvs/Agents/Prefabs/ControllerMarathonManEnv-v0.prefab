@@ -60,6 +60,19 @@ MonoBehaviour:
   HeadDistance: 0
   FallFactor: 0
   ObjectForPointDistancesGizmo: 3
+--- !u!114 &5965043261311126201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8878912891930077695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ad1013fcfea94c78bd38ee533603b89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SensorIsInTouch: []
 --- !u!114 &8704383841024592634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1021,7 +1034,7 @@ PrefabInstance:
     - target: {fileID: 114263248370519032, guid: 27548cbf466924cd699685496025f534,
         type: 3}
       propertyPath: m_BrainParameters.vectorObservationSize
-      value: 108
+      value: 114
       objectReference: {fileID: 0}
     - target: {fileID: 114263248370519032, guid: 27548cbf466924cd699685496025f534,
         type: 3}
