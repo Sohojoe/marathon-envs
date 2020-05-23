@@ -195,7 +195,7 @@ public class RagDollAgent : Agent
         debugCopyMocap = false;
         _inputController.OnReset();
         _mocapController.GetComponentInChildren<MocapAnimatorController>().OnReset();
-        var angle = UnityEngine.Vector3.Angle(Vector3.forward, _inputController.HorizontalDirection);
+        var angle = Vector3.SignedAngle(Vector3.forward, _inputController.HorizontalDirection, Vector3.up);
         var rotation = Quaternion.Euler(0f, angle, 0f);
         _mocapController.OnReset(rotation);
         _mocapController.CopyStatesTo(this.gameObject);
