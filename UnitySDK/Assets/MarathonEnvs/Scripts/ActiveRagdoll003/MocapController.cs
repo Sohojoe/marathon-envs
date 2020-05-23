@@ -255,6 +255,29 @@ public class MocapController : MonoBehaviour, IOnSensorCollision
             {
                 targetRb.TeleportRoot(stat.position, stat.rotation);
             }
+			float stiffness = 0f;
+			float damping = 10000f;
+            if (targetRb.swingYLock == ArticulationDofLock.LimitedMotion)
+			{
+				var drive = targetRb.yDrive;
+				drive.stiffness = stiffness;
+				drive.damping = damping;
+				targetRb.yDrive = drive;
+			}
+            if (targetRb.swingZLock == ArticulationDofLock.LimitedMotion)
+			{
+				var drive = targetRb.zDrive;
+				drive.stiffness = stiffness;
+				drive.damping = damping;
+				targetRb.zDrive = drive;
+			}
+			if (targetRb.twistLock == ArticulationDofLock.LimitedMotion)
+			{
+				var drive = targetRb.xDrive;
+				drive.stiffness = stiffness;
+				drive.damping = damping;
+				targetRb.xDrive = drive;
+			}
         }
         root.gameObject.SetActive(true);
     }	   
