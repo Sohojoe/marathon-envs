@@ -95,7 +95,7 @@ public class RagDollAgent : Agent
         sensor.AddVectorObs(_dReConObservations.PreviousActions);
         
         // add sensors (feet etc)
-        // sensor.AddVectorObs(_sensorObservations.SensorIsInTouch);
+        sensor.AddVectorObs(_sensorObservations.SensorIsInTouch);
     }
 	public override void AgentAction(float[] vectorAction)
     {
