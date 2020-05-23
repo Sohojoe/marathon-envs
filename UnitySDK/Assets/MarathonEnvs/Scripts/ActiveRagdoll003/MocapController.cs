@@ -88,15 +88,18 @@ public class MocapController : MonoBehaviour, IOnSensorCollision
         // MimicBone("left_upper_arm",   "mixamorig:LeftArm", "mixamorig:LeftForeArm", new Vector3(.0f, .0f, .0f), Quaternion.Euler(0, 45, 180));
         // MimicBone("left_larm",        "mixamorig:LeftForeArm",  "mixamorig:LeftHand", new Vector3(.0f, .0f, .0f), Quaternion.Euler(0f, -180-45, 180));
         // //MimicBone("left_hand",        "mixamorig:LeftHand", new Vector3(.0f, .0f, .0f), 			Quaternion.Euler(0, 90, 90+180));
-        MimicBone("left_upper_arm",   "mixamorig:LeftArm", "mixamorig:LeftForeArm", new Vector3(.0f, .0f, .0f), Quaternion.Euler(0f, 45f+90f, 180f));
-        MimicBone("left_larm",        "mixamorig:LeftForeArm",  "mixamorig:LeftHand", new Vector3(.0f, .0f, .0f), Quaternion.Euler(0f, 45f+90f, 180f));
-        // MimicBone("left_hand",        "mixamorig:LeftForeArm",  "mixamorig:LeftHand", new Vector3(.0f, .0f, .0f), Quaternion.Euler(0, 45f, 0));
+        MimicBone("left_upper_arm",   "mixamorig:LeftArm", "mixamorig:LeftForeArm", new Vector3(-.05f, .02f, -0.04f), Quaternion.Euler(0f, 45f+90f, 180f));
+        MimicBone("left_larm",        "mixamorig:LeftForeArm",  "mixamorig:LeftHand", new Vector3(-.05f, .02f, -0.04f), Quaternion.Euler(0f, 45f+90f, 180f));
+        // MimicBone("left_upper_arm",   "mixamorig:LeftArm", "mixamorig:LeftForeArm", left_upper_arm_offser, Quaternion.Euler(0f, 45f+90f, 180f));
+        // MimicBone("left_larm",        "mixamorig:LeftForeArm",  "mixamorig:LeftHand", new Vector3(.0f, .0f, .0f), Quaternion.Euler(0f, 45f+90f, 180f));
         
         // MimicBone("right_upper_arm",  "mixamorig:RightArm", "mixamorig:RightForeArm",      new Vector3(.0f, .0f, .0f), Quaternion.Euler(0, 180-45, 180));
         // MimicBone("right_larm",       "mixamorig:RightForeArm", "mixamorig:RightHand",  new Vector3(.0f, .0f, .0f), Quaternion.Euler(0, 90-45, 180));
         // // MimicBone("right_hand",       "mixamorig:RightHand",      new Vector3(.0f, .0f, .0f), Quaternion.Euler(0, 180-90, -90));
-        MimicBone("right_upper_arm",  "mixamorig:RightArm", "mixamorig:RightForeArm",      new Vector3(.0f, .0f, .0f), Quaternion.Euler(0f, 45f+180f, 180f));
-        MimicBone("right_larm",       "mixamorig:RightForeArm", "mixamorig:RightHand",  new Vector3(.0f, .0f, .0f), Quaternion.Euler(0f, 45f+180f, 180f));
+        MimicBone("right_upper_arm",  "mixamorig:RightArm", "mixamorig:RightForeArm",      new Vector3(.05f, .02f, -0.04f), Quaternion.Euler(0f, 45f+180f, 180f));
+        MimicBone("right_larm",       "mixamorig:RightForeArm", "mixamorig:RightHand",  new Vector3(.05f, .02f, -0.04f), Quaternion.Euler(0f, 45f+180f, 180f));
+        // MimicBone("right_upper_arm",  "mixamorig:RightArm", "mixamorig:RightForeArm", right_upper_arm_offser, Quaternion.Euler(0f, 45f+180f, 180f));
+        // MimicBone("right_larm",       "mixamorig:RightForeArm", "mixamorig:RightHand",  new Vector3(.0f, .0f, .0f), Quaternion.Euler(0f, 45f+180f, 180f));
 
 
         MimicBone("left_thigh",       "mixamorig:LeftUpLeg",  "mixamorig:LeftLeg",    new Vector3(.0f, .0f, .0f), 			Quaternion.Euler(0, 90, 180));
@@ -146,7 +149,10 @@ public class MocapController : MonoBehaviour, IOnSensorCollision
 		var target = _rigidbodies.First(x=>x.name == name);
 
 		var pos = (animEndBone.transform.position - animStartBone.transform.position);
-		target.transform.position = animStartBone.transform.position + (pos/2) + offset;
+		var localOffset = target.transform.parent.InverseTransformPoint(offset);
+		// target.transform.position = animStartBone.transform.position + (pos/2) + localOffset;
+		target.transform.position = animStartBone.transform.position + (pos/2);
+		target.transform.localPosition += offset;
 		target.transform.rotation = animStartBone.transform.rotation * rotationOffset;
 	}
 	[Range(0f,1f)]

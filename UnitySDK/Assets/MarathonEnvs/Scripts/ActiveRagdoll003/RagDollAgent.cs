@@ -162,6 +162,12 @@ public class RagDollAgent : Agent
             _ragDollSettings = GetComponent<RagDoll002>();
             _inputController = _spawnableEnv.GetComponentInChildren<InputController>();
 
+            foreach (var body in GetComponentsInChildren<ArticulationBody>())
+            {
+                body.solverIterations = 255;
+                body.solverVelocityIterations = 255;
+            }
+
             _motors = GetComponentsInChildren<ArticulationBody>()
                 .Where(x=>x.jointType == ArticulationJointType.SphericalJoint)
                 .Where(x=>!x.isRoot)
