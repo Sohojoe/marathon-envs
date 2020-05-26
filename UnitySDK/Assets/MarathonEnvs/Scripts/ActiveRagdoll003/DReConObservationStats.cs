@@ -181,8 +181,10 @@ public class DReConObservationStats : MonoBehaviour
             bodyPartStat.Velocity = worldPosition - bodyPartStat.LastWorldPosition;
             bodyPartStat.Velocity /= timeDelta;
             bodyPartStat.Velocity = transform.InverseTransformVector(bodyPartStat.Velocity);
-            bodyPartStat.AngualrVelocity = GetAngularVelocity(worldRotation, bodyPartStat.LastWorldRotation, timeDelta);
-            bodyPartStat.AngualrVelocity += AngualrVelocity;
+            bodyPartStat.AngualrVelocity = GetAngularVelocity(
+                    Quaternion.Inverse(transform.rotation) * worldRotation, 
+                    Quaternion.Inverse(transform.rotation) * bodyPartStat.LastWorldRotation, 
+                    timeDelta);
             bodyPartStat.LastWorldPosition = worldPosition;
             bodyPartStat.LastWorldRotation = worldRotation;
             bodyPartStat.LastIsSet = true;
