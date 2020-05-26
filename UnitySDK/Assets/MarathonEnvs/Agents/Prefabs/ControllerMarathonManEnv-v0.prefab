@@ -15,8 +15,8 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  maxStep: 2000
-  FixedDeltaTime: 0.016666668
+  maxStep: 5000
+  FixedDeltaTime: 0.006666667
   SmoothBeta: 0.2
   RequestCamera: 1
   CameraFollowMe: 0
@@ -1045,7 +1045,7 @@ PrefabInstance:
     - target: {fileID: 114275564199513312, guid: 27548cbf466924cd699685496025f534,
         type: 3}
       propertyPath: DecisionPeriod
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 260939356137283678, guid: 27548cbf466924cd699685496025f534,
         type: 3}
