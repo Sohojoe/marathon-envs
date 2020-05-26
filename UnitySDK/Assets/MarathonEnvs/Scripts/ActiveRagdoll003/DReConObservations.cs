@@ -69,9 +69,8 @@ public class DReConObservations : MonoBehaviour
         _ragDollBodyStats.OnAwake(BodyPartsToTrack, transform);
     }
 
-    public void OnStep()
+    public void OnStep(float timeDelta)
     {
-        float timeDelta = Time.fixedDeltaTime;
         _mocapBodyStats.SetStatusForStep(timeDelta);
         _ragDollBodyStats.SetStatusForStep(timeDelta);
         UpdateObservations(timeDelta);

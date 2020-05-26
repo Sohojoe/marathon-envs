@@ -35,6 +35,8 @@ public class RagDollAgent : Agent
     MarathonTestBedController _debugController;  
     InputController _inputController;
     SensorObservations _sensorObservations;
+    DecisionRequester _decisionRequester;
+
     bool _hasLazyInitialized;
     float[] _smoothedActions;
 
@@ -52,6 +54,21 @@ public class RagDollAgent : Agent
             follow.target = CameraTarget;
         }        
     }
+    void Update()
+    {
+        if (debugCopyMocap)
+        {
+            Done();
+        }
+
+        // hadle mocap going out of bounds
+        if (!_spawnableEnv.IsPointWithinBoundsInWorldSpace(_mocapController.transform.position)) {
+            _mocapController.transform.position = _spawnableEnv.transform.position;
+            _trackBodyStatesInWorldSpace.Reset();
+            Done();
+        }
+
+    }
 	override public void CollectObservations()
     {
 		var sensor = this;
@@ -59,16 +76,10 @@ public class RagDollAgent : Agent
 		{
 			AgentReset();
 		}
-        // hadle mocap going out of bounds
-        if(!_spawnableEnv.IsPointWithinBoundsInWorldSpace(_mocapController.transform.position))
-        {
-            _mocapController.transform.position = _spawnableEnv.transform.position;
-            _trackBodyStatesInWorldSpace.Reset();
-            Done();
-        }
 
-        _dReConObservations.OnStep();
-        _dReConRewards.OnStep();        
+        float timeDelta = Time.fixedDeltaTime * _decisionRequester.DecisionPeriod;
+        _dReConObservations.OnStep(timeDelta);
+        _dReConRewards.OnStep(timeDelta);        
 
         sensor.AddVectorObs(_dReConObservations.MocapCOMVelocity);
         sensor.AddVectorObs(_dReConObservations.RagDollCOMVelocity);
@@ -160,6 +171,7 @@ public class RagDollAgent : Agent
 	{
 		if (!_hasLazyInitialized)
 		{
+            _decisionRequester = GetComponent<DecisionRequester>();
             _debugController = FindObjectOfType<MarathonTestBedController>();
     		Time.fixedDeltaTime = FixedDeltaTime;
             _spawnableEnv = GetComponentInParent<SpawnableEnv>();
@@ -207,10 +219,11 @@ public class RagDollAgent : Agent
         _mocapController.OnReset(rotation);
         _mocapController.CopyStatesTo(this.gameObject);
         // _trackBodyStatesInWorldSpace.CopyStatesTo(this.gameObject);
+        float timeDelta = float.MinValue;
         _dReConObservations.OnReset();
         _dReConRewards.OnReset();
-        _dReConObservations.OnStep();
-        _dReConRewards.OnStep();
+        _dReConObservations.OnStep(timeDelta);
+        _dReConRewards.OnStep(timeDelta);
 #if UNITY_EDITOR		
 		if (DebugPauseOnReset)
 		{

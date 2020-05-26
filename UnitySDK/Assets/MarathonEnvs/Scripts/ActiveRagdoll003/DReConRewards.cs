@@ -93,9 +93,8 @@ public class DReConRewards : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void OnStep()
+    public void OnStep(float timeDelta)
     {
-        float timeDelta = Time.fixedDeltaTime;
         _mocapBodyStats.SetStatusForStep(timeDelta);
         _ragDollBodyStats.SetStatusForStep(timeDelta);
 
