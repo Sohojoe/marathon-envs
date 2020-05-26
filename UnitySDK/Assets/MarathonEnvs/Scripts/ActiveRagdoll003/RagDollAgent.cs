@@ -110,9 +110,17 @@ public class RagDollAgent : Agent
     }
 	public override void AgentAction(float[] vectorAction)
     {
+        if (!_hasLazyInitialized)
+		{
+			return;
+		}
+
         bool shouldDebug = _debugController != null;
-        shouldDebug &= _debugController.isActiveAndEnabled;
-        shouldDebug &= _debugController.gameObject.activeInHierarchy;
+        if (_debugController != null)
+        {
+            shouldDebug &= _debugController.isActiveAndEnabled;
+            shouldDebug &= _debugController.gameObject.activeInHierarchy;
+        }
         if (shouldDebug)
         {
             if (_debugController.Actions == null || _debugController.Actions.Length == 0)
