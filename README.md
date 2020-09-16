@@ -63,13 +63,22 @@ The following table lists releases, the required unity version, and links to rel
 
 ### Requirements
 
-* Unity 2018.4 (Download [here](https://unity3d.com/get-unity/download)).
+* Unity 2020.1.2f1 (Download [here](https://unity3d.com/get-unity/download)).
 * Clone / Download this repro
-* Install ml-agents version 0.14.1 - install via:
+* Install ml-agents version 0.14.1 
 
+First, install tensorflow using Anaconda. For this, install Anaconda, and then in the conda prompt you must create a new environment, activate it, and add the instruction:
+
+``` sh
+    conda install -c conda-forge tensorflow=1.7.1 
+```
+If you prefer to install the gpu version of tensorflow, it should also work.
+Once this works, you can install ml-agents with pip, like:
 ``` sh
 pip3 install mlagents==0.14.1
 ```
+
+Note, that installing mlagents directly will not work, the version of tensorflow that is installed poses some problems. 
 
 * Build or install the correct runtime for your version into the `envs\` folder
 
