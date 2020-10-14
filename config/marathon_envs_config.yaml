@@ -257,3 +257,35 @@ ControllerMarathonMan-v0:
     summary_freq: 100000
     num_layers: 2
     hidden_units: 256    
+    
+    
+    
+ControllerArtanim-v3:
+    # num_epoch: 4
+    # time_horizon: 100
+    # summary_freq: 10000
+    # use_recurrent: false
+    # normalize: true 
+    # num_layers: 2
+    # hidden_units: 128
+    # learning_rate: 3e-4
+    # batch_size: 10000 # buffer_size/4
+    # buffer_size: 40000
+    # beta: .00001
+    # max_steps: 100e6
+    normalize: true
+    num_epoch: 3
+    beta: .00001
+    learning_rate: 3e-4
+    time_horizon: 100
+    max_steps: 128e6
+    batch_size: 768 
+    # buffer_size: 21504 # 768 * 28
+    buffer_size: 3072 # 768 * 4
+    summary_freq: 100000
+    num_layers: 2
+    hidden_units: 256    
+    
+        
+    
+    
