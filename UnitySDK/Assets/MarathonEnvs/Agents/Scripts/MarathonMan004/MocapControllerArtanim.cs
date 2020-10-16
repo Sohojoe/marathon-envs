@@ -6,7 +6,6 @@ using MLAgents;
 using UnityEngine;
 
 
-//using MxM;
 using System.Linq.Expressions;
 
 public class MocapControllerArtanim : MonoBehaviour, IOnSensorCollision 
@@ -37,8 +36,8 @@ public class MocapControllerArtanim : MonoBehaviour, IOnSensorCollision
 
 	[Space(20)]
 	//---------------------- piece added to deal with mixamo characters and mapping between skinned and physical characters
-	[SerializeField]
-	bool _usesMotionMatching = false;
+	//[SerializeField]
+	//bool _usesMotionMatching = false;
     private bool _usingMocapAnimatorController = false;
 	MocapAnimatorController _mocapAnimController;
 
@@ -182,7 +181,7 @@ public class MocapControllerArtanim : MonoBehaviour, IOnSensorCollision
 		catch(Exception e) {
 
 			_usingMocapAnimatorController = false;
-			Debug.LogWarning("Mocap Controller is working WITHOUT MocapAnimatorController. Instead we are Assuming MxM animator available");
+			Debug.LogWarning("Mocap Controller is working WITHOUT MocapAnimatorController");
 
 		}
 
@@ -190,7 +189,7 @@ public class MocapControllerArtanim : MonoBehaviour, IOnSensorCollision
         SetupSensors();
 
 		anim = GetComponent<Animator>();
-		if (!_usesMotionMatching)
+		//if (!_usesMotionMatching)
 		{
 			
 			 anim.Play("Record",0, NormalizedTime);
@@ -223,7 +222,7 @@ public class MocapControllerArtanim : MonoBehaviour, IOnSensorCollision
     void FixedUpdate()
     {
 
-		if (!_usesMotionMatching)
+		//if (!_usesMotionMatching)
 		{
 			AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
 			AnimatorClipInfo[] clipInfo = anim.GetCurrentAnimatorClipInfo(0);
@@ -238,22 +237,22 @@ public class MocapControllerArtanim : MonoBehaviour, IOnSensorCollision
 			// }       
 		}
 
-        MimicAnimation();
+        MimicAnimationArtanim();
     }
 
-	public void MimicAnimation(bool skipIfLearning = false)
-	{
-		if (!anim.enabled)
-			return;
+	//public void MimicAnimation(bool skipIfLearning = false)
+	//{
+		
 
 	
-		MimicAnimationArtanim();
+	//	MimicAnimationArtanim();
 		
-	}
+	//}
 
 
 	void MimicAnimationArtanim() {
-
+		if (!anim.enabled)
+			return;
 
 		if (_offsetsSource2RB == null)
 		{
@@ -456,7 +455,7 @@ public class MocapControllerArtanim : MonoBehaviour, IOnSensorCollision
 			transform.position = pos;
 		}
 		transform.rotation = resetRotation;
-        MimicAnimation();
+        MimicAnimationArtanim();
 	}
 
     public void OnSensorCollisionEnter(Collider sensorCollider, GameObject other)

@@ -35,7 +35,11 @@ public class MappingOffset
 
         _t = t;
         _rb = rb;
-        _offsetRB2Bone = offset;
+        
+        //this causes trouble with mecanim, probably because when it is done there is already an animation pose loaded
+        //_offsetRB2Bone = offset;
+        _offsetRB2Bone = Quaternion.identity;
+
 
         _ab = null;
 
@@ -47,23 +51,15 @@ public class MappingOffset
     }
 
 
-
-
-    //  Vector3 pos = (animEndBone.transform.position - animStartBone.transform.position);
-    //  target.transform.position = animStartBone.transform.position + (pos/2);
-    //target.transform.localPosition += offset;
-    //target.transform.rotation = animStartBone.transform.rotation* rotationOffset;
-
-
-
-
-
     public MappingOffset(Transform t, ArticulationBody ab, Quaternion offset)
     {
 
         _t = t;
         _rb = null;
-        _offsetRB2Bone = offset;
+
+        //this causes trouble with mecanim, probably because when it is done there is already an animation pose loaded
+        //_offsetRB2Bone = offset;
+        _offsetRB2Bone = Quaternion.identity;
 
         _ab = ab;
 

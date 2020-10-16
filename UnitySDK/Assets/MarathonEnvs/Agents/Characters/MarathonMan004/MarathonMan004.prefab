@@ -3904,7 +3904,7 @@ MonoBehaviour:
     vectorActionSize: 1e000000
     vectorActionDescriptions: []
     vectorActionSpaceType: 1
-  m_Model: {fileID: 11400000, guid: 370d4b1f339744221b3c4c788f19e2af, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: ae8fb3e0a6c49664393afc32f60fe36f, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: ControllerMarathonMan-v0
