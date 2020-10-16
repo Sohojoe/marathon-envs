@@ -4,6 +4,8 @@ using System.Linq;
 using MLAgents;
 using UnityEngine;
 
+using System;
+
 public class RagDollAgent : Agent 
 {
     [Header("Settings")]
@@ -390,7 +392,21 @@ public class RagDollAgent : Agent
 
     void UpdateMotor(ArticulationBody joint, Vector3 targetNormalizedRotation)
     {
-        Vector3 power = _ragDollSettings.MusclePowers.First(x=>x.Muscle == joint.name).PowerVector;
+        //Vector3 power = _ragDollSettings.MusclePowers.First(x=>x.Muscle == joint.name).PowerVector;
+
+        Vector3 power = Vector3.zero;
+        try
+        {
+            power = _ragDollSettings.MusclePowers.First(x => x.Muscle == joint.name).PowerVector;
+
+        }
+        catch (Exception e)
+        {
+            Debug.Log("there is no muscle for joint " + joint.name);
+
+        }
+
+
         power *= _ragDollSettings.Stiffness;
         float damping = _ragDollSettings.Damping;
 

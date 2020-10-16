@@ -3879,8 +3879,12 @@ MonoBehaviour:
     PowerVector: {x: 20, y: 20, z: 20}
   - Muscle: left_larm_joint
     PowerVector: {x: 40, y: 40, z: 40}
+  - Muscle: left_shoulder_joint
+    PowerVector: {x: 20, y: 20, z: 20}
+  - Muscle: right_shoulder_joint
+    PowerVector: {x: 20, y: 20, z: 20}
   MotorScale: 1
-  Stiffness: 100
+  Stiffness: 50
   Damping: 100
 --- !u!114 &114263248370519032
 MonoBehaviour:
@@ -3897,7 +3901,7 @@ MonoBehaviour:
   m_BrainParameters:
     vectorObservationSize: 114
     numStackedVectorObservations: 1
-    vectorActionSize: 15000000
+    vectorActionSize: 1e000000
     vectorActionDescriptions: []
     vectorActionSpaceType: 1
   m_Model: {fileID: 11400000, guid: 370d4b1f339744221b3c4c788f19e2af, type: 3}
@@ -3948,6 +3952,7 @@ MonoBehaviour:
   dontResetOnZeroReward: 0
   DebugPauseOnReset: 0
   UsePDControl: 1
+  _isArtanimAgent: 0
 --- !u!114 &4606487679878347701
 MonoBehaviour:
   m_ObjectHideFlags: 0
