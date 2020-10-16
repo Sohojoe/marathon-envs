@@ -260,7 +260,7 @@ ControllerMarathonMan-v0:
     
     
     
-ControllerArtanim-v3:
+ControllerArtanim-v4:
     # num_epoch: 4
     # time_horizon: 100
     # summary_freq: 10000

@@ -38,10 +38,18 @@ public class RagDollAgent : Agent
     SensorObservations _sensorObservations;
     DecisionRequester _decisionRequester;
 
+
+
     bool _hasLazyInitialized;
     bool _skipRewardAfterTeleport;
     float[] _smoothedActions;
     float[] _mocapTargets;
+
+    [Space(16)]
+    [SerializeField]
+    bool _isArtanimAgent = false;
+    MocapControllerArtanim _mocapControllerArtanim;
+
     void Awake()
     {
 		if (RequestCamera && CameraTarget != null)
@@ -63,11 +71,24 @@ public class RagDollAgent : Agent
             return;
         }
 
-        // hadle mocap going out of bounds
-        if (!_spawnableEnv.IsPointWithinBoundsInWorldSpace(_mocapController.transform.position)) {
-            _mocapController.transform.position = _spawnableEnv.transform.position;
-            _trackBodyStatesInWorldSpace.Reset();
-            Done();
+        if (_isArtanimAgent)
+        {
+            // hadle mocap going out of bounds
+            if (!_spawnableEnv.IsPointWithinBoundsInWorldSpace(_mocapControllerArtanim.transform.position))
+            {
+                _mocapControllerArtanim.transform.position = _spawnableEnv.transform.position;
+                _trackBodyStatesInWorldSpace.Reset();
+                Done();
+            }
+        }
+        else
+        {
+            if (!_spawnableEnv.IsPointWithinBoundsInWorldSpace(_mocapController.transform.position))
+            { 
+                _mocapController.transform.position = _spawnableEnv.transform.position;
+                _trackBodyStatesInWorldSpace.Reset();
+                Done();
+            }
         }
 
     }
@@ -188,7 +209,10 @@ public class RagDollAgent : Agent
             Transform ragDollCom = _dReConObservations.GetRagDollCOM();
             Vector3 snapPosition = ragDollCom.position;
             snapPosition.y = 0f;
-            _mocapController.SnapTo(snapPosition);
+            if(_isArtanimAgent)
+                   _mocapControllerArtanim.SnapTo(snapPosition);
+            else
+                _mocapController.SnapTo(snapPosition);
             AddReward(-.5f);
             _skipRewardAfterTeleport = true;
         }
@@ -212,13 +236,35 @@ public class RagDollAgent : Agent
             _debugController = FindObjectOfType<MarathonTestBedController>();
     		Time.fixedDeltaTime = FixedDeltaTime;
             _spawnableEnv = GetComponentInParent<SpawnableEnv>();
-            _mocapController = _spawnableEnv.GetComponentInChildren<MocapController>();
-            _mocapBodyParts = _mocapController.GetComponentsInChildren<Rigidbody>().ToList();
+
+
+            if (_isArtanimAgent) 
+            { 
+                _mocapControllerArtanim = _spawnableEnv.GetComponentInChildren<MocapControllerArtanim>();
+                _mocapBodyParts = _mocapControllerArtanim.GetComponentsInChildren<Rigidbody>().ToList();
+            }
+            else
+            {
+                _mocapController = _spawnableEnv.GetComponentInChildren<MocapController>();
+                _mocapBodyParts = _mocapController.GetComponentsInChildren<Rigidbody>().ToList();
+            }
+
+
             _bodyParts = GetComponentsInChildren<ArticulationBody>().ToList();
             _dReConObservations = GetComponent<DReConObservations>();
             _dReConRewards = GetComponent<DReConRewards>();
-            var mocapController = _spawnableEnv.GetComponentInChildren<MocapController>();
-            _trackBodyStatesInWorldSpace = mocapController.GetComponent<TrackBodyStatesInWorldSpace>();
+            if (_isArtanimAgent)
+            {
+                var mocapController = _spawnableEnv.GetComponentInChildren<MocapControllerArtanim>();
+                _trackBodyStatesInWorldSpace = mocapController.GetComponent<TrackBodyStatesInWorldSpace>();
+
+            }
+            else { 
+                var mocapController = _spawnableEnv.GetComponentInChildren<MocapController>();
+                _trackBodyStatesInWorldSpace = mocapController.GetComponent<TrackBodyStatesInWorldSpace>();
+            }
+
+
             _ragDollSettings = GetComponent<RagDoll003>();
             _inputController = _spawnableEnv.GetComponentInChildren<InputController>();
             _sensorObservations = GetComponent<SensorObservations>();
@@ -250,11 +296,23 @@ public class RagDollAgent : Agent
         _smoothedActions = null;
         debugCopyMocap = false;
         _inputController.OnReset();
-        _mocapController.GetComponentInChildren<MocapAnimatorController>().OnReset();
-        var angle = Vector3.SignedAngle(Vector3.forward, _inputController.HorizontalDirection, Vector3.up);
-        var rotation = Quaternion.Euler(0f, angle, 0f);
-        _mocapController.OnReset(rotation);
-        _mocapController.CopyStatesTo(this.gameObject);
+        if (_isArtanimAgent)
+        {
+            //_mocapControllerArtanim.GetComponentInChildren<MocapAnimatorController>().OnReset();//TODOJL
+            var angle = Vector3.SignedAngle(Vector3.forward, _inputController.HorizontalDirection, Vector3.up);
+            var rotation = Quaternion.Euler(0f, angle, 0f);
+            _mocapControllerArtanim.OnReset(rotation);
+            _mocapControllerArtanim.CopyStatesTo(this.gameObject);
+        }
+
+        else 
+        { 
+            _mocapController.GetComponentInChildren<MocapAnimatorController>().OnReset();
+            var angle = Vector3.SignedAngle(Vector3.forward, _inputController.HorizontalDirection, Vector3.up);
+            var rotation = Quaternion.Euler(0f, angle, 0f);
+            _mocapController.OnReset(rotation);
+            _mocapController.CopyStatesTo(this.gameObject);
+        }
         // _trackBodyStatesInWorldSpace.CopyStatesTo(this.gameObject);
         float timeDelta = float.MinValue;
         _dReConObservations.OnReset();

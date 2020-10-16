@@ -69,7 +69,19 @@ public class DReConRewards : MonoBehaviour
     {
         _spawnableEnv = GetComponentInParent<SpawnableEnv>();
         Assert.IsNotNull(_spawnableEnv);
-        _mocap = _spawnableEnv.GetComponentInChildren<MocapController>().gameObject;
+
+        MocapController temp = _spawnableEnv.GetComponentInChildren<MocapController>();
+        MocapControllerArtanim temp2 = null;
+        if (temp != null)
+            _mocap = temp.gameObject;
+        else {
+            temp2 = _spawnableEnv.GetComponentInChildren<MocapControllerArtanim>();
+            if (temp2 != null)
+                _mocap = temp2.gameObject;
+            else
+                Debug.LogError("I could not find component Mocap Controller nor component Mocap Controller Artanim");
+
+        }
         _ragDoll = _spawnableEnv.GetComponentInChildren<RagDollAgent>().gameObject;
         Assert.IsNotNull(_mocap);
         Assert.IsNotNull(_ragDoll);
@@ -79,13 +91,23 @@ public class DReConRewards : MonoBehaviour
         // Assert.AreEqual(_mocapBodyParts.Count, _ragDollBodyParts.Count);
         _mocapHead = _mocap
             .GetComponentsInChildren<Transform>()
-            .First(x=>x.name == "head");
+            .First(x => x.name == "head");
         _ragDollHead = _ragDoll
             .GetComponentsInChildren<Transform>()
-            .First(x=>x.name == "head");
-        _mocapBodyStats= new GameObject("MocapDReConRewardStats").AddComponent<DReConRewardStats>();
-        var mocapController = _spawnableEnv.GetComponentInChildren<MocapController>();
-        _mocapBodyStats.ObjectToTrack = mocapController;
+            .First(x => x.name == "head");
+        _mocapBodyStats = new GameObject("MocapDReConRewardStats").AddComponent<DReConRewardStats>();
+
+        //below does not work because in some cases we use MocapControllerArtanim
+        if (temp != null) { 
+           var mocapController = temp ;
+           _mocapBodyStats.ObjectToTrack = mocapController;
+        }else if(temp2 !=null){
+            var mocapController = temp2;
+            _mocapBodyStats.ObjectToTrack = mocapController;
+        }
+        else
+          Debug.LogError("I could not find component Mocap Controller nor component Mocap Controller Artanim");
+
         _mocapBodyStats.transform.SetParent(_spawnableEnv.transform);
         _mocapBodyStats.OnAwake(_mocapBodyStats.ObjectToTrack.transform);
 

@@ -58,8 +58,29 @@ public class DReConObservations : MonoBehaviour
             .ToList();
 
         _mocapBodyStats= new GameObject("MocapDReConObservationStats").AddComponent<DReConObservationStats>();
-        var mocapController = _spawnableEnv.GetComponentInChildren<MocapController>();
-        _mocapBodyStats.ObjectToTrack = mocapController;
+
+        MocapController temp = _spawnableEnv.GetComponentInChildren<MocapController>();
+        if (temp != null)
+        {
+            _mocapBodyStats.ObjectToTrack = temp;
+
+        }
+        else //so it is null
+        {
+            MocapControllerArtanim temp2 = _spawnableEnv.GetComponentInChildren<MocapControllerArtanim>();
+            if (temp2 != null)
+            {
+                _mocapBodyStats.ObjectToTrack = temp2;
+
+            }
+            else {
+                Debug.LogError("I could not find a MocapController nor a MocapControlerArtanim  within the environment");
+            
+            }
+
+        }
+ 
+
         _mocapBodyStats.transform.SetParent(_spawnableEnv.transform);
         _mocapBodyStats.OnAwake(BodyPartsToTrack, _mocapBodyStats.ObjectToTrack.transform);
 
