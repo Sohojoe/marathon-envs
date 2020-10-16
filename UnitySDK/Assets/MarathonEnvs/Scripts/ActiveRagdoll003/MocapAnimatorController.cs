@@ -53,7 +53,7 @@ public class MocapAnimatorController : MonoBehaviour
         _spawnableEnv = GetComponentInParent<SpawnableEnv>();
         _inputController = _spawnableEnv.GetComponentInChildren<InputController>();
         _targetDirection = Quaternion.Euler(0, 90, 0);
-        var ragDoll = _spawnableEnv.GetComponentInChildren<RagDollAgent>();
+        var ragDoll = _spawnableEnv.GetComponentInChildren<RagDollAgent>( true);//we include inactive childs
         _layerMask = 1<<ragDoll.gameObject.layer;
         _layerMask |= 1<<this.gameObject.layer;
         _layerMask = ~(_layerMask);
@@ -99,13 +99,13 @@ public class MocapAnimatorController : MonoBehaviour
         _angleDiff = 0f;
 
         _anim.SetBool("onGround", _isGrounded);
-        _anim.SetFloat("verticalVelocity", _verticalVelocity);
+       // _anim.SetFloat("verticalVelocity", _verticalVelocity);
         _anim.SetFloat("angleDeltaRad", _angleDiff * Mathf.Deg2Rad);
         _anim.SetFloat("forwardVelocity", _forwardVelocity);
         _anim.SetBool("backflip", false);
         _anim.Rebind();
         _anim.SetBool("onGround", _isGrounded);
-        _anim.SetFloat("verticalVelocity", _verticalVelocity);
+       // _anim.SetFloat("verticalVelocity", _verticalVelocity);
         _anim.SetFloat("angleDeltaRad", _angleDiff * Mathf.Deg2Rad);
         _anim.SetFloat("forwardVelocity", _forwardVelocity);
         _anim.SetBool("backflip", false);
@@ -129,8 +129,8 @@ public class MocapAnimatorController : MonoBehaviour
             if (Physics.Raycast(ray, out hit, kGroundedRayDistance, _layerMask, QueryTriggerInteraction.Ignore))
             {
                 // project velocity on plane
-                // movement = _anim.deltaPosition;
-                // movement.y = 0f;
+                movement = _anim.deltaPosition;
+                movement.y = 0f;
                 movement = Vector3.ProjectOnPlane(_anim.deltaPosition, hit.normal);
                 
                 // store material under foot
