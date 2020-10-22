@@ -175,7 +175,7 @@ public class MocapControllerArtanim : MonoBehaviour, IOnSensorCollision
 		try
 		{
 			_mocapAnimController = GetComponent<MocapAnimatorController>();
-			string s = _mocapAnimController.name;//this should launch an exception
+			string s = _mocapAnimController.name;//this should launch an exception if there is no animator
 			_usingMocapAnimatorController = true;
 		}
 		catch(Exception e) {
@@ -189,11 +189,12 @@ public class MocapControllerArtanim : MonoBehaviour, IOnSensorCollision
         SetupSensors();
 
 		anim = GetComponent<Animator>();
-		//if (!_usesMotionMatching)
+		if (_usingMocapAnimatorController)
 		{
-			
-			 anim.Play("Record",0, NormalizedTime);
-			 anim.Update(0f);
+
+			// anim.Play("Record",0, NormalizedTime);
+			anim.Play("Idle", 0, NormalizedTime);
+			anim.Update(0f);
 		}
 
 			if (RequestCamera && CameraTarget != null)

@@ -250,12 +250,12 @@ PrefabInstance:
     - target: {fileID: 4475872956784911638, guid: c7f549aabbce548e7aae2b2101ae3062,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4810550302162678093, guid: c7f549aabbce548e7aae2b2101ae3062,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5965315998760433598, guid: c7f549aabbce548e7aae2b2101ae3062,
         type: 3}
@@ -386,8 +386,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 5022602860645237092, guid: ae8fb3e0a6c49664393afc32f60fe36f,
+      objectReference: {fileID: 0}
+    - target: {fileID: 114263248370519032, guid: 6a7e84e6b4b64c744857753e3e544b81,
         type: 3}
+      propertyPath: m_BrainParameters.vectorObservationSize
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: 114263248370519032, guid: 6a7e84e6b4b64c744857753e3e544b81,
+        type: 3}
+      propertyPath: m_BrainParameters.vectorActionSize.Array.data[0]
+      value: 42
+      objectReference: {fileID: 0}
     - target: {fileID: 260939356137283678, guid: 6a7e84e6b4b64c744857753e3e544b81,
         type: 3}
       propertyPath: m_ParentAnchorPosition.x
