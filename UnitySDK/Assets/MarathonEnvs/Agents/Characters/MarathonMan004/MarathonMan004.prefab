@@ -183,8 +183,8 @@ ArticulationBody:
   m_LinearX: 2
   m_LinearY: 2
   m_LinearZ: 2
-  m_SwingY: 1
-  m_SwingZ: 1
+  m_SwingY: 2
+  m_SwingZ: 0
   m_Twist: 0
   m_XDrive:
     lowerLimit: 65
@@ -928,18 +928,18 @@ ArticulationBody:
   m_GameObject: {fileID: 4190549850654841206}
   m_Enabled: 1
   m_Mass: 2.07
-  m_ParentAnchorPosition: {x: -0.14970557, y: 0.019975185, z: 0.0010964777}
-  m_ParentAnchorRotation: {x: 0.70710677, y: 0, z: 0, w: 0.70710677}
-  m_AnchorPosition: {x: 0.0024542185, y: 0.16646, z: 0.009137318}
-  m_AnchorRotation: {x: 0.70710677, y: 0, z: 0, w: 0.70710677}
+  m_ParentAnchorPosition: {x: -0.15000005, y: 0, z: 0}
+  m_ParentAnchorRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_AnchorPosition: {x: 0, y: 0, z: 0}
+  m_AnchorRotation: {x: 0, y: 0, z: 0, w: 1}
   m_ComputeParentAnchor: 1
   m_ArticulationJointType: 3
   m_LinearX: 2
   m_LinearY: 2
   m_LinearZ: 2
   m_SwingY: 0
-  m_SwingZ: 0
-  m_Twist: 1
+  m_SwingZ: 1
+  m_Twist: 0
   m_XDrive:
     lowerLimit: -150
     upperLimit: 8
@@ -957,8 +957,8 @@ ArticulationBody:
     target: 0
     targetVelocity: 0
   m_ZDrive:
-    lowerLimit: -70
-    upperLimit: 90
+    lowerLimit: 0
+    upperLimit: 170
     stiffness: 0
     damping: 0
     forceLimit: 3.4028235e+38
@@ -968,7 +968,7 @@ ArticulationBody:
   m_AngularDamping: 0.05
   m_JointFriction: 0.05
   m_Immovable: 0
-  m_UseGravity: 1
+  m_UseGravity: 0
 --- !u!136 &2603520691741017906
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1543,8 +1543,8 @@ ArticulationBody:
   m_LinearX: 2
   m_LinearY: 2
   m_LinearZ: 2
-  m_SwingY: 1
-  m_SwingZ: 1
+  m_SwingY: 2
+  m_SwingZ: 0
   m_Twist: 0
   m_XDrive:
     lowerLimit: 65
@@ -2236,15 +2236,15 @@ ArticulationBody:
   m_Enabled: 1
   m_Mass: 3.67
   m_ParentAnchorPosition: {x: 0.15000002, y: 0, z: 0}
-  m_ParentAnchorRotation: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
+  m_ParentAnchorRotation: {x: 0, y: 0, z: 0, w: 1}
   m_AnchorPosition: {x: 0, y: 0, z: 0}
-  m_AnchorRotation: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
+  m_AnchorRotation: {x: 0, y: 0, z: 0, w: 1}
   m_ComputeParentAnchor: 1
   m_ArticulationJointType: 3
   m_LinearX: 2
   m_LinearY: 2
   m_LinearZ: 2
-  m_SwingY: 1
+  m_SwingY: 0
   m_SwingZ: 1
   m_Twist: 0
   m_XDrive:
@@ -2265,7 +2265,7 @@ ArticulationBody:
     targetVelocity: 0
   m_ZDrive:
     lowerLimit: 0
-    upperLimit: 90
+    upperLimit: 170
     stiffness: 20000
     damping: 100
     forceLimit: 3.402823e+38
