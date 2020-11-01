@@ -29,7 +29,7 @@ public class MarathonTestBedController : MonoBehaviour
     void FreezeBodyParts()
     {
 
-        var marathonAgents = FindObjectsOfType<Agent>();
+        var marathonAgents = FindObjectsOfType<Agent>(true);
         
         foreach (var agent in marathonAgents)
         {
@@ -49,6 +49,7 @@ public class MarathonTestBedController : MonoBehaviour
                     // if (FreezeHead && !FreezeHips)
                     //     rb.GetComponentInChildren<FixedJoint>().connectedBody = head;
                     break;
+                case "Ragdoll-MarathonMan004":
                 case "RagDoll":
                     _hasFrozen = true;
                     children = agent.GetComponentsInChildren<ArticulationBody>();
