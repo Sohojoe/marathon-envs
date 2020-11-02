@@ -122,3 +122,14 @@ Update Mode: updateDependencies
 
 The following packages were updated:
   com.unity.ide.vscode from version 1.2.1 to 1.2.2
+
+=== Sun Nov  1 13:42:30 2020
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.ads from version 3.4.9 to 3.5.0
+  com.unity.ide.visualstudio from version 2.0.2 to 2.0.3
+  com.unity.purchasing from version 2.1.0 to 2.1.1
+  com.unity.test-framework from version 1.1.16 to 1.1.18
