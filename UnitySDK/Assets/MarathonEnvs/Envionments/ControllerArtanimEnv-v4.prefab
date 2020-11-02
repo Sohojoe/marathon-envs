@@ -377,27 +377,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1714340263721781765}
     m_Modifications:
-    - target: {fileID: 114263248370519032, guid: 6a7e84e6b4b64c744857753e3e544b81,
-        type: 3}
-      propertyPath: m_BehaviorName
-      value: ControllerArtanim-v4
-      objectReference: {fileID: 0}
-    - target: {fileID: 114263248370519032, guid: 6a7e84e6b4b64c744857753e3e544b81,
-        type: 3}
-      propertyPath: m_Model
-      value: 
-      objectReference: {fileID: 5022602860645237092, guid: d31c808cd9fe448cda73834fe94c3e33,
-        type: 3}
-    - target: {fileID: 114263248370519032, guid: 6a7e84e6b4b64c744857753e3e544b81,
-        type: 3}
-      propertyPath: m_BrainParameters.vectorObservationSize
-      value: 114
-      objectReference: {fileID: 0}
-    - target: {fileID: 114263248370519032, guid: 6a7e84e6b4b64c744857753e3e544b81,
-        type: 3}
-      propertyPath: m_BrainParameters.vectorActionSize.Array.data[0]
-      value: 42
-      objectReference: {fileID: 0}
     - target: {fileID: 260939356137283678, guid: 6a7e84e6b4b64c744857753e3e544b81,
         type: 3}
       propertyPath: m_ParentAnchorPosition.x
@@ -497,11 +476,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ParentAnchorPosition.x
       value: -0.000000062088155
-      objectReference: {fileID: 0}
-    - target: {fileID: 4177175816300940728, guid: 6a7e84e6b4b64c744857753e3e544b81,
-        type: 3}
-      propertyPath: _isArtanimAgent
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6032172806317267978, guid: 6a7e84e6b4b64c744857753e3e544b81,
         type: 3}
