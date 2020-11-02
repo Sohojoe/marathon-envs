@@ -3940,8 +3940,8 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  maxStep: 5000
-  FixedDeltaTime: 0.006666667
+  maxStep: 2000
+  FixedDeltaTime: 0.0125
   SmoothBeta: 0.2
   RequestCamera: 1
   CameraFollowMe: 0
