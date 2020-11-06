@@ -16,8 +16,11 @@ namespace MLAgents
             Collider myCollider = GetComponent<Collider>();
             if (myCollider == null)
                 return;
-            // only ingore if part of the same object
-            if (myCollider.transform.root != other.transform.root)
+            // skip if other does not share Parent
+            HandleOverlap otherOverlap = other.gameObject.GetComponent<HandleOverlap>();
+            if (otherOverlap == null)
+                return;
+            if (otherOverlap.Parent != Parent)
                 return;
             Physics.IgnoreCollision(myCollider, other.collider);
         }
