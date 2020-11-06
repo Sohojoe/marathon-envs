@@ -245,7 +245,7 @@ public class MocapController : MonoBehaviour, IOnSensorCollision
     {
         var targets = target.GetComponentsInChildren<ArticulationBody>().ToList();
         var root = targets.First(x=>x.isRoot);
-        root.gameObject.SetActive(false);
+        // root.gameObject.SetActive(false);
         foreach (var targetRb in targets)
         {
 			var stat = GetComponentsInChildren<Rigidbody>().First(x=>x.name == targetRb.name);
@@ -279,7 +279,7 @@ public class MocapController : MonoBehaviour, IOnSensorCollision
 				targetRb.zDrive = drive;
 			}
         }
-        root.gameObject.SetActive(true);
+        // root.gameObject.SetActive(true);
     }	   
 	public void SnapTo(Vector3 snapPosition)
 	{

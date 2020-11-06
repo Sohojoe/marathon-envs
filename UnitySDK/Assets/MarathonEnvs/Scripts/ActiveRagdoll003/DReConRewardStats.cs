@@ -61,6 +61,7 @@ public class DReConRewardStats : MonoBehaviour
             .ToList();
         _capsuleColliders = _bodyParts
             .SelectMany(x=>x.GetComponentsInChildren<CapsuleCollider>())
+            .Where(x=>x.enabled)
             .Distinct()
             .ToList();
         if (orderToCopy != null)

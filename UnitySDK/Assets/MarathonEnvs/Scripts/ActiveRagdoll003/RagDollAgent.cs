@@ -23,6 +23,7 @@ public class RagDollAgent : Agent
     public bool debugCopyMocap;
     public bool ignorActions;
     public bool dontResetOnZeroReward;
+    public bool dontSnapMocapToRagdoll;
     public bool DebugPauseOnReset;
     public bool UsePDControl = true;
 
@@ -206,7 +207,7 @@ public class RagDollAgent : Agent
                 Done();
         }
         // else if (_dReConRewards.HeadDistance > 1.5f)
-        else if (_dReConRewards.Reward <= 0.1f)
+        else if (_dReConRewards.Reward <= 0.1f && !dontSnapMocapToRagdoll)
         {
             Transform ragDollCom = _dReConObservations.GetRagDollCOM();
             Vector3 snapPosition = ragDollCom.position;
@@ -239,6 +240,11 @@ public class RagDollAgent : Agent
     		Time.fixedDeltaTime = FixedDeltaTime;
             _spawnableEnv = GetComponentInParent<SpawnableEnv>();
 
+            if (_debugController != null)
+            {
+                dontResetOnZeroReward = true;
+                dontSnapMocapToRagdoll = true;
+            }
 
             if (_isArtanimAgent) 
             { 

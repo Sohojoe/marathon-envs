@@ -21,5 +21,9 @@ namespace MLAgents
                 return;
             Physics.IgnoreCollision(myCollider, other.collider);
         }
+        void FixedUpdate()
+        {
+            enabled = false;
+        }
     }
 }
