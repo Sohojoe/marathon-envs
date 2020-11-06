@@ -184,9 +184,9 @@ ArticulationBody:
   m_LinearX: 2
   m_LinearY: 2
   m_LinearZ: 2
-  m_SwingY: 0
+  m_SwingY: 1
   m_SwingZ: 0
-  m_Twist: 1
+  m_Twist: 0
   m_XDrive:
     lowerLimit: -90
     upperLimit: 0
@@ -196,8 +196,8 @@ ArticulationBody:
     target: 0
     targetVelocity: 0
   m_YDrive:
-    lowerLimit: -100
-    upperLimit: 10
+    lowerLimit: -180
+    upperLimit: -90
     stiffness: 20000
     damping: 100
     forceLimit: 3.4028235e+38
@@ -1642,9 +1642,9 @@ ArticulationBody:
   m_LinearX: 2
   m_LinearY: 2
   m_LinearZ: 2
-  m_SwingY: 0
+  m_SwingY: 1
   m_SwingZ: 0
-  m_Twist: 1
+  m_Twist: 0
   m_XDrive:
     lowerLimit: -180
     upperLimit: -90
@@ -1654,8 +1654,8 @@ ArticulationBody:
     target: 0
     targetVelocity: 0
   m_YDrive:
-    lowerLimit: -100
-    upperLimit: 10
+    lowerLimit: 180
+    upperLimit: 90
     stiffness: 20000
     damping: 100
     forceLimit: 3.4028235e+38
