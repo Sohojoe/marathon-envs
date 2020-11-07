@@ -244,6 +244,7 @@ public class RagDollAgent : Agent
             {
                 dontResetOnZeroReward = true;
                 dontSnapMocapToRagdoll = true;
+                UsePDControl = false;
             }
 
             if (_isArtanimAgent) 
