@@ -4224,7 +4224,7 @@ MonoBehaviour:
   m_BrainParameters:
     vectorObservationSize: 114
     numStackedVectorObservations: 1
-    vectorActionSize: 2a000000
+    vectorActionSize: 17000000
     vectorActionDescriptions: []
     vectorActionSpaceType: 1
   m_Model: {fileID: 5022602860645237092, guid: d31c808cd9fe448cda73834fe94c3e33, type: 3}
@@ -5147,16 +5147,16 @@ ArticulationBody:
   m_SwingZ: 0
   m_Twist: 1
   m_XDrive:
-    lowerLimit: 300
-    upperLimit: 30
+    lowerLimit: -30
+    upperLimit: 75
     stiffness: 40000
     damping: 100
     forceLimit: 3.4028235e+38
     target: 0
     targetVelocity: 0
   m_YDrive:
-    lowerLimit: -45
-    upperLimit: 225
+    lowerLimit: -25
+    upperLimit: 25
     stiffness: 0
     damping: 0
     forceLimit: 40
