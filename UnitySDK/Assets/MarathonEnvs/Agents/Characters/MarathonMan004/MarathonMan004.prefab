@@ -4289,7 +4289,7 @@ MonoBehaviour:
   dontResetOnZeroReward: 0
   dontSnapMocapToRagdoll: 0
   DebugPauseOnReset: 0
-  UsePDControl: 1
+  UsePDControl: 0
   _isArtanimAgent: 1
 --- !u!114 &4606487679878347701
 MonoBehaviour:
