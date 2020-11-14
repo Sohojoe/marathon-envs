@@ -32,7 +32,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8726915850983127639}
-  - {fileID: 6452676548587832880}
   m_Father: {fileID: 8383819776097905755}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -142,11 +141,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 439706128378593326}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.12000008, y: 0, z: 0}
+  m_LocalScale: {x: 0.12000003, y: 0.12, z: 0.12000003}
   m_Children:
   - {fileID: 8727310058112905241}
-  m_Father: {fileID: 5146388946861194467}
+  m_Father: {fileID: 8727146830054938469}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4671803082335251682
@@ -352,7 +351,7 @@ GameObject:
   - component: {fileID: 7184366637968187580}
   - component: {fileID: 387116365361177586}
   m_Layer: 15
-  m_Name: model for upper-arm
+  m_Name: model for right upper_arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -873,7 +872,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8727146830054938469}
-  - {fileID: 2009482438608923057}
   m_Father: {fileID: 1720789711332212714}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -967,7 +965,7 @@ GameObject:
   - component: {fileID: 8746854010170475181}
   - component: {fileID: 4782247232804624982}
   m_Layer: 15
-  m_Name: model for left-larm
+  m_Name: model for leftlarm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1501,11 +1499,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7003747802561260103}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.12000008, y: 0, z: 0}
+  m_LocalScale: {x: 0.12000003, y: 0.12, z: 0.12000003}
   m_Children:
   - {fileID: 8727169760970726795}
-  m_Father: {fileID: 5918462728070665095}
+  m_Father: {fileID: 8726915850983127639}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7687474111828078585
@@ -1598,7 +1596,7 @@ GameObject:
   - component: {fileID: 4574447663132149991}
   - component: {fileID: 865532131078735823}
   m_Layer: 15
-  m_Name: model for upper-arm
+  m_Name: model for left upper_arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1679,7 +1677,7 @@ GameObject:
   - component: {fileID: 836395681546131920}
   - component: {fileID: 697876790035830581}
   m_Layer: 15
-  m_Name: model for right-larm
+  m_Name: model for rightlarm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2932,7 +2930,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8719608748687072707}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &8713795088801476167
 SphereCollider:
@@ -3003,7 +3001,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8719608748687072707}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &8713360080215785891
 SphereCollider:
@@ -3298,7 +3296,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8719875636317608491}
-  - component: {fileID: 8690789666678175709}
   m_Layer: 15
   m_Name: MarathonMan004Target
   m_TagString: Untagged
@@ -3321,48 +3318,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8690789666678175709
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8722076229893094739}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e788eb6109bb04aa1bd822f9fc98f4bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MusclePowers:
-  - Muscle: butt
-    PowerVector: {x: 40, y: 0, z: 0}
-  - Muscle: lower_waist
-    PowerVector: {x: 40, y: 0, z: 40}
-  - Muscle: right_thigh
-    PowerVector: {x: 120, y: 40, z: 40}
-  - Muscle: right_shin
-    PowerVector: {x: 80, y: 0, z: 0}
-  - Muscle: right_right_foot
-    PowerVector: {x: 40, y: 20, z: 0}
-  - Muscle: left_thigh
-    PowerVector: {x: 120, y: 40, z: 40}
-  - Muscle: left_shin
-    PowerVector: {x: 80, y: 0, z: 0}
-  - Muscle: left_left_foot
-    PowerVector: {x: 40, y: 20, z: 0}
-  - Muscle: right_upper_arm
-    PowerVector: {x: 20, y: 20, z: 20}
-  - Muscle: right_shoulder2
-    PowerVector: {x: 20, y: 0, z: 0}
-  - Muscle: right_larm
-    PowerVector: {x: 40, y: 0, z: 0}
-  - Muscle: left_upper_arm
-    PowerVector: {x: 20, y: 20, z: 20}
-  - Muscle: left_shoulder2
-    PowerVector: {x: 20, y: 0, z: 0}
-  - Muscle: left_larm
-    PowerVector: {x: 40, y: 0, z: 0}
-  MotorScale: 1
 --- !u!1 &8722159205191571325
 GameObject:
   m_ObjectHideFlags: 0
@@ -3567,6 +3522,7 @@ Transform:
   m_LocalScale: {x: 8.333332, y: 8.333334, z: 8.333332}
   m_Children:
   - {fileID: 3115485619686496340}
+  - {fileID: 6452676548587832880}
   m_Father: {fileID: 5918462728070665095}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3644,6 +3600,7 @@ Transform:
   m_LocalScale: {x: 8.333332, y: 8.333334, z: 8.333332}
   m_Children:
   - {fileID: 5033364494250554107}
+  - {fileID: 2009482438608923057}
   m_Father: {fileID: 5146388946861194467}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3999,9 +3956,9 @@ Transform:
   m_Children:
   - {fileID: 5973032977649167942}
   - {fileID: 8719773365750254961}
+  - {fileID: 8727195330044446149}
   - {fileID: 8719750791822151511}
   - {fileID: 8726932274202523663}
-  - {fileID: 8727195330044446149}
   m_Father: {fileID: 8727345808408514215}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4189,7 +4146,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8719608748687072707}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &8706224094127359635
 SphereCollider:
