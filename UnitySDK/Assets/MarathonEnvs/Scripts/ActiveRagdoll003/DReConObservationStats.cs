@@ -76,9 +76,10 @@ public class DReConObservationStats : MonoBehaviour
                 .SelectMany(x=>x.GetComponentsInChildren<Transform>())
                 .Distinct()
                 .ToList();
+        var bodyPartNames = _bodyParts.Select(x=>x.name);
         if (_bodyPartsToTrack?.Count > 0)
             _bodyParts = _bodyPartsToTrack
-                .Where(x=>_bodyPartsToTrack.Contains(x))
+                .Where(x=>bodyPartNames.Contains(x))
                 .Select(x=>_bodyParts.First(y=>y.name == x))
                 .ToList();
         Stats = _bodyParts
