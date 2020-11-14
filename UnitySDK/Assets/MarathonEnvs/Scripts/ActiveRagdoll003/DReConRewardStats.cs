@@ -38,6 +38,11 @@ public class DReConRewardStats : MonoBehaviour
     Vector3[] _lastPoints;
     public Vector3[] PointVelocity;
 
+    [Header("Stats")]
+    public List<string> ColliderNames;
+    public List<string> RotationNames;
+    public List<string> BodyPartNames;
+
     public void OnAwake(Transform defaultTransform, DReConRewardStats orderToCopy = null)
     {
         _spawnableEnv = GetComponentInParent<SpawnableEnv>();
@@ -94,6 +99,15 @@ public class DReConRewardStats : MonoBehaviour
         }        
         transform.position = defaultTransform.position;
         transform.rotation = defaultTransform.rotation;
+        ColliderNames = _capsuleColliders
+            .Select(x=>x.name)
+            .ToList();
+        RotationNames = _trackRotations
+            .Select(x=>x.name)
+            .ToList();
+        BodyPartNames = _bodyParts
+            .Select(x=>x.name)
+            .ToList();
     }
     public void OnReset()
     {
@@ -208,6 +222,15 @@ public class DReConRewardStats : MonoBehaviour
             Assert.AreEqual(_capsuleColliders[i].height, target._capsuleColliders[i].height, $"height:{debugStr}");
             Assert.AreEqual(_capsuleColliders[i].radius, target._capsuleColliders[i].radius, $"radius:{debugStr}");
         }
+        Assert.AreEqual(ColliderNames.Count, target.ColliderNames.Count);
+        Assert.AreEqual(RotationNames.Count, target.RotationNames.Count);
+        Assert.AreEqual(BodyPartNames.Count, target.BodyPartNames.Count);
+        for (int i = 0; i < ColliderNames.Count; i++)
+            Assert.AreEqual(ColliderNames[i], target.ColliderNames[i]);
+        for (int i = 0; i < RotationNames.Count; i++)
+            Assert.AreEqual(RotationNames[i], target.RotationNames[i]);
+        for (int i = 0; i < BodyPartNames.Count; i++)
+            Assert.AreEqual(BodyPartNames[i], target.BodyPartNames[i]);
     }
 
     void GetAllPoints(Vector3[] pointBuffer)

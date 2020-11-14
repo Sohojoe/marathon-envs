@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 3034099057215724305}
   - component: {fileID: 3331521106111848309}
   - component: {fileID: 837786529545343070}
-  - component: {fileID: 1937770878884234374}
+  - component: {fileID: 3821583226675895726}
   - component: {fileID: 4201493407406561921}
   m_Layer: 14
   m_Name: left_upper_arm_joint
@@ -216,8 +216,8 @@ ArticulationBody:
   m_JointFriction: 0.05
   m_Immovable: 0
   m_UseGravity: 1
---- !u!136 &1937770878884234374
-CapsuleCollider:
+--- !u!135 &3821583226675895726
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -226,9 +226,8 @@ CapsuleCollider:
   m_Material: {fileID: 13400000, guid: 38b7ea504254a4fa986e42a7bb16c8df, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 0.18
-  m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4201493407406561921
 MonoBehaviour:
@@ -255,7 +254,6 @@ GameObject:
   - component: {fileID: 8935019918390650099}
   - component: {fileID: 3457445179794214210}
   - component: {fileID: 2015231249865073876}
-  - component: {fileID: 8176249431368065976}
   - component: {fileID: 6660338583867514660}
   m_Layer: 14
   m_Name: left_shoulder_joint
@@ -378,20 +376,6 @@ ArticulationBody:
   m_JointFriction: 0.05
   m_Immovable: 0
   m_UseGravity: 1
---- !u!136 &8176249431368065976
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1994225063198175274}
-  m_Material: {fileID: 13400000, guid: 38b7ea504254a4fa986e42a7bb16c8df, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.5
-  m_Height: 0.18
-  m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6660338583867514660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -498,7 +482,6 @@ GameObject:
   - component: {fileID: 9046930195186253552}
   - component: {fileID: 2152778561481833261}
   - component: {fileID: 689695163126716068}
-  - component: {fileID: 6746655703077494039}
   - component: {fileID: 1290925815246772676}
   m_Layer: 14
   m_Name: left_shin_joint
@@ -621,20 +604,6 @@ ArticulationBody:
   m_JointFriction: 0.05
   m_Immovable: 0
   m_UseGravity: 1
---- !u!136 &6746655703077494039
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2689048127048375752}
-  m_Material: {fileID: 13400000, guid: 38b7ea504254a4fa986e42a7bb16c8df, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.5
-  m_Height: 0.18
-  m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1290925815246772676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -741,7 +710,6 @@ GameObject:
   - component: {fileID: 1416826154867648414}
   - component: {fileID: 771864734824304175}
   - component: {fileID: 6499578195492720033}
-  - component: {fileID: 508332719784573138}
   - component: {fileID: 2247839371280604527}
   m_Layer: 14
   m_Name: right_shin_joint
@@ -864,20 +832,6 @@ ArticulationBody:
   m_JointFriction: 0.05
   m_Immovable: 0
   m_UseGravity: 1
---- !u!136 &508332719784573138
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4049109848645304093}
-  m_Material: {fileID: 13400000, guid: 38b7ea504254a4fa986e42a7bb16c8df, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.5
-  m_Height: 0.18
-  m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2247839371280604527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -903,7 +857,6 @@ GameObject:
   - component: {fileID: 1215296383275901019}
   - component: {fileID: 4507802282497515728}
   - component: {fileID: 1808420173214174992}
-  - component: {fileID: 2603520691741017906}
   - component: {fileID: 6242672257749564432}
   m_Layer: 14
   m_Name: left_larm_joint
@@ -1026,20 +979,6 @@ ArticulationBody:
   m_JointFriction: 0.05
   m_Immovable: 0
   m_UseGravity: 0
---- !u!136 &2603520691741017906
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4190549850654841206}
-  m_Material: {fileID: 13400000, guid: 38b7ea504254a4fa986e42a7bb16c8df, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.5
-  m_Height: 0.18
-  m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6242672257749564432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1065,7 +1004,6 @@ GameObject:
   - component: {fileID: 8836933567846973744}
   - component: {fileID: 8708533440761823382}
   - component: {fileID: 2971074736974418861}
-  - component: {fileID: 8494412569393870243}
   - component: {fileID: 8208166115191761376}
   m_Layer: 14
   m_Name: left_thigh_joint
@@ -1188,20 +1126,6 @@ ArticulationBody:
   m_JointFriction: 0.05
   m_Immovable: 0
   m_UseGravity: 1
---- !u!136 &8494412569393870243
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4226232852625651408}
-  m_Material: {fileID: 13400000, guid: 38b7ea504254a4fa986e42a7bb16c8df, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.5
-  m_Height: 0.18
-  m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8208166115191761376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1308,7 +1232,6 @@ GameObject:
   - component: {fileID: 4737168371432961590}
   - component: {fileID: 2271940557066395818}
   - component: {fileID: 1279219593241357561}
-  - component: {fileID: 7464066816594650833}
   - component: {fileID: 5371255058742018447}
   m_Layer: 14
   m_Name: right_thigh_joint
@@ -1431,20 +1354,6 @@ ArticulationBody:
   m_JointFriction: 0.05
   m_Immovable: 0
   m_UseGravity: 1
---- !u!136 &7464066816594650833
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4791384792183454201}
-  m_Material: {fileID: 13400000, guid: 38b7ea504254a4fa986e42a7bb16c8df, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.5
-  m_Height: 0.18
-  m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5371255058742018447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1551,7 +1460,7 @@ GameObject:
   - component: {fileID: 8486330274383236288}
   - component: {fileID: 4429935845084394516}
   - component: {fileID: 8149641315181257463}
-  - component: {fileID: 1870652067845543387}
+  - component: {fileID: 7101900443259438056}
   - component: {fileID: 5332134630415139608}
   m_Layer: 14
   m_Name: right_upper_arm_joint
@@ -1674,8 +1583,8 @@ ArticulationBody:
   m_JointFriction: 0.05
   m_Immovable: 0
   m_UseGravity: 1
---- !u!136 &1870652067845543387
-CapsuleCollider:
+--- !u!135 &7101900443259438056
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1684,9 +1593,8 @@ CapsuleCollider:
   m_Material: {fileID: 13400000, guid: 38b7ea504254a4fa986e42a7bb16c8df, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 0.18
-  m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5332134630415139608
 MonoBehaviour:
@@ -1794,7 +1702,6 @@ GameObject:
   - component: {fileID: 611013393603066668}
   - component: {fileID: 1702547920926920205}
   - component: {fileID: 1856326131723110599}
-  - component: {fileID: 450731774565509450}
   - component: {fileID: 731609966799716163}
   m_Layer: 14
   m_Name: right_shoulder_joint
@@ -1917,20 +1824,6 @@ ArticulationBody:
   m_JointFriction: 0.05
   m_Immovable: 0
   m_UseGravity: 1
---- !u!136 &450731774565509450
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6094053739594975242}
-  m_Material: {fileID: 13400000, guid: 38b7ea504254a4fa986e42a7bb16c8df, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.5
-  m_Height: 0.18
-  m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &731609966799716163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2280,7 +2173,6 @@ GameObject:
   - component: {fileID: 4683530424847130775}
   - component: {fileID: 8123767261018785165}
   - component: {fileID: 9173802407982569481}
-  - component: {fileID: 8975771398266679285}
   - component: {fileID: 2896841057666015045}
   m_Layer: 14
   m_Name: right_larm_joint
@@ -2403,20 +2295,6 @@ ArticulationBody:
   m_JointFriction: 0.05
   m_Immovable: 0
   m_UseGravity: 1
---- !u!136 &8975771398266679285
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7922785383300859302}
-  m_Material: {fileID: 13400000, guid: 38b7ea504254a4fa986e42a7bb16c8df, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.5
-  m_Height: 0.18
-  m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2896841057666015045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3606,7 +3484,7 @@ GameObject:
   - component: {fileID: 8753563405546037147}
   - component: {fileID: 8745140387057764951}
   - component: {fileID: 7641843802677264542}
-  - component: {fileID: 6496608949052855536}
+  - component: {fileID: 5563187025173742896}
   m_Layer: 14
   m_Name: left_hand
   m_TagString: Untagged
@@ -3690,8 +3568,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Parent: {fileID: 8721806364151867171}
---- !u!136 &6496608949052855536
-CapsuleCollider:
+--- !u!135 &5563187025173742896
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -3700,9 +3578,8 @@ CapsuleCollider:
   m_Material: {fileID: 13400000, guid: 38b7ea504254a4fa986e42a7bb16c8df, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.0279
-  m_Height: 0.33292812
-  m_Direction: 0
+  serializedVersion: 2
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8721752914000565987
 GameObject:
@@ -3857,7 +3734,7 @@ GameObject:
   - component: {fileID: 8719986123157941757}
   - component: {fileID: 8752946019180066261}
   - component: {fileID: 8745503363120457911}
-  - component: {fileID: 3252990465283578456}
+  - component: {fileID: 6549431724995893410}
   - component: {fileID: 1012036716365501883}
   m_Layer: 14
   m_Name: right_hand
@@ -3929,19 +3806,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &3252990465283578456
-CapsuleCollider:
+--- !u!135 &6549431724995893410
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8721795517134667573}
-  m_Material: {fileID: 13400000, guid: 38b7ea504254a4fa986e42a7bb16c8df, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.0279
-  m_Height: 0.33292812
-  m_Direction: 0
+  serializedVersion: 2
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1012036716365501883
 MonoBehaviour:
