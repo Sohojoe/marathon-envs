@@ -4136,7 +4136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DecisionPeriod: 2
-  RepeatAction: 0
+  RepeatAction: 1
   offsetStep: 0
 --- !u!114 &4177175816300940728
 MonoBehaviour:
