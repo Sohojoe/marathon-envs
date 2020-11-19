@@ -300,47 +300,12 @@ PrefabInstance:
     - target: {fileID: 8087028546548217645, guid: c7f549aabbce548e7aae2b2101ae3062,
         type: 3}
       propertyPath: _updatebounds
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8087028546548217645, guid: c7f549aabbce548e7aae2b2101ae3062,
         type: 3}
       propertyPath: _groundRootName
       value: CommonGround
-      objectReference: {fileID: 0}
-    - target: {fileID: 8087028546548217645, guid: c7f549aabbce548e7aae2b2101ae3062,
-        type: 3}
-      propertyPath: bounds.m_Center.x
-      value: -1.4832697
-      objectReference: {fileID: 0}
-    - target: {fileID: 8087028546548217645, guid: c7f549aabbce548e7aae2b2101ae3062,
-        type: 3}
-      propertyPath: bounds.m_Center.y
-      value: 0.458734
-      objectReference: {fileID: 0}
-    - target: {fileID: 8087028546548217645, guid: c7f549aabbce548e7aae2b2101ae3062,
-        type: 3}
-      propertyPath: bounds.m_Center.z
-      value: 231.12286
-      objectReference: {fileID: 0}
-    - target: {fileID: 8087028546548217645, guid: c7f549aabbce548e7aae2b2101ae3062,
-        type: 3}
-      propertyPath: bounds.m_Extent.x
-      value: 10.505
-      objectReference: {fileID: 0}
-    - target: {fileID: 8087028546548217645, guid: c7f549aabbce548e7aae2b2101ae3062,
-        type: 3}
-      propertyPath: bounds.m_Extent.y
-      value: 1.2787352
-      objectReference: {fileID: 0}
-    - target: {fileID: 8087028546548217645, guid: c7f549aabbce548e7aae2b2101ae3062,
-        type: 3}
-      propertyPath: bounds.m_Extent.z
-      value: 321.8771
-      objectReference: {fileID: 0}
-    - target: {fileID: 8087028546548217645, guid: c7f549aabbce548e7aae2b2101ae3062,
-        type: 3}
-      propertyPath: paddingBetweenEnvs
-      value: 0.000051
       objectReference: {fileID: 0}
     - target: {fileID: 8087028546548217645, guid: c7f549aabbce548e7aae2b2101ae3062,
         type: 3}

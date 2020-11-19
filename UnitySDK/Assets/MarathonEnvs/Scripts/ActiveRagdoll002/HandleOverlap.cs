@@ -16,6 +16,8 @@ namespace MLAgents
             Collider myCollider = GetComponent<Collider>();
             if (myCollider == null)
                 return;
+            if (!enabled)
+                return;
             // skip if other does not share Parent
             HandleOverlap otherOverlap = other.gameObject.GetComponent<HandleOverlap>();
             if (otherOverlap == null)
