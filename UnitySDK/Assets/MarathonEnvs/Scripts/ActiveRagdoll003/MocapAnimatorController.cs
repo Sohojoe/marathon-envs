@@ -39,6 +39,10 @@ public class MocapAnimatorController : MonoBehaviour
     bool _inCombo;
     int _layerMask;
 
+    //for debugging, we disable this when setTpose in MarathonTestBedController is on
+    [HideInInspector]
+    public bool doFixedUpdate = true;
+
 
     protected bool IsMoveInput
     {
@@ -57,6 +61,11 @@ public class MocapAnimatorController : MonoBehaviour
         _layerMask = 1<<ragDoll.gameObject.layer;
         _layerMask |= 1<<this.gameObject.layer;
         _layerMask = ~(_layerMask);
+
+
+
+
+
     }
 
     void Update()
@@ -65,8 +74,12 @@ public class MocapAnimatorController : MonoBehaviour
 
     void FixedUpdate()
     {
-        OnFixedUpdate();
+
+        if(doFixedUpdate)
+            OnFixedUpdate();
     }
+
+
     void OnFixedUpdate()
     {
         // RotateTarget(Time.fixedDeltaTime);
@@ -98,19 +111,26 @@ public class MocapAnimatorController : MonoBehaviour
         _verticalVelocity = 0f;
         _angleDiff = 0f;
 
+        if (!doFixedUpdate)
+            return;
+   
         _anim.SetBool("onGround", _isGrounded);
-       // _anim.SetFloat("verticalVelocity", _verticalVelocity);
+        // _anim.SetFloat("verticalVelocity", _verticalVelocity);
         _anim.SetFloat("angleDeltaRad", _angleDiff * Mathf.Deg2Rad);
         _anim.SetFloat("forwardVelocity", _forwardVelocity);
         _anim.SetBool("backflip", false);
         _anim.Rebind();
         _anim.SetBool("onGround", _isGrounded);
-       // _anim.SetFloat("verticalVelocity", _verticalVelocity);
+        // _anim.SetFloat("verticalVelocity", _verticalVelocity);
         _anim.SetFloat("angleDeltaRad", _angleDiff * Mathf.Deg2Rad);
         _anim.SetFloat("forwardVelocity", _forwardVelocity);
         _anim.SetBool("backflip", false);
         OnFixedUpdate();
         _anim.Update(0f);
+
+
+     
+
     }
 
 

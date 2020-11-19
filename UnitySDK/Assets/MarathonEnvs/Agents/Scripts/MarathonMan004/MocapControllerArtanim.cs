@@ -61,10 +61,13 @@ public class MocapControllerArtanim : MonoBehaviour, IOnSensorCollision
 
 	private List<MappingOffset> _offsetsSource2RB = null;
 
+    //for debugging, we disable this when setTpose in MarathonTestBedController is on
+    [HideInInspector]
+    public bool doFixedUpdate = true;
 
 
 
-	MappingOffset SetOffsetSourcePose2RB(string rbname, string tname)
+    MappingOffset SetOffsetSourcePose2RB(string rbname, string tname)
 	{
 		//here we set up:
 		// a. the transform of the rigged character input
@@ -222,24 +225,40 @@ public class MocapControllerArtanim : MonoBehaviour, IOnSensorCollision
 
     void FixedUpdate()
     {
+        if (doFixedUpdate)
+            OnFixedUpdate();
+	
+    }
 
-		//if (!_usesMotionMatching)
-		{
-			AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
-			AnimatorClipInfo[] clipInfo = anim.GetCurrentAnimatorClipInfo(0);
-			Lenght = stateInfo.length;
-			NormalizedTime = stateInfo.normalizedTime;
-			IsLoopingAnimation = stateInfo.loop;
-			var timeStep = stateInfo.length * stateInfo.normalizedTime;
-			var endTime = 1f;
-			if (IsLoopingAnimation)
-				endTime = 3f;
-			// if (NormalizedTime <= endTime) {
-			// }       
-		}
+
+    void OnFixedUpdate() {
+
+        //if (!_usesMotionMatching)
+        {
+            AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
+            AnimatorClipInfo[] clipInfo = anim.GetCurrentAnimatorClipInfo(0);
+            Lenght = stateInfo.length;
+            NormalizedTime = stateInfo.normalizedTime;
+            IsLoopingAnimation = stateInfo.loop;
+            var timeStep = stateInfo.length * stateInfo.normalizedTime;
+            var endTime = 1f;
+            if (IsLoopingAnimation)
+                endTime = 3f;
+            // if (NormalizedTime <= endTime) {
+            // }       
+        }
 
         MimicAnimationArtanim();
+
+
+
+
+
+
+
+
     }
+
 
 	//public void MimicAnimation(bool skipIfLearning = false)
 	//{
@@ -424,8 +443,10 @@ public class MocapControllerArtanim : MonoBehaviour, IOnSensorCollision
 	public void OnReset(Quaternion resetRotation)
 	{
 
+        if (!doFixedUpdate)
+            return;
 
-		if(_usingMocapAnimatorController)
+            if (_usingMocapAnimatorController)
 		{
 			_mocapAnimController.OnReset();
 

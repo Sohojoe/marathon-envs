@@ -14,18 +14,48 @@ public class MarathonTestBedController : MonoBehaviour
     /**< \brief Apply a random number to each action each framestep*/
     public bool ApplyRandomActions = true;
 
-    public bool FreezeHead = false;
+    //public bool FreezeHead = false;
     public bool FreezeHips = false;
     public bool DontUpdateMotor = false;
 
+    public bool setTpose;
+
+
     bool _hasFrozen;
 
+
+
+
+  //  bool tposeanimisloaded = false;
 
     // Start is called before the first frame update
     void Start()
     {
 
     }
+
+    void loadTposeanim() {
+
+        GameObject sourceAgent = GameObject.Find("AgentMove-source");
+
+        Animator anim = sourceAgent.GetComponent<Animator>();
+        anim.runtimeAnimatorController = null; // Resources.Load("MarathonEnvs/Animations/Tpose") as RuntimeAnimatorController;
+
+        MocapAnimatorController animControl =  sourceAgent.GetComponent<MocapAnimatorController>();
+        animControl.doFixedUpdate = false;
+        animControl.MaxForwardVelocity = 0;
+
+        MocapControllerArtanim animControlartanim = sourceAgent.GetComponent<MocapControllerArtanim>();
+        animControlartanim.doFixedUpdate = false;
+
+        InputController input = FindObjectOfType<InputController>();
+        input.DemoMockIfNoInput = false;
+
+
+
+    }
+
+
     void FreezeBodyParts()
     {
 
@@ -39,6 +69,7 @@ public class MarathonTestBedController : MonoBehaviour
             switch (agent.name)
             {
                 case "MarathonMan":
+                    
                     _hasFrozen = true;
                     children = agent.GetComponentsInChildren<ArticulationBody>();
                     head = children.FirstOrDefault(x=>x.name=="torso");
@@ -51,6 +82,10 @@ public class MarathonTestBedController : MonoBehaviour
                     break;
                 case "Ragdoll-MarathonMan004":
                 case "RagDoll":
+                    if (!_hasFrozen && setTpose)
+                        loadTposeanim();
+
+
                     _hasFrozen = true;
                     children = agent.GetComponentsInChildren<ArticulationBody>();
                     head = children.FirstOrDefault(x=>x.name=="torso");
@@ -65,8 +100,8 @@ public class MarathonTestBedController : MonoBehaviour
                 default:
                     break;
             }
-            if (FreezeHead && head != null)
-                head.immovable = true;
+        //    if (FreezeHead && head != null)
+        //        head.immovable = true;
             if (FreezeHips && butt != null)
                 butt.immovable = true;
         }
