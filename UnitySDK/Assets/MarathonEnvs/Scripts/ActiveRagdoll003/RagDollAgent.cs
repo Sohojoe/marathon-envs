@@ -153,11 +153,7 @@ public class RagDollAgent : Agent
         }
         if (shouldDebug)
         {
-            if (_debugController.Actions == null || _debugController.Actions.Length == 0)
-            {
-                _debugController.Actions = vectorAction.Select(x=>0f).ToArray();
-            }
-            vectorAction = _debugController.Actions.Select(x=>Mathf.Clamp(x,-1f,1f)).ToArray();
+            vectorAction = GetDebugActions(vectorAction);
         }
         if (UsePDControl)
         {
@@ -185,14 +181,6 @@ public class RagDollAgent : Agent
 				targetNormalizedRotation.y = vectorAction[i++];
             if (m.swingZLock == ArticulationDofLock.LimitedMotion)
 				targetNormalizedRotation.z = vectorAction[i++];
-
-            // // keep old order (delete me when retrained)
-            // if (m.swingYLock == ArticulationDofLock.LimitedMotion)
-			// 	targetNormalizedRotation.y = vectorAction[i++];
-            // if (m.swingZLock == ArticulationDofLock.LimitedMotion)
-			// 	targetNormalizedRotation.z = vectorAction[i++];
-			// if (m.twistLock == ArticulationDofLock.LimitedMotion)
-			// 	targetNormalizedRotation.x = vectorAction[i++];
             UpdateMotor(m, targetNormalizedRotation);
         }
         _dReConObservations.PreviousActions = vectorAction;
@@ -219,6 +207,41 @@ public class RagDollAgent : Agent
             AddReward(-.5f);
             _skipRewardAfterTeleport = true;
         }
+    }
+    float[] GetDebugActions(float[] vectorAction)
+    {
+        if (_debugController.Actions == null || _debugController.Actions.Length != vectorAction.Length)
+        {
+            _debugController.Actions = vectorAction.Select(x=>0f).ToArray();
+        }
+        int i = 0;
+        foreach (var m in _motors)
+        {
+            if (m.isRoot)
+                continue;
+            DebugMotor debugMotor = m.GetComponent<DebugMotor>();
+            if (debugMotor == null)
+            {
+                debugMotor = m.gameObject.AddComponent<DebugMotor>();
+            }
+            // clip to -1/+1
+            debugMotor.Actions = new Vector3 (
+                Mathf.Clamp(debugMotor.Actions.x, -1f, 1f),
+                Mathf.Clamp(debugMotor.Actions.y, -1f, 1f),
+                Mathf.Clamp(debugMotor.Actions.z, -1f, 1f)
+            );
+            Vector3 targetNormalizedRotation = debugMotor.Actions;
+
+            if (m.twistLock == ArticulationDofLock.LimitedMotion)
+                _debugController.Actions[i++] = targetNormalizedRotation.x;
+            if (m.swingYLock == ArticulationDofLock.LimitedMotion)
+                _debugController.Actions[i++] = targetNormalizedRotation.y;
+            if (m.swingZLock == ArticulationDofLock.LimitedMotion)
+                _debugController.Actions[i++] = targetNormalizedRotation.z;
+        }
+
+        vectorAction = _debugController.Actions.Select(x=>Mathf.Clamp(x,-1f,1f)).ToArray();
+        return vectorAction;
     }
 
     float[] SmoothActions(float[] vectorAction)
