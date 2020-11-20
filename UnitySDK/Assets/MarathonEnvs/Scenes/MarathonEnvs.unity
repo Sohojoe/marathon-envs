@@ -269,7 +269,7 @@ MonoBehaviour:
   ApplyRandomActions: 0
   FreezeHips: 1
   DontUpdateMotor: 0
-  setTpose: 1
+  setTpose: 0
 --- !u!4 &1467993923
 Transform:
   m_ObjectHideFlags: 0
