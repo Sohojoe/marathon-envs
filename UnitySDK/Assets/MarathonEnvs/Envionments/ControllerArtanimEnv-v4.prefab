@@ -350,6 +350,11 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 114263248370519032, guid: 6a7e84e6b4b64c744857753e3e544b81,
         type: 3}
+      propertyPath: m_BrainParameters.vectorObservationSize
+      value: 124
+      objectReference: {fileID: 0}
+    - target: {fileID: 114263248370519032, guid: 6a7e84e6b4b64c744857753e3e544b81,
+        type: 3}
       propertyPath: m_BrainParameters.vectorActionSize.Array.data[0]
       value: 31
       objectReference: {fileID: 0}
@@ -606,9 +611,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8490727564501632366, guid: c4813c0eb838d1b4fa513c76f6b99f5f,
         type: 3}
+      propertyPath: data4constraints
+      value: 
+      objectReference: {fileID: 11400000, guid: b92abd362c7d81c4197a5d55731f7427,
+        type: 2}
+    - target: {fileID: 8490727564501632366, guid: c4813c0eb838d1b4fa513c76f6b99f5f,
+        type: 3}
       propertyPath: _articulationBodyRoot
       value: 
       objectReference: {fileID: 1843908275852895023}
+    - target: {fileID: 8490727564501632366, guid: c4813c0eb838d1b4fa513c76f6b99f5f,
+        type: 3}
+      propertyPath: SetUpConstraintsFromData
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4813c0eb838d1b4fa513c76f6b99f5f, type: 3}
 --- !u!1001 &8663897799653336881
